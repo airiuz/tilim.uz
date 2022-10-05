@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+.rdw-option-wrapper {
+    border: none !important;
+    /* background-color: #d3eaff !important; */
+    box-shadow: none !important;
+    padding: 4px !important;
+  }
+
+.rdw-editor-toolbar{
+    margin: 0 !important;
+    display: flex !important;
+    border: none !important;
+   
+}
+.rdw-option-active{
+    background-color: blueviolet !important;
+}

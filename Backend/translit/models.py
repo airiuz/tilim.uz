@@ -29,3 +29,18 @@ class TypeFastModel(models.Model):
 
     def __str__(self):
         return self.text[:60]
+    
+class TypeFastOutModel(models.Model):
+    text_id = models.IntegerField()
+    text = models.CharField(max_length=500)
+    true_answers = models.IntegerField()
+    
+    def __str__(self):
+        return self.text[:50]
+
+class NameofTop(models.Model):
+    type_fast_out_id = models.ForeignKey(TypeFastOutModel, on_delete=models.CASCADE)
+    name = models.CharField(max_length=200)
+    
+    def __str__(self):
+        return self.name    

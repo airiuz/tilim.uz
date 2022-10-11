@@ -12,7 +12,8 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 
-from .serializers import LoginSerializer, MyFileSerializer, MyTextSerializer, MyOutFileSerializer, NameofTopSerializer, TypeFastOutSerializer, TypeFastSerializer, NameofTop, UserOutSerializer, UserSerializer
+from .serializers import LoginSerializer, MyFileSerializer, MyTextSerializer, MyOutFileSerializer, NameofTopSerializer, \
+    TypeFastOutSerializer, TypeFastSerializer, NameofTop, UserOutSerializer, UserSerializer
 from .models import MyFile, TypeFastModel, TypeFastOutModel
 from rest_framework.parsers import FileUploadParser, MultiPartParser, FormParser
 from rest_framework.viewsets import ViewSet
@@ -27,7 +28,7 @@ class ChangeTextAPIView(APIView):
             a = serializer.data.get('data')
             t = serializer.data.get('type')
             t = '1' if t in ['1', 'lotin'] else t == '0'
-            result = front.translit_text.to_cyrillic(a) if t=='1' else front.translit_text.to_latin(a)
+            result = front.translit_text.to_cyrillic(a) if t == '1' else front.translit_text.to_latin(a)
             return Response(result)
         else:
             return Response(serializer.errors)
@@ -35,6 +36,7 @@ class ChangeTextAPIView(APIView):
 
 class DocumentChangeAPIView(APIView):
     parser_classes = (MultiPartParser, FileUploadParser)
+
     def post(self, request):
         serializer = MyFileSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
@@ -53,8 +55,8 @@ class DocumentChangeAPIView(APIView):
                 return Response(data=serializer.errors)
         else:
             return Response(
-                        data=serializer.errors,
-                        status=status.HTTP_400_BAD_REQUEST)
+                data=serializer.errors,
+                status=status.HTTP_400_BAD_REQUEST)
 
 
 class TypeFastAPIView(APIView):
@@ -64,37 +66,40 @@ class TypeFastAPIView(APIView):
         text_m = TypeFastModel.objects.filter(id=x).first()
         serializer = TypeFastSerializer(text_m, many=False)
         return Response(serializer.data)
-    
+
     @csrf_exempt
     def post(self, request):
         serializer = TypeFastOutSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         type_m = TypeFastModel.objects.filter(id=serializer.data['text_id']).first()
         type_fast_result = type_fast.find_difference_text(type_m.text, serializer.data['text'])
-        
-        content = TypeFastOutModel.objects.create(text_id=serializer.data['text_id'], text=serializer.data['text'], true_answers=len(type_fast_result))
+
+        content = TypeFastOutModel.objects.create(text_id=serializer.data['text_id'], text=serializer.data['text'],
+                                                  true_answers=len(type_fast_result))
         content.save()
-        
+
         top_results = [x.true_answers for x in TypeFastOutModel.objects.all().order_by('-true_answers')[:5]]
         all_results = [x.true_answers for x in TypeFastOutModel.objects.all().order_by('-true_answers')]
         leader = True if content.true_answers in top_results else False
-        place = all_results.index(content.true_answers)+1
-        return_content = {'data':type_fast_result, 'place':place, 'leader':leader}
+        place = all_results.index(content.true_answers) + 1
+        return_content = {'data': type_fast_result, 'place': place, 'leader': leader}
         return HttpResponse(json.dumps(return_content), content_type='application/json')
 
 
 class NameofTopAPIView(generics.ListCreateAPIView):
     serializer_class = NameofTopSerializer
     queryset = NameofTop.objects.all()
-        
+
+
 class CreateTextAPIView(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticated, IsAdminUser)
     serializer_class = TypeFastSerializer
     queryset = TypeFastModel.objects.all()
 
-   
+
 class SessionUserView(APIView):
     permission_classes = (IsAuthenticated, IsAdminUser)
+
     def get(self, request):
         user = User.objects.get(pk=self.request.user.id)
         serializer = UserOutSerializer(user)
@@ -104,5 +109,4 @@ class SessionUserView(APIView):
 class CreateUser(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticated, IsAdminUser)
     serializer_class = UserSerializer
-    queryset = User.objects.all()        
-        
+    queryset = User.objects.all()

@@ -37,25 +37,19 @@ class DocumentChangeAPIView(APIView):
     parser_classes = (MultiPartParser, FileUploadParser)
     def post(self, request):
         serializer = MyFileSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            file = MyFile.objects.get(id=serializer.data.get('id'))
-            myfile = file.in_file
-            t = serializer.data.get('t')
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        file = MyFile.objects.get(id=serializer.data.get('id'))
+        myfile = file.in_file
+        t = serializer.data.get('t')
 
-            outfile = front.translit_file.translit_file(t, myfile)
-            if isinstance(outfile['out_file'], str):
-                return Response(data=outfile['out_file'])
-            else:
-                serializer = MyOutFileSerializer(data=outfile)
-                if serializer.is_valid(raise_exception=True):
-                    return Response(serializer.data)
-                return Response(data=serializer.errors)
+        outfile = front.translit_file.translit_file(t, myfile)
+        if isinstance(outfile['out_file'], str):
+            return Response(data=outfile['out_file'])
         else:
-            return Response(
-                        data=serializer.errors,
-                        status=status.HTTP_400_BAD_REQUEST)
-
+            serializer = MyOutFileSerializer(data=outfile)
+            serializer.is_valid(raise_exception=True)
+            return Response(serializer.data)
 
 class TypeFastAPIView(APIView):
     def get(self, request):
@@ -79,7 +73,7 @@ class TypeFastAPIView(APIView):
         all_results = [x.true_answers for x in TypeFastOutModel.objects.all().order_by('-true_answers')]
         leader = True if content.true_answers in top_results else False
         place = all_results.index(content.true_answers)+1
-        return_content = {'data':type_fast_result, 'place':place, 'leader':leader}
+        return_content = {'id':content.id, 'data':type_fast_result, 'place':place, 'leader':leader}
         return HttpResponse(json.dumps(return_content), content_type='application/json')
 
 

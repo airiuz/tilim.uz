@@ -65,7 +65,7 @@ function Documents() {
         <div className="flex flex-col justify-center items-center w-full">
           <div className="w-1/2 flex justify-center"></div>
 
-          <label className="flex flex-col justify-center items-center w-1/2 h-64 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+          <label className="flex flex-col justify-center items-center md:w-[400px] xl:w-1/2 h-64 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer ">
             <div className="flex flex-col justify-center space-y-8 items-center pt-5 pb-6">
               <div className="flex space-x-4">
                 <img className="w-10 h-10" src="/img/word.png" alt="image" />

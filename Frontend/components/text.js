@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import { useCallback, useEffect, useState } from "react";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import debounce from "./utils/debounce";
-import { changeIcon, copy, info_icon } from "./utils/icons";
+import { changeIcon, copy, info_icon, pencil } from "./utils/icons";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { stateFromMarkdown } from "draft-js-import-markdown";
 import { stateToMarkdown } from "draft-js-export-markdown";
@@ -168,21 +168,21 @@ function TextEditor() {
 
   return (
     <div className="h-full my-6">
-      <div className="flex items-center space-x-6 my-2 justify-center">
+      <div className="flex items-center my-2 justify-center">
         <div className="flex flex-col focus:border-2 focus:border-blue-500">
-          <div className="flex justify-between w-full space-x-4 px-3 items-center py-2 bg-gray-200 rounded-t-md">
+          <div className="flex justify-between w-full space-x-4 items-center h-[109px] bg-red-200 ">
             <div className="flex space-x-4">
               <button
                 onClick={() => {
                   setTool(!tool);
                 }}
-                className="bg-slate-300  py-1 px-3 rounded-xl"
+                className="bg-[#D3DAFD]  py-[16px] px-[15px] rounded-xl flex items-center"
               >
-                Matn tahriri
+                Matn tahriri{pencil}
               </button>
               <button
                 onClick={tozala}
-                className="bg-slate-300  py-1 px-3 rounded-xl"
+                className="bg-slate-300  py-1 px-3 rounded-xl hidden"
               >
                 Tozalash
               </button>
@@ -199,13 +199,13 @@ function TextEditor() {
             stripPastedStyles={true}
             onEditorStateChange={onEditorStateChange}
             toolbarClassName="bg-green-500 w-[500px] h-[100px] border-b-2 "
-            editorClassName="bg-gray-300 border-white w-[500px] min-h-[400px] max-h-[400px] p-3 overflow-y-scroll"
+            editorClassName="bg-white w-[683px] min-h-[244px] border-t border-[#E8EBF2] max-h-[400px] p-3 overflow-y-scroll"
             wrapperClassName="demo-wrapper"
             toolbar={{
               options: ["inline", "textAlign", "list", "history"],
             }}
           />
-          <div className="w-full flex justify-between px-4 items-center h-[50px] bg-cyan-800 rounded-b-md text-gray-200">
+          <div className="w-full flex justify-between px-10 items-center h-[50px] bg-cyan-800 text-gray-200">
             <p>{valueLength > 0 ? valueLength : 0}/5000</p>
             <div className="flex justify-evenly items-center gap-2">
               <CopyToClipboard text={copyValue}>
@@ -238,11 +238,15 @@ function TextEditor() {
             </div>
           </div>
         </div>
-        <button className="h-full p-4" type="button" onClick={changeDirection}>
+        <button
+          className="h-[68px] w-[68px] bg-[#D3DAFD] rounded-[22px] absolute top-24 flex justify-center items-center"
+          type="button"
+          onClick={changeDirection}
+        >
           {changeIcon}
         </button>
         <div className="flex flex-col">
-          <div className="flex justify-between w-full space-x-4 px-3 items-center py-2  bg-gray-200 rounded-t-md">
+          <div className="flex justify-between w-full space-x-4 px-3 items-center py-2  h-[109px]  bg-gray-200">
             <p className="font-semibold">
               {dataValue ? "Кириллча" : "Lotincha"}
             </p>
@@ -258,11 +262,11 @@ function TextEditor() {
             readOnly
             editorState={editorStatePreview}
             toolbarClassName="bg-green-500 w-[500px] h-[100px] demo-toolbar-custom border-b-2"
-            editorClassName="bg-gray-300 border-white w-[500px] min-h-[400px] max-h-[400px] p-3 overflow-y-scroll"
+            editorClassName="bg-gray-300 border-white w-[683px] min-h-[244px] border-t border-[#E8EBF2] p-3 overflow-y-scroll"
             wrapperClassName="demo-wrapper"
           />
           {/* <p>{data}</p> */}
-          <div className="w-full flex justify-between px-4 items-center h-[50px] bg-cyan-800 rounded-b-md text-gray-200">
+          <div className="w-full flex justify-between px-10 items-center h-[50px] bg-cyan-800 text-gray-200">
             <p>{dataLength === "" ? 0 : dataLength}</p>
             <CopyToClipboard text={data}>
               <div className="flex items-center space-x-2">

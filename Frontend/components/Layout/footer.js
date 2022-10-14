@@ -58,9 +58,15 @@ function Footer() {
           </p>
         </div>
         <div className="flex space-x-[32px]">
-          <p className="text-[#273A5D] text-[15px]">Kontaktlar</p>
-          <p className="text-[#273A5D] text-[15px]">Maxfiylik</p>
-          <p className="text-[#273A5D] text-[15px]">Foydalanish shartlari</p>
+          <Link href={"#"}>
+            <a className="text-[#273A5D] text-[15px]">Kontaktlar</a>
+          </Link>
+          <Link href={"#"}>
+            <a className="text-[#273A5D] text-[15px]">Maxfiylik</a>
+          </Link>
+          <Link href={"#"}>
+            <a className="text-[#273A5D] text-[15px]">Foydalanish shartlari</a>
+          </Link>
         </div>
       </div>
     </footer>

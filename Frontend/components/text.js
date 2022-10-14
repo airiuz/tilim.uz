@@ -4,11 +4,19 @@ import dynamic from "next/dynamic";
 import { useCallback, useEffect, useState } from "react";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import debounce from "./utils/debounce";
-import { changeIcon, copy, info_icon, pencil } from "./utils/icons";
-import { CopyToClipboard } from "react-copy-to-clipboard";
+import {
+  changeIcon,
+  copy,
+  info_icon,
+  like,
+  microphone,
+  pencil,
+  share,
+  tozalash,
+  volume,
+} from "./utils/icons";
 import { stateFromMarkdown } from "draft-js-import-markdown";
 import { stateToMarkdown } from "draft-js-export-markdown";
-import { replaceData } from "draft-js/lib/DraftEntity";
 
 const Editor = dynamic(
   () => import("react-draft-wysiwyg").then((module) => module.Editor),
@@ -60,8 +68,6 @@ function TextEditor() {
   const [copyValue, setCopyValue] = useState("");
   const [showR, setShowR] = useState(false);
   const [showL, setShowL] = useState(false);
-  const [alert, setAlert] = useState(false);
-  const [alertLength, setAlertLength] = useState(false);
   const [dataLength, setDatatLength] = useState(0);
   const postData = useCallback(
     debounce((currentContent, latin2cyrill) => {
@@ -143,22 +149,6 @@ function TextEditor() {
   );
   const [tool, setTool] = useState(false);
 
-  function showToolTipRight() {
-    setShowR(true);
-    setTimeout(() => {
-      // After 3 seconds set the show value to false
-      setShowR(false);
-    }, 3000);
-  }
-
-  function showToolTipLeft() {
-    setShowL(true);
-    setTimeout(() => {
-      // After 3 seconds set the show value to false
-      setShowL(false);
-    }, 3000);
-  }
-
   const changeDirection = useCallback(() => {
     setDataValue((dataValue) => {
       postData(currentContent, !dataValue);
@@ -167,16 +157,16 @@ function TextEditor() {
   }, [currentContent]);
 
   return (
-    <div className="h-full my-6">
-      <div className="flex items-center my-2 justify-center">
+    <div className="h-full">
+      <div className="flex items-center justify-center">
         <div className="flex flex-col focus:border-2 focus:border-blue-500">
-          <div className="flex justify-between w-full space-x-4 items-center h-[109px] bg-red-200 ">
+          <div className="flex justify-between w-full space-x-4 pr-14 items-center h-[109px]">
             <div className="flex space-x-4">
               <button
                 onClick={() => {
                   setTool(!tool);
                 }}
-                className="bg-[#D3DAFD]  py-[16px] px-[15px] rounded-xl flex items-center"
+                className="bg-[#D3DAFD] space-x-[14px] text-[16px]  py-[16px] px-[15px] rounded-xl flex items-center"
               >
                 Matn tahriri{pencil}
               </button>
@@ -193,66 +183,49 @@ function TextEditor() {
               </p>
             </div>
           </div>
-          <Editor
-            toolbarHidden={!tool ? true : false}
-            editorState={editorState}
-            stripPastedStyles={true}
-            onEditorStateChange={onEditorStateChange}
-            toolbarClassName="bg-green-500 w-[500px] h-[100px] border-b-2 "
-            editorClassName="bg-white w-[683px] min-h-[244px] border-t border-[#E8EBF2] max-h-[400px] p-3 overflow-y-scroll"
-            wrapperClassName="demo-wrapper"
-            toolbar={{
-              options: ["inline", "textAlign", "list", "history"],
-            }}
-          />
-          <div className="w-full flex justify-between px-10 items-center h-[50px] bg-cyan-800 text-gray-200">
-            <p>{valueLength > 0 ? valueLength : 0}/5000</p>
-            <div className="flex justify-evenly items-center gap-2">
-              <CopyToClipboard text={copyValue}>
-                <div className="flex items-center space-x-2">
-                  {showR ? (
-                    <div
-                      role="tooltip"
-                      class="py-2 px-3 text-[10px] font-medium bg-gray-900 rounded-lg shadow-sm"
-                    >
-                      Nusxalandi!
-                      <div class="tooltip-arrow" data-popper-arrow></div>
-                    </div>
-                  ) : null}
-                  <button onClick={showToolTipRight}>{copy}</button>
-                </div>
-              </CopyToClipboard>
-
-              <button
-                onClick={(e) => {
-                  setAlert(true);
-                  e.preventDefault();
-                  setTimeout(() => {
-                    setAlert(false);
-                  }, 2000);
-                }}
-                className="px-4 py-1 bg-orange-600 rounded-3xl"
-              >
-                Tekshirish
-              </button>
+          <div className="relative">
+            <Editor
+              toolbarHidden={!tool ? true : false}
+              editorState={editorState}
+              stripPastedStyles={true}
+              onEditorStateChange={onEditorStateChange}
+              toolbarClassName="bg-green-500 w-[500px] h-[100px] border-b-2 "
+              editorClassName="bg-white w-[683px] min-h-[195px] border-t border-[#E8EBF2] py-3 pl-3 pr-14"
+              toolbar={{
+                options: ["inline", "textAlign", "list", "history"],
+              }}
+            />
+            <button onClick={tozala} className="absolute top-6 right-8">
+              {tozalash}
+            </button>
+          </div>
+          <div className="w-full flex justify-between px-10 items-center h-[49px] border-b border-[#E8EBF2]">
+            <div className="flex space-x-[30px]">
+              <button>{microphone}</button>
+              <button>{volume}</button>
+              <button>{copy}</button>
             </div>
+            <p className="text-[16px] font-medium">
+              {valueLength > 0 ? valueLength : 0}/5000
+            </p>
           </div>
         </div>
+
+        {/* Change icon */}
         <button
-          className="h-[68px] w-[68px] bg-[#D3DAFD] rounded-[22px] absolute top-24 flex justify-center items-center"
+          className="h-[68px] w-[68px] bg-[#D3DAFD] rounded-[22px] absolute top-28 flex justify-center items-center"
           type="button"
           onClick={changeDirection}
         >
           {changeIcon}
         </button>
+
+        {/* Right editor */}
         <div className="flex flex-col">
-          <div className="flex justify-between w-full space-x-4 px-3 items-center py-2  h-[109px]  bg-gray-200">
+          <div className="flex justify-between w-full space-x-4 items-center pl-14  h-[109px]  bg-[#F4F7FC]">
             <p className="font-semibold">
               {dataValue ? "Кириллча" : "Lotincha"}
             </p>
-            <button className="bg-gray-200 invisible text-gray-200 cursor-auto  py-1 px-3 rounded-xl">
-              Tozalash
-            </button>
           </div>
           <div
             className={tool ? "h-[100px] bg-white border-none" : " hidden"}
@@ -261,59 +234,21 @@ function TextEditor() {
             toolbarHidden
             readOnly
             editorState={editorStatePreview}
-            toolbarClassName="bg-green-500 w-[500px] h-[100px] demo-toolbar-custom border-b-2"
-            editorClassName="bg-gray-300 border-white w-[683px] min-h-[244px] border-t border-[#E8EBF2] p-3 overflow-y-scroll"
-            wrapperClassName="demo-wrapper"
+            toolbarClassName="bg-green-500 w-[500px] h-[100px]"
+            editorClassName="bg-[#F4F7FC] w-[683px] min-h-[195px] border-t border-[#E8EBF2] py-3 pl-3"
           />
-          {/* <p>{data}</p> */}
-          <div className="w-full flex justify-between px-10 items-center h-[50px] bg-cyan-800 text-gray-200">
-            <p>{dataLength === "" ? 0 : dataLength}</p>
-            <CopyToClipboard text={data}>
-              <div className="flex items-center space-x-2">
-                {showL ? (
-                  <div
-                    role="tooltip"
-                    className="py-2 px-3 text-[10px] font-medium bg-gray-900 rounded-lg shadow-sm"
-                  >
-                    Nusxalandi!
-                    <div className="tooltip-arrow" data-popper-arrow></div>
-                  </div>
-                ) : (
-                  <></>
-                )}
-                <button onClick={showToolTipLeft}>{copy}</button>
-              </div>
-            </CopyToClipboard>
+          <div className="w-full flex justify-between px-10 items-center h-[49px] bg-[#F4F7FC] border-b border-[#E8EBF2]">
+            <div>
+              <button>{volume}</button>
+            </div>
+            <div className="flex space-x-[30px]">
+              <button>{copy}</button>
+              <button>{like}</button>
+              <button>{share}</button>
+            </div>
           </div>
         </div>
       </div>
-      {alert && (
-        <div className="absolute flex justify-center top-[56px] w-full">
-          <div className="bg-cyan-50 border w-auto border-cyan-400 rounded text-cyan-800 text-sm p-4 flex items-center space-x-2">
-            <div>{info_icon}</div>
-            <div>
-              <p>
-                <span className="font-bold">Xabarnoma: </span>
-                Tekshirish funksiyasi hozirda jarayonda, noqulaylik uchun uzur!
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {alertLength && (
-        <div className="absolute flex justify-center top-[56px] w-full ">
-          <div className="bg-red-50 border mx-8 border-red-400 rounded text-red-800 text-sm p-4 flex items-center space-x-2">
-            <div>{info_icon}</div>
-            <div className="w-full">
-              <p>
-                <span className="font-bold">Xatolik: </span>
-                5000 dan kop belgilarni tarjima qilmaydi
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

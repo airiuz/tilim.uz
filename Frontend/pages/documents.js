@@ -2,12 +2,6 @@ import React, { useState } from "react";
 import Layout from "../components/Layout";
 import FormData from "form-data";
 import axios from "axios";
-import {
-  documentIcon,
-  download,
-  exclamination,
-  info_icon,
-} from "../components/utils/icons";
 
 function Documents() {
   let formData = new FormData();

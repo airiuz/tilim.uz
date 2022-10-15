@@ -21,6 +21,7 @@ from translit import serializers, type_fast
 
 
 class ChangeTextAPIView(APIView):
+    permission_classes = (AllowAny,)
     @csrf_exempt
     def post(self, request):
         serializer = MyTextSerializer(data=request.data)
@@ -37,6 +38,7 @@ class ChangeTextAPIView(APIView):
 
 
 class DocumentChangeAPIView(APIView):
+    permission_classes = (AllowAny,)
     parser_classes = (MultiPartParser, FileUploadParser)
 
     def post(self, request):
@@ -62,6 +64,7 @@ class DocumentChangeAPIView(APIView):
 
 
 class TypeFastAPIView(APIView):
+    permission_classes = (AllowAny,)
     def get(self, request):
         ids = [x.id for x in TypeFastModel.objects.all()]
         x = random.choice(ids)
@@ -89,11 +92,13 @@ class TypeFastAPIView(APIView):
 
 
 class NameofTopAPIView(generics.ListCreateAPIView):
+    permission_classes = (AllowAny,)
     serializer_class = NameofTopSerializer
     queryset = NameofTop.objects.all()
 
 
 class CreateTextAPIView(generics.ListCreateAPIView):
+    permission_classes = (AllowAny,)
     permission_classes = (IsAuthenticated, IsAdminUser)
     serializer_class = TypeFastSerializer
     queryset = TypeFastModel.objects.all()

@@ -25,17 +25,13 @@ class ChangeTextAPIView(APIView):
     @csrf_exempt
     def post(self, request):
         serializer = MyTextSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            print(serializer.data)
-            a = serializer.data.get('data')
-            t = serializer.data.get('type')
-            t = '1' if t in ['1', 'lotin'] else t == '0'
-            result = front.translit_text.to_cyrillic(a) if t=='1' else front.translit_text.to_latin(a)
-            print(result)
-            return Response(result)
-        else:
-            return Response(serializer.errors)
-
+        serializer.is_valid(raise_exception=True):
+        print(serializer.data)
+        a = serializer.data.get('data')
+        t = serializer.data.get('type')
+        t = '1' if t in ['1', 'lotin'] else t == '0'
+        result = front.translit_text.to_cyrillic(a) if t=='1' else front.translit_text.to_latin(a)
+        return Response(result)
 
 class DocumentChangeAPIView(APIView):
     parser_classes = (MultiPartParser, FileUploadParser)

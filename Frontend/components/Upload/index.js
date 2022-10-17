@@ -2,8 +2,7 @@ import { useDropzone } from "react-dropzone";
 import axios from "axios";
 import FormData from "form-data";
 import { HashLoader } from "react-spinners";
-import { useCallback, useRef, useState, useEffect, useMemo } from "react";
-import { useRouter } from "next/router";
+import { useCallback, useState, useEffect, useRef } from "react";
 import {
   excel,
   powerPoint,
@@ -12,41 +11,32 @@ import {
   uploadBin,
   uploadSuccess,
   uploadWord,
-  warning,
+  info,
   word,
+  warning,
+  downloadFile,
+  arrow,
+  cancel,
+  uploadExcel,
+  uploadPptx,
+  uploadTxt,
+  download,
 } from "../utils/icons";
 import Select from "./Select";
+import Link from "next/link";
+
+const CancelToken = axios.CancelToken;
 
 function Upload() {
-  const router = useRouter();
-  const [progress, setProgress] = useState(null);
+  const cancelUpload = useRef();
+  const [transcript, setTranscript] = useState(1);
+  const [type, setType] = useState(null);
   const [sizeFile, setSizeFile] = useState(0);
-  const postData = useCallback(
-    (data) => {
-      setProgress("0");
-      axios
-        .post("/api/record", data, {
-          onUploadProgress: (event) => {
-            const percent = (event.loaded / event.total) * 100;
-            setProgress(percent.toFixed(1));
-          },
-        })
-        .then((res) => {
-          setProgress("100.0");
-          console.log(res.data);
-          router.push(`/audio/${res.data.slug}/`);
-        })
-        .catch((error) => {
-          setProgress(null);
-          console.log(error);
-        });
-    },
-    [router]
-  );
-
-  const loading = progress !== null;
-  const uploading = loading && progress !== "100.0";
-  const pending = loading && progress === "100.0";
+  const [error, setError] = useState({
+    uploadMessage: null,
+    responseMessage: null,
+  });
+  const [data, setData] = useState({ status: null, path: null });
 
   const {
     getRootProps,
@@ -55,17 +45,79 @@ function Upload() {
     isDragAccept,
     isDragReject,
     acceptedFiles,
-  } = useDropzone();
+    fileRejections,
+  } = useDropzone({
+    accept: {
+      "document/docx": [".docx"],
+      "document/xlsx": [".xlsx"],
+      "document/pptx": [".pptx"],
+      "document/txt": [".txt"],
+    },
+  });
+
+  const postData = useCallback(
+    (e) => {
+      e.preventDefault();
+      setData((prev) => ({ ...prev, status: "pending" }));
+      const formData = new FormData();
+      formData.append("t", transcript);
+
+      if (acceptedFiles && acceptedFiles[0]) {
+        formData.append("in_file", acceptedFiles[0]);
+      }
+      cancelUpload.current = CancelToken.source();
+      axios
+        .post("/api/changefile/", formData, {
+          cancelToken: cancelUpload.current.token,
+        })
+        .then((res) => {
+          setData((prev) => ({ ...prev, path: res.data.out_file }));
+          setData((prev) => ({ ...prev, status: "done" }));
+        })
+        .catch((error) => {
+          setError((prev) => ({ ...prev, responseMessage: error }));
+        });
+    },
+    [acceptedFiles]
+  );
+
+  const removeFile = useCallback(
+    (e) => {
+      e.preventDefault();
+      setType(null);
+      setData((prev) => ({ ...prev, status: null }));
+      setError((prev) => ({ ...prev, uploadMessage: null }));
+    },
+    [type]
+  );
 
   useEffect(() => {
+    if (fileRejections[0]) {
+      const newError = fileRejections[0].file.name.split(".");
+      return setError((prev) => ({
+        ...prev,
+        uploadMessage: `"${
+          newError[newError.length - 1]
+        }" tipdagi xujjat yuklash mumkin
+                      emas! Iltimos xujjat tipini tekshirib qaytattan urinib
+                      ko’ring.`,
+      }));
+    }
     if (acceptedFiles.length === 0) {
       return;
     }
-    const formData = new FormData();
-    formData.append("file", acceptedFiles[0]);
+    const newType = acceptedFiles[0].name.split(".");
+    if (newType[newType.length - 1] === "docx") {
+      setType(uploadWord);
+    } else if (newType[newType.length - 1] === "xlsx") {
+      setType(uploadExcel);
+    } else if (newType[newType.length - 1] === "pptx") {
+      setType(uploadPptx);
+    } else {
+      setType(uploadTxt);
+    }
 
-    postData(formData);
-    const bytes = acceptedFiles[0].size;
+    const bytes = acceptedFiles[0]?.size;
     if (!+bytes) return "0 Bytes";
 
     const k = 1024;
@@ -77,14 +129,14 @@ function Upload() {
     setSizeFile(
       () => `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`
     );
-  }, [acceptedFiles]);
-
+    setData((prev) => ({ ...prev, status: "ready" }));
+  }, [acceptedFiles, fileRejections]);
   return (
     <>
-      <div className="max-w-fit mx-auto p-[30px] bg-white shadow rounded-[18px]">
-        {false ? (
+      {!data.status ? (
+        <div className="max-w-fit mx-auto p-[30px] bg-white shadow rounded-[18px]">
           <div className="space-y-[30px]">
-            <Select />
+            <Select stateTranscript={setTranscript} />
             <div className="flex space-x-7">
               <div className="space-y-7">
                 <div className="flex space-x-2 items-center">
@@ -135,94 +187,160 @@ function Upload() {
                   } outline-none flex flex-col items-center py-5 justify-center space-y-4 rounded-lg cursor-pointer shadow-sm select-none  border-2 border-dashed border-primary rounded-lg`,
                 })}
               >
-                {upload}
+                <div className="w-[66px] h-[66px] fill-[#3474DF]">{upload}</div>
                 <p className="text-center text-[#565656]">
                   Faylni yuklash uchun shu yerga olib
                   <br />
                   keling yoki
                   <span className="text-primary"> shu yerni bosing</span>
                 </p>
-                ``
                 <input {...getInputProps()} />
               </div>
             </div>
-            <div className="flex items-center mt-10 space-x-2">
-              {warning}
-              <p className="font-semibold">
-                Eslatma:&nbsp;
-                <span className="font-normal">
-                  Birvarakayiga faqat 1ta xujjat yuklay olasiz
+            <div className="mt-10">
+              {error.uploadMessage ? (
+                <div className="flex space-x-3.5 p-4 bg-[#F6F6F7] rounded-[18px] max-w-[658px]">
+                  <div className="shrink">{warning}</div>
+                  <div>
+                    <p className="text-[#EC594D] text-lg font-semibold">
+                      {error.uploadMessage}
+                    </p>
+                    <p className="text-[#828696]">
+                      Yuklash mumkin bo’lgan xujjat tipi:&nbsp;
+                      <span className="font-semibold">
+                        DOCX, XLSX, PPTX, TXT.
+                      </span>
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex items-center space-x-4">
+                  <div className="shrink">{info}</div>
+                  <p className="font-semibold">
+                    Eslatma:&nbsp;
+                    <span className="font-normal">
+                      Birvarakayiga faqat 1ta xujjat yuklay olasiz
+                    </span>
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      ) : null}
+
+      {data.status === "ready" ? (
+        <div className="max-w-fit mx-auto p-[30px] bg-white shadow rounded-[18px]">
+          <div className="flex justify-between items-center px-5 py-[15px] bg-[#F6F6F7] text-lg rounded-full w-[658px]">
+            <span>{transcript === 1 ? "Lotin" : "Кирил"}</span>
+            {arrow}
+            <span>{transcript === 1 ? "Кирил" : "Lotin"}</span>
+          </div>
+          <p className="mt-[30px] mb-[10px] text-lg">Jo’natilgan xujjat:</p>
+          <div className="bg-[#F6F6F7] rounded-xl py-3 px-3 flex justify-between items-center">
+            <div className="flex items-center space-x-6 w-full">
+              {type}
+              <p className="text-lg font-semibold leading-6 max-w-[200px] truncate">
+                {acceptedFiles[0].name}
+                <br />
+                <span className="font-[13px] font-normal text-[#828696]">
+                  size: {sizeFile}
                 </span>
               </p>
             </div>
+            <button onClick={removeFile}>{uploadBin}</button>
           </div>
-        ) : (
-          <>
-            <div className="w-[658px] h-[224px] rounded-[18px] flex flex-col items-center justify-center bg-[#F6F6F7] space-y-4">
-              {uploadSuccess}
-              <p className="text-lg font-medium text-center">
-                Xujjat muvaffaqqiyatli
+          <div className="mt-[30px] grid grid-cols-2 gap-5">
+            <button
+              className="py-3 px-8 text-lg rounded-full border border-[#828696]"
+              type="submit"
+              onClick={removeFile}
+            >
+              Bekor qilish
+            </button>
+            <button
+              className="py-3 px-8 text-lg rounded-full text-white bg-primary"
+              type="submit"
+              onClick={postData}
+            >
+              Jonatish
+            </button>
+          </div>
+        </div>
+      ) : null}
+
+      {data.status === "pending" ? (
+        <div className="max-w-fit mx-auto p-[30px] bg-white shadow rounded-[18px]">
+          <p className="mb-[10px] text-lg">Yuklangan xujjat:</p>
+          <div className="bg-[#F6F6F7] mb-[30px] rounded-xl py-3 px-3 flex justify-between items-center">
+            <div className="flex items-center space-x-6 w-full">
+              {type}
+              <p className="text-lg font-semibold leading-6 max-w-[200px] truncate">
+                {/* {acceptedFiles[0].name} */}
                 <br />
-                yuklandi!
+                <span className="font-[13px] font-normal text-[#828696]">
+                  size: {sizeFile}
+                </span>
               </p>
             </div>
-            <div className="my-[30px] border border-[#E8EBF2] rounded-xl py-3 px-5 flex justify-between items-center">
-              <div className="flex items-center space-x-6">
-                {uploadWord}
-                <p className="text-lg font-semibold leading-6">
-                  Word file: name of the file
-                  <br />
-                  <span className="font-[13px] font-normal text-[#828696]">
-                    size: 120mb
-                  </span>
-                </p>
-              </div>
-              <button>{uploadBin}</button>
+            <div className="flex items-center px-[15px] py-[10px] space-x-4 bg-white text-lg rounded-full">
+              <span>{transcript === 1 ? "Lotin" : "Kiril"}</span>
+              {arrow}
+              <span>{transcript === 1 ? "Kiril" : "Lotin"}</span>
             </div>
-            <div className="grid grid-cols-2 gap-5">
-              <button className="py-5 text-lg rounded-full border border-[#E8EBF2] bg-[#F6F6F7] text-[#828696]">
-                Bekor qilish
-              </button>
-              <button className="py-5 text-lg rounded-full text-white bg-primary">
-                Jonatish
-              </button>
-            </div>
-          </>
-        )}
-      </div>
-      {loading ? (
-        <div className="fixed flex z-[100] inset-0 flex-col items-center bg-[#262E36]/20 backdrop-blur-[10px] justify-center">
-          <div
-            className={`flex flex-col items-center space-y-2 ${
-              !pending && "hidden"
-            }`}
-          >
-            <HashLoader color="#fff" loading />
-            <p className="uppercase text-white text-xl">fayl tekshirilmoqda</p>
           </div>
-          <div
-            className={`space-y-2 bg-white p-8 rounded-[14px] ${
-              uploading ? "block" : "hidden"
-            }`}
-          >
-            <p className="text-2xl font-semibold">Yuklanmoqda:</p>
-            <div className="flex justify-between items-end">
-              <div className="flex items-center space-x-4">
-                <p className="text-[10px]">
-                  Audio file name<br></br>
+          <div className="w-[658px] h-[224px] rounded-[18px] flex flex-col items-center justify-center bg-[#F6F6F7] space-y-4">
+            <HashLoader color="#3474DF" size={40} loading />
+            <p className="text-lg font-medium text-center">Bajarilmoqda</p>
+          </div>
+        </div>
+      ) : null}
+
+      {data.status === "done" ? (
+        <div className="max-w-fit mx-auto p-[30px] bg-white shadow rounded-[18px]">
+          <div className="w-[658px] h-[224px] rounded-[18px] flex flex-col items-center justify-center bg-[#F6F6F7] space-y-4">
+            {uploadSuccess}
+            <p className="text-lg font-medium text-center">
+              Xujjat “{transcript === 1 ? "Kiril" : "Lotin"}” alifbosiga
+              <br />
+              muvaffaqqiyatli o’girildi
+            </p>
+          </div>
+          <div className="bg-[#F6F6F7] my-[30px] rounded-xl py-3 px-5 flex justify-between items-center">
+            <div className="flex items-center space-x-6">
+              {type}
+              <p className="text-lg font-semibold leading-6 max-w-[200px] truncate">
+                {acceptedFiles[0].name}
+                <br />
+                <span className="font-[13px] font-normal text-[#828696]">
                   {sizeFile}
-                </p>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="">{progress}%</span>
-              </div>
+                </span>
+              </p>
             </div>
-            <div className="w-[350px] rounded-md overflow-hidden bg-[#F4F6FB] h-8 relative">
-              <div
-                className="h-full absolute left-0 bg-gradient-to-l from-[#736EFE] to-[#5EFCE8]"
-                style={{ width: `${progress}%` }}
-              ></div>
+
+            <div className="flex items-center px-[15px] py-[10px] space-x-4 bg-white text-lg rounded-full">
+              <span>{transcript === 1 ? "Lotin" : "Kiril"}</span>
+              {arrow}
+              <span>{transcript === 1 ? "Kiril" : "Lotin"}</span>
             </div>
+          </div>
+          <div className="grid grid-cols-2 gap-5">
+            <button
+              className="py-3 px-8 text-lg rounded-full border border-[#828696]"
+              type="submit"
+              onClick={removeFile}
+            >
+              Bekor qilish
+            </button>
+            <Link href={data.path}>
+              <a
+                className="py-3 flex justify-center items-center space-x-5 px-8 text-lg rounded-full text-white bg-[#34A853]"
+                type="submit"
+              >
+                <span>Yuklab olish</span>
+                <div className="w-6 h-6 fill-white">{download}</div>
+              </a>
+            </Link>
           </div>
         </div>
       ) : null}

@@ -21,21 +21,28 @@ from translit import serializers, type_fast
 
 
 class ChangeTextAPIView(APIView):
+<<<<<<< HEAD
     permission_classes = (permissions.AllowAny,)
+=======
+    permission_classes = (AllowAny,)
+>>>>>>> 9d9e5682e7cf3a71b6eacca2244460a931f891b9
     @csrf_exempt
     def post(self, request):
         serializer = MyTextSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
+            print(serializer.data)
             a = serializer.data.get('data')
             t = serializer.data.get('type')
             t = '1' if t in ['1', 'lotin'] else t == '0'
-            result = front.translit_text.to_cyrillic(a) if t == '1' else front.translit_text.to_latin(a)
+            result = front.translit_text.to_cyrillic(a) if t=='1' else front.translit_text.to_latin(a)
+            print(result)
             return Response(result)
         else:
             return Response(serializer.errors)
 
 
 class DocumentChangeAPIView(APIView):
+    permission_classes = (AllowAny,)
     parser_classes = (MultiPartParser, FileUploadParser)
     permission_classes = (permissions.AllowAny,)
 
@@ -56,7 +63,11 @@ class DocumentChangeAPIView(APIView):
             return Response(serializer.data)
 
 class TypeFastAPIView(APIView):
+<<<<<<< HEAD
     permission_classes = (permissions.AllowAny,)
+=======
+    permission_classes = (AllowAny,)
+>>>>>>> 9d9e5682e7cf3a71b6eacca2244460a931f891b9
     def get(self, request):
         ids = [x.id for x in TypeFastModel.objects.all()]
         x = random.choice(ids)
@@ -87,11 +98,16 @@ class TypeFastAPIView(APIView):
 
 
 class NameofTopAPIView(generics.ListCreateAPIView):
+<<<<<<< HEAD
     permission_classes = (permissions.AllowAny,)
+=======
+    permission_classes = (AllowAny,)
+>>>>>>> 9d9e5682e7cf3a71b6eacca2244460a931f891b9
     serializer_class = NameofTopSerializer
     queryset = NameofTop.objects.all()
 
 class CreateTextAPIView(generics.ListCreateAPIView):
+    permission_classes = (AllowAny,)
     permission_classes = (IsAuthenticated, IsAdminUser)
     serializer_class = TypeFastSerializer
     queryset = TypeFastModel.objects.all()

@@ -1,7 +1,5 @@
 from .translit_text import to_cyrillic, to_latin
 from docx import Document
-import docx 
-from docx.oxml.ns import qn
 
 
 def transliterate(file_path, file_path2, t):
@@ -10,8 +8,7 @@ def transliterate(file_path, file_path2, t):
     
     for p in doc_obj.paragraphs:
         if p.text and p.text.strip():
-            text = mytranslate(str(p.text))
-            p.text = text
+            p.text = mytranslate(p.text)
         
     for table in doc_obj.tables:
         for row in table.rows:

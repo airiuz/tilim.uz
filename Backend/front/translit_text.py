@@ -994,7 +994,6 @@ CYRILLIC_VOWELS = (
     'а', 'е','ё', 'и', 'о', 'у', 'э', 'ю', 'я', 'ў',
 )
 def to_cyrillic(text):
-    
     text = re.sub(r"(ʻ|‘|`|ʼ|’|')" , "ㄹ" , text)
     text = re.sub(r"(“|”)" , "ㄱ" , text)
 

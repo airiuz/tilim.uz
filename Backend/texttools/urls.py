@@ -1,15 +1,21 @@
-
 from django.contrib import admin
-from django.urls import include, path
+from collections import OrderedDict
+from django.urls import re_path, path, include
+
 from django.conf import settings
 from django.conf.urls.static import static
-from rest_framework.authtoken import views
+from rest_framework.routers import APIRootView
+
+api_root_dict = OrderedDict()
+api_root_dict['auth'] = 'auth-root'
+api_root_dict['user'] = 'user-root'
+root_view = APIRootView.as_view(api_root_dict=api_root_dict)
 
 urlpatterns = [
-	path('', include('translit.urls')),
-	path('token-auth/', views.obtain_auth_token),
-	path('process/', include('front.urls')),
+    path('', include('translit.urls')),
+    path('process/', include('front.urls')),
     path('admin/', admin.site.urls),
+    re_path(r'^$', root_view, name='api-root'),
+    path('auth/', include('authuser.urls')),
 ]
-urlpatterns+=static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
-
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -20,7 +20,7 @@ def transliterate(file_path, file_path2, t):
 						for paragraph in text_frame.paragraphs:
 							new_text = mytransliterate(paragraph.text)
 							paragraph.text = new_text
-								
+       
 					if sh.has_table:
 						for row in shape.table.rows:
 							for cell in row.cells:

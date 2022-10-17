@@ -21,11 +21,7 @@ from translit import serializers, type_fast
 
 
 class ChangeTextAPIView(APIView):
-<<<<<<< HEAD
     permission_classes = (permissions.AllowAny,)
-=======
-    permission_classes = (AllowAny,)
->>>>>>> 9d9e5682e7cf3a71b6eacca2244460a931f891b9
     @csrf_exempt
     def post(self, request):
         serializer = MyTextSerializer(data=request.data)
@@ -42,7 +38,6 @@ class ChangeTextAPIView(APIView):
 
 
 class DocumentChangeAPIView(APIView):
-    permission_classes = (AllowAny,)
     parser_classes = (MultiPartParser, FileUploadParser)
     permission_classes = (permissions.AllowAny,)
 
@@ -63,11 +58,7 @@ class DocumentChangeAPIView(APIView):
             return Response(serializer.data)
 
 class TypeFastAPIView(APIView):
-<<<<<<< HEAD
     permission_classes = (permissions.AllowAny,)
-=======
-    permission_classes = (AllowAny,)
->>>>>>> 9d9e5682e7cf3a71b6eacca2244460a931f891b9
     def get(self, request):
         ids = [x.id for x in TypeFastModel.objects.all()]
         x = random.choice(ids)
@@ -98,20 +89,14 @@ class TypeFastAPIView(APIView):
 
 
 class NameofTopAPIView(generics.ListCreateAPIView):
-<<<<<<< HEAD
     permission_classes = (permissions.AllowAny,)
-=======
-    permission_classes = (AllowAny,)
->>>>>>> 9d9e5682e7cf3a71b6eacca2244460a931f891b9
     serializer_class = NameofTopSerializer
     queryset = NameofTop.objects.all()
 
 class CreateTextAPIView(generics.ListCreateAPIView):
-    permission_classes = (AllowAny,)
     permission_classes = (IsAuthenticated, IsAdminUser)
     serializer_class = TypeFastSerializer
     queryset = TypeFastModel.objects.all()
-
 
 class SessionUserView(APIView):
     permission_classes = (IsAuthenticated, IsAdminUser)

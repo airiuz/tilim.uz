@@ -1178,8 +1178,6 @@ def to_cyrillic(text):
         text1.append(first)
 
     i = 0
-    print(text1, "text1")
-    print(text2, "text2")
     while i < len(text2):
         if text2[i] == ' ' and i!=0 and (re.match(r"\w+\.$",text2[i-1]) or (text2[i-1] in "[{(^#.ㅎ\"")):
             i+=1

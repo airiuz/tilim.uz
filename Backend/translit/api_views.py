@@ -25,8 +25,7 @@ class ChangeTextAPIView(APIView):
     @csrf_exempt
     def post(self, request):
         serializer = MyTextSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True):
-        print(serializer.data)
+        serializer.is_valid(raise_exception=True)
         a = serializer.data.get('data')
         t = serializer.data.get('type')
         t = '1' if t in ['1', 'lotin'] else t == '0'
@@ -47,7 +46,7 @@ class DocumentChangeAPIView(APIView):
 
         outfile = front.translit_file.translit_file(t, myfile)
         if isinstance(outfile['out_file'], str):
-            return Response(data=outfile['out_file'])
+            return Response(data=outfile['out_file'], status=status.HTTP_400_BAD_REQUEST)
         else:
             serializer = MyOutFileSerializer(data=outfile)
             serializer.is_valid(raise_exception=True)

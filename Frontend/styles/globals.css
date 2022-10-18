@@ -62,27 +62,32 @@ body {
   align-items: center !important;
 }
 
-.rdw-inline-wrapper{
+.rdw-inline-wrapper {
   gap: 0px !important;
-  margin: 0!important;
+  margin: 0 !important;
 }
 
 .rdw-option-active {
-  background-color: #D3DAFD !important;
+  background-color: #d3dafd !important;
   border-radius: 6px !important;
 }
 
-.rdw-list-wrapper .rdw-option-disabled{
+.rdw-list-wrapper .rdw-option-disabled {
   display: none !important;
 }
 
-div.rdw-inline-wrapper div[title="Unordered"]{
+div.rdw-inline-wrapper div[title="Unordered"] {
   display: none !important;
 }
 
-
-[title~="Monospace"], [title~="Subscript"], [title~="Superscript"] {
+[title~="Monospace"],
+[title~="Subscript"],
+[title~="Superscript"] {
   display: none !important;
-
 }
 
+.rdw-editor-wrapper,
+.rdw-editor-main {
+  flex: 1 !important;
+  overflow: unset !important;
+}

@@ -9,8 +9,7 @@
 }
 @font-face {
   font-family: Montserrat;
-  src: url("/fonts/Montserrat/static/Montserrat-MediumBold.ttf")
-    format("truetype");
+  src: url("/fonts/Montserrat/static/Montserrat-Medium.ttf") format("truetype");
   font-display: swap;
   font-weight: 500;
 }
@@ -39,6 +38,13 @@
 body {
   font-family: "Montserrat";
   color: #273a5d;
+}
+
+.bg_about {
+  background-image: url("../public/img/bg_about.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .rdw-option-wrapper {

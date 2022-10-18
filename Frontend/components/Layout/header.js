@@ -6,11 +6,13 @@ import ActiveLink from "../utils/activeLink";
 function Header() {
   return (
     <header>
-      <div className="max-w-[1366px] px-4 mx-auto flex justify-between items-center text-white py-[10px] border-red-500">
-        <div className="flex items-center space-x-2 select-none">
-          <span>{logo}</span>
-          <p className="text-[16px] font-semibold text-primary ">TILIM.UZ</p>
-        </div>
+      <div className="max-w-[1366px] px-4 mx-auto flex justify-between items-center text-white py-[10px]">
+        <Link href={"/"}>
+          <a className="flex items-center space-x-2 select-none">
+            <span>{logo}</span>
+            <p className="text-lg font-semibold text-primary ">TILIM.UZ</p>
+          </a>
+        </Link>
         <div className="flex space-x-10">
           <ActiveLink
             children="Lotin-Kirill"

@@ -9,8 +9,7 @@
 }
 @font-face {
   font-family: Montserrat;
-  src: url("/fonts/Montserrat/static/Montserrat-MediumBold.ttf")
-    format("truetype");
+  src: url("/fonts/Montserrat/static/Montserrat-Medium.ttf") format("truetype");
   font-display: swap;
   font-weight: 500;
 }
@@ -41,6 +40,13 @@ body {
   color: #273a5d;
 }
 
+.bg_about {
+  background-image: url("../public/img/bg_about.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
 .rdw-option-wrapper {
   border: none !important;
   box-shadow: none !important;
@@ -58,28 +64,27 @@ body {
   padding: 0 !important;
 }
 
-.rdw-inline-wrapper{
+.rdw-inline-wrapper {
   gap: 0px !important;
-  margin: 0!important;
+  margin: 0 !important;
 }
 
 .rdw-option-active {
-  background-color: #D3DAFD !important;
+  background-color: #d3dafd !important;
   border-radius: 6px !important;
 }
 
-.rdw-list-wrapper .rdw-option-disabled{
+.rdw-list-wrapper .rdw-option-disabled {
   display: none !important;
 }
 
-div.rdw-inline-wrapper div[title="Unordered"]{
+div.rdw-inline-wrapper div[title="Unordered"] {
   display: none !important;
 }
 
 
 [title~="Monospace"], [title~="Subscript"], [title~="Superscript"] , [title~="Strikethrough"] {
   display: none !important;
-
 }
 
 [title~="Bold"] img{
@@ -115,4 +120,9 @@ div.rdw-inline-wrapper div[title="Unordered"]{
   display: flex !important;
   align-items: center !important;
   margin-top: 5px !important;
+}
+.rdw-editor-wrapper,
+.rdw-editor-main {
+  flex: 1 !important;
+  overflow: unset !important;
 }

@@ -10,12 +10,9 @@ export default function Home() {
   return (
     <>
       <Layout>
-        <section>
-          <div className="flex items-center justify-center absolute inset-0 -z-20">
-            <img src="/img/aboutbg.png" alt="logo" />
-          </div>
-
-          <div className="z-10 max-w-[936px] mx-auto">
+        <div className="bg-[#ECECEC]/40 py-[30px] px-4 relative">
+          <div className="absolute inset-x-0 inset-y-[30px] bg_about -z-10"></div>
+          <div className="max-w-[936px] mx-auto">
             <p className="text-[#273A5D] text-[48px] font-bold">
               Loyixa haqida
             </p>
@@ -84,7 +81,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-        </section>
+        </div>
       </Layout>
     </>
   );

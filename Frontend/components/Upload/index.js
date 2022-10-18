@@ -32,10 +32,7 @@ function Upload() {
   const [transcript, setTranscript] = useState(1);
   const [type, setType] = useState(null);
   const [sizeFile, setSizeFile] = useState(0);
-  const [error, setError] = useState({
-    uploadMessage: null,
-    responseMessage: null,
-  });
+  const [error, setError] = useState(null);
   const [data, setData] = useState({ status: null, path: null });
 
   const {
@@ -75,7 +72,15 @@ function Upload() {
           setData((prev) => ({ ...prev, status: "done" }));
         })
         .catch((error) => {
-          setError((prev) => ({ ...prev, responseMessage: error }));
+          if (error.response.status === 500) {
+            setError(
+              "Serverda xatolik yuz berdi iltimos birozdan song urunib koring!"
+            );
+          } else {
+            console.log(error);
+            setError(error.message);
+          }
+          setData((prev) => ({ ...prev, status: null }));
         });
     },
     [acceptedFiles]
@@ -94,14 +99,11 @@ function Upload() {
   useEffect(() => {
     if (fileRejections[0]) {
       const newError = fileRejections[0].file.name.split(".");
-      return setError((prev) => ({
-        ...prev,
-        uploadMessage: `"${
-          newError[newError.length - 1]
-        }" tipdagi xujjat yuklash mumkin
+      return setError(`"${
+        newError[newError.length - 1]
+      }" tipdagi xujjat yuklash mumkin
                       emas! Iltimos xujjat tipini tekshirib qaytattan urinib
-                      ko’ring.`,
-      }));
+                      ko’ring.`);
     }
     if (acceptedFiles.length === 0) {
       return;
@@ -198,12 +200,12 @@ function Upload() {
               </div>
             </div>
             <div className="mt-10">
-              {error.uploadMessage ? (
+              {error ? (
                 <div className="flex space-x-3.5 p-4 bg-[#F6F6F7] rounded-[18px] max-w-[658px]">
                   <div className="shrink">{warning}</div>
                   <div>
                     <p className="text-[#EC594D] text-lg font-semibold">
-                      {error.uploadMessage}
+                      {error}
                     </p>
                     <p className="text-[#828696]">
                       Yuklash mumkin bo’lgan xujjat tipi:&nbsp;
@@ -229,7 +231,7 @@ function Upload() {
         </div>
       ) : null}
 
-      {data.status === "ready" ? (
+      {data.status === "ready" || data.status === "pending" ? (
         <div className="max-w-fit mx-auto p-[30px] bg-white shadow rounded-[18px]">
           <div className="flex justify-between items-center px-5 py-[15px] bg-[#F6F6F7] text-lg rounded-full w-[658px]">
             <span>{transcript === 1 ? "Lotin" : "Кирил"}</span>
@@ -270,28 +272,34 @@ function Upload() {
       ) : null}
 
       {data.status === "pending" ? (
-        <div className="max-w-fit mx-auto p-[30px] bg-white shadow rounded-[18px]">
-          <p className="mb-[10px] text-lg">Yuklangan xujjat:</p>
-          <div className="bg-[#F6F6F7] mb-[30px] rounded-xl py-3 px-3 flex justify-between items-center">
-            <div className="flex items-center space-x-6 w-full">
-              {type}
-              <p className="text-lg font-semibold leading-6 max-w-[200px] truncate">
-                {/* {acceptedFiles[0].name} */}
-                <br />
-                <span className="font-[13px] font-normal text-[#828696]">
-                  size: {sizeFile}
-                </span>
-              </p>
-            </div>
-            <div className="flex items-center px-[15px] py-[10px] space-x-4 bg-white text-lg rounded-full">
-              <span>{transcript === 1 ? "Lotin" : "Kiril"}</span>
-              {arrow}
-              <span>{transcript === 1 ? "Kiril" : "Lotin"}</span>
-            </div>
-          </div>
-          <div className="w-[658px] h-[224px] rounded-[18px] flex flex-col items-center justify-center bg-[#F6F6F7] space-y-4">
+        // <div className="max-w-fit mx-auto p-[30px] bg-white shadow rounded-[18px]">
+        //   <p className="mb-[10px] text-lg">Yuklangan xujjat:</p>
+        //   <div className="bg-[#F6F6F7] mb-[30px] rounded-xl py-3 px-3 flex justify-between items-center">
+        //     <div className="flex items-center space-x-6 w-full">
+        //       {type}
+        //       <p className="text-lg font-semibold leading-6 max-w-[200px] truncate">
+        //         {/* {acceptedFiles[0].name} */}
+        //         <br />
+        //         <span className="font-[13px] font-normal text-[#828696]">
+        //           size: {sizeFile}
+        //         </span>
+        //       </p>
+        //     </div>
+        //     <div className="flex items-center px-[15px] py-[10px] space-x-4 bg-white text-lg rounded-full">
+        //       <span>{transcript === 1 ? "Lotin" : "Kiril"}</span>
+        //       {arrow}
+        //       <span>{transcript === 1 ? "Kiril" : "Lotin"}</span>
+        //     </div>
+        //   </div>
+        //   <div className="w-[658px] h-[224px] rounded-[18px] flex flex-col items-center justify-center bg-[#F6F6F7] space-y-4">
+        //     <HashLoader color="#3474DF" size={40} loading />
+        //     <p className="text-lg font-medium text-center">Bajarilmoqda</p>
+        //   </div>
+        // </div>
+        <div className="fixed inset-0 bg-[#273A5D]/50 grid place-content-center">
+          <div className="px-[43px] pt-[45px] pb-10 bg-white flex flex-col items-center space-y-[25px] rounded-[28px]">
             <HashLoader color="#3474DF" size={40} loading />
-            <p className="text-lg font-medium text-center">Bajarilmoqda</p>
+            <p className="text-xl font-medium text-primary">Bajarilmoqda</p>
           </div>
         </div>
       ) : null}

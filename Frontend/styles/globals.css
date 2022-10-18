@@ -9,8 +9,7 @@
 }
 @font-face {
   font-family: Montserrat;
-  src: url("/fonts/Montserrat/static/Montserrat-MediumBold.ttf")
-    format("truetype");
+  src: url("/fonts/Montserrat/static/Montserrat-Medium.ttf") format("truetype");
   font-display: swap;
   font-weight: 500;
 }
@@ -41,18 +40,49 @@ body {
   color: #273a5d;
 }
 
+.bg_about {
+  background-image: url("../public/img/bg_about.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
 .rdw-option-wrapper {
   border: none !important;
-  /* background-color: #d3eaff !important; */
   box-shadow: none !important;
-  padding: 4px !important;
+  width: 44px !important;
+  height: 44px !important;
 }
 
 .rdw-editor-toolbar {
   margin: 0 !important;
   display: flex !important;
   border: none !important;
+  gap: 0px !important;
+  align-items: center !important;
 }
+
+.rdw-inline-wrapper{
+  gap: 0px !important;
+  margin: 0!important;
+}
+
 .rdw-option-active {
-  background-color: blueviolet !important;
+  background-color: #D3DAFD !important;
+  border-radius: 6px !important;
 }
+
+.rdw-list-wrapper .rdw-option-disabled{
+  display: none !important;
+}
+
+div.rdw-inline-wrapper div[title="Unordered"]{
+  display: none !important;
+}
+
+
+[title~="Monospace"], [title~="Subscript"], [title~="Superscript"] {
+  display: none !important;
+
+}
+

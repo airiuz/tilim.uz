@@ -66,9 +66,12 @@ function TextEditor() {
   const [data, setData] = useState("");
   const [dataValue, setDataValue] = useState(true);
   const [copyValue, setCopyValue] = useState("");
-  const [showR, setShowR] = useState(false);
-  const [showL, setShowL] = useState(false);
-  const [dataLength, setDatatLength] = useState(0);
+  const [dataLength, setDatatLength] = useState(false);
+
+  // document
+  //   .querySelector([(title = "Bold")] < img)
+  //   .setAttribute(src, "https://www.w3schools.com/images/w3lynx_200.png");
+
   const postData = useCallback(
     debounce((currentContent, latin2cyrill) => {
       const [html, links] = convertTo(currentContent);
@@ -109,6 +112,7 @@ function TextEditor() {
     setEditorStatePreview(EditorState.createEmpty());
     setValueLength(0);
     setData("");
+    setDatatLength(false);
   }, []);
 
   const currentContent = editorState.getCurrentContent();
@@ -121,7 +125,9 @@ function TextEditor() {
           return block.text.trim();
         });
         const length = blockTexts.join("").trim().length;
-
+        if (length > 0) {
+          setDatatLength(true);
+        }
         let value = "";
         if (blockTexts.filter((t) => t).length) {
           value = blockTexts.join("\n").trim();
@@ -132,8 +138,7 @@ function TextEditor() {
         if (length <= 5000) {
           postData(newCurrentContent, dataValue);
         } else {
-          setAlertLength(true);
-          setTimeout(() => setAlertLength(false), 3000);
+          alert("Xato");
         }
         setValueLength(length);
       }
@@ -147,7 +152,6 @@ function TextEditor() {
     },
     [currentContent, dataValue]
   );
-  const [tool, setTool] = useState(false);
 
   const changeDirection = useCallback(() => {
     setDataValue((dataValue) => {
@@ -158,46 +162,31 @@ function TextEditor() {
 
   return (
     <div className="h-full">
-      <div className="flex items-center justify-center">
-        <div className="flex flex-col focus:border-2 focus:border-blue-500">
-          <div className="flex justify-between w-full space-x-4 pr-14 items-center h-[109px]">
-            <div className="flex space-x-4">
-              <button
-                onClick={() => {
-                  setTool(!tool);
-                }}
-                className="bg-[#D3DAFD] space-x-[14px] text-[16px]  py-[16px] px-[15px] rounded-xl flex items-center"
-              >
-                Matn tahriri{pencil}
-              </button>
-              <button
-                onClick={tozala}
-                className="bg-slate-300  py-1 px-3 rounded-xl hidden"
-              >
-                Tozalash
-              </button>
-            </div>
+      <div className="flex justify-center">
+        <div className="flex flex-col relative border-t border-[#E8EBF2]">
+          <div className="flex justify-end w-full space-x-4 pr-14 items-center h-[80px]">
             <div>
               <p className="font-semibold">
                 {dataValue ? "Lotincha" : "Кириллча"}
               </p>
             </div>
           </div>
-          <div className="relative">
+          <div>
             <Editor
-              toolbarHidden={!tool ? true : false}
               editorState={editorState}
               stripPastedStyles={true}
               onEditorStateChange={onEditorStateChange}
-              toolbarClassName="bg-green-500 w-[500px] h-[100px] border-b-2 "
+              toolbarClassName="w-[500px] absolute top-[10px] left-0"
               editorClassName="bg-white w-[683px] min-h-[195px] border-t border-[#E8EBF2] py-3 pl-3 pr-14"
               toolbar={{
-                options: ["inline", "textAlign", "list", "history"],
+                options: ["inline", "list", "history"],
               }}
             />
-            <button onClick={tozala} className="absolute top-6 right-8">
-              {tozalash}
-            </button>
+            {dataLength && (
+              <button onClick={tozala} className="absolute top-[110px] right-6">
+                {tozalash}
+              </button>
+            )}
           </div>
           <div className="w-full flex justify-between px-10 items-center h-[49px] border-b border-[#E8EBF2]">
             <div className="flex space-x-[30px]">
@@ -213,7 +202,7 @@ function TextEditor() {
 
         {/* Change icon */}
         <button
-          className="h-[68px] w-[68px] bg-[#D3DAFD] rounded-[22px] absolute top-28 flex justify-center items-center"
+          className="h-[68px] w-[68px] bg-[#D3DAFD] rounded-[22px] absolute top-[97px] flex justify-center items-center"
           type="button"
           onClick={changeDirection}
         >
@@ -222,19 +211,15 @@ function TextEditor() {
 
         {/* Right editor */}
         <div className="flex flex-col">
-          <div className="flex justify-between w-full space-x-4 items-center pl-14  h-[109px]  bg-[#F4F7FC]">
+          <div className="flex justify-between w-full space-x-4 items-center pl-14  h-[81px]  bg-[#F4F7FC] border-t border-[#E8EBF2]">
             <p className="font-semibold">
               {dataValue ? "Кириллча" : "Lotincha"}
             </p>
           </div>
-          <div
-            className={tool ? "h-[100px] bg-white border-none" : " hidden"}
-          ></div>
           <Editor
             toolbarHidden
             readOnly
             editorState={editorStatePreview}
-            toolbarClassName="bg-green-500 w-[500px] h-[100px]"
             editorClassName="bg-[#F4F7FC] w-[683px] min-h-[195px] border-t border-[#E8EBF2] py-3 pl-3"
           />
           <div className="w-full flex justify-between px-10 items-center h-[49px] bg-[#F4F7FC] border-b border-[#E8EBF2]">

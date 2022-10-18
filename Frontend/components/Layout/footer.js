@@ -9,7 +9,7 @@ function Footer() {
       <div className="max-w-[1366px] px-4 mx-auto flex justify-between items-center border-b py-[15px]">
         <div className="flex items-center space-x-2 select-none">
           <span>{logo}</span>
-          <p className="text-lg font-semibold text-primary ">TILIM.UZ</p>
+          <p className="text-[16px] font-semibold text-primary ">TILIM.UZ</p>
         </div>
         <div className="flex space-x-10">
           <ActiveLink

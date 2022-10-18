@@ -4,6 +4,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth import authenticate
+import front
 from django.core.validators import RegexValidator
 
 class TypeFastSerializer(serializers.ModelSerializer):
@@ -36,7 +37,6 @@ class MyFileSerializer(serializers.ModelSerializer):
     t = serializers.CharField(
         max_length = 100,
         required=True)
-
     class Meta:
         model = MyFile
         fields = ['id', 'in_file', 't']
@@ -44,6 +44,10 @@ class MyFileSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         file = validated_data.pop('in_file')
         t = validated_data.pop('t')
+        real_name, ext = file.name.rsplit('.')
+        mytranslate = lambda text:front.translit_text.to_cyrillic(text) if t == '1' else front.translit_text.to_latin(text)
+        file_main_name = mytranslate(real_name) + '_Tilimuz.' + ext
+        file.name = file_main_name 
         return MyFile.objects.create(in_file=file, t=t)
 
 class MyOutFileSerializer(serializers.ModelSerializer):
@@ -52,12 +56,6 @@ class MyOutFileSerializer(serializers.ModelSerializer):
         model = MyOutFile
         fields = ['id', 'out_file']
         read_only_fields = ['id', 'out_file']
-
-
-
-
-
-                # auth user serializers
 class UserSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(
             required=True,
@@ -91,26 +89,9 @@ class UserSerializer(serializers.ModelSerializer):
             last_name=validated_data.get('last_name', ''),
             is_staff = validated_data['is_staff']
         )
-
         user.set_password(validated_data['password'])
         user.save()
         return user
-
-class LoginSerializer(serializers.Serializer):
-    username = serializers.CharField()
-    password = serializers.CharField()
-
-    def validate(self, attrs):
-        user = authenticate(username=attrs['username'], password=attrs['password'])
-
-        if not user:
-            raise serializers.ValidationError('Incorrect username or password.')
-
-        if not user.is_active:
-            raise serializers.ValidationError('User is disabled.')
-
-        return {'user': user}
-
 class UserOutSerializer(serializers.ModelSerializer):
     class Meta:
         model = User

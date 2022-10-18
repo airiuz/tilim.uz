@@ -46,6 +46,7 @@ body {
   box-shadow: none !important;
   width: 44px !important;
   height: 44px !important;
+  background: inherit;
 }
 
 .rdw-editor-toolbar {
@@ -54,6 +55,7 @@ body {
   border: none !important;
   gap: 0px !important;
   align-items: center !important;
+  padding: 0 !important;
 }
 
 .rdw-inline-wrapper{
@@ -75,8 +77,42 @@ div.rdw-inline-wrapper div[title="Unordered"]{
 }
 
 
-[title~="Monospace"], [title~="Subscript"], [title~="Superscript"] {
+[title~="Monospace"], [title~="Subscript"], [title~="Superscript"] , [title~="Strikethrough"] {
   display: none !important;
 
 }
 
+[title~="Bold"] img{
+  content:url("../public/img/bold.png");
+}
+
+[title~="Italic"] img{
+  content:url("../public/img/italic.png");
+}
+
+[title~="Underline"] img{
+  content:url("../public/img/underline.png");
+}
+
+[title~="Unordered"] img{
+  content:url("../public/img/list\ \(1\).png");
+}
+
+[title~="Ordered"] img{
+  content:url("../public/img/list\ \(2\).png");
+}
+
+[title~="Undo"] img{
+  content:url("../public/img/rotate-ccw.png");
+}
+
+[title~="Redo"] img{
+  content:url("../public/img/rotate-cw.png");
+}
+
+
+.rdw-list-wrapper{
+  display: flex !important;
+  align-items: center !important;
+  margin-top: 5px !important;
+}

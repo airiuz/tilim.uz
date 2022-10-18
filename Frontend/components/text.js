@@ -9,7 +9,10 @@ import {
   copy,
   info_icon,
   like,
+  like_bold,
   microphone,
+  nusxa,
+  nusxa_icon,
   pencil,
   share,
   tozalash,
@@ -67,6 +70,10 @@ function TextEditor() {
   const [dataValue, setDataValue] = useState(true);
   const [copyValue, setCopyValue] = useState("");
   const [dataLength, setDatatLength] = useState(false);
+  const [micro, setMicro] = useState(false);
+  const [nusxa, setNusxa] = useState(false);
+  const [rnusxa, setRnusxa] = useState(false);
+  const [likebtn, setLikebtn] = useState(false);
 
   // document
   //   .querySelector([(title = "Bold")] < img)
@@ -115,6 +122,31 @@ function TextEditor() {
     setDatatLength(false);
   }, []);
 
+  const microphonebtn = useCallback((e) => {
+    e.preventDefault;
+    setMicro(true);
+
+    setTimeout(() => {
+      setMicro(false);
+    }, 1500);
+  }, []);
+
+  const nusxabtn = useCallback((e) => {
+    e.preventDefault;
+    setNusxa(true);
+    setTimeout(() => {
+      setNusxa(false);
+    }, 1500);
+  }, []);
+
+  const nusxarightbtn = useCallback((e) => {
+    e.preventDefault;
+    setRnusxa(true);
+    setTimeout(() => {
+      setRnusxa(false);
+    }, 1500);
+  }, []);
+
   const currentContent = editorState.getCurrentContent();
   const onEditorStateChange = useCallback(
     (newEditorState) => {
@@ -138,7 +170,6 @@ function TextEditor() {
         if (length <= 5000) {
           postData(newCurrentContent, dataValue);
         } else {
-          alert("Xato");
         }
         setValueLength(length);
       }
@@ -166,9 +197,7 @@ function TextEditor() {
         <div className="flex flex-col relative border-t border-[#E8EBF2]">
           <div className="flex justify-end w-full space-x-4 pr-14 items-center h-[80px]">
             <div>
-              <p className="font-semibold">
-                {dataValue ? "Lotincha" : "Кириллча"}
-              </p>
+              <p className="font-semibold">{dataValue ? "Lotin" : "Кирил"}</p>
             </div>
           </div>
           <div>
@@ -190,14 +219,29 @@ function TextEditor() {
           </div>
           <div className="w-full flex justify-between px-10 items-center h-[49px] border-b border-[#E8EBF2]">
             <div className="flex space-x-[30px]">
-              <button>{microphone}</button>
+              <button onClick={microphonebtn}>{microphone}</button>
               <button>{volume}</button>
-              <button>{copy}</button>
+              <button onClick={nusxabtn}>{copy}</button>
             </div>
             <p className="text-[16px] font-medium">
               {valueLength > 0 ? valueLength : 0}/5000
             </p>
           </div>
+          {micro && (
+            <div className="flex space-x-[10px] text-white mt-[12px]  bg-[#3474DF] w-[273px] h-[74px]  p-[15px] items-center rounded-[4px]">
+              <div>{info_icon}</div>
+              <div>
+                <p>“Ovozli yozish” </p>
+                <p>ishlab chiqish jarayonida</p>
+              </div>
+            </div>
+          )}
+          {nusxa && (
+            <div className="flex space-x-[10px] text-white mt-[12px]  bg-[#3474DF] w-[196px] h-[56px] py-[14px] px-[30px] items-center rounded-[4px]">
+              <div>Nusxa olindi</div>
+              <div>{nusxa_icon}</div>
+            </div>
+          )}
         </div>
 
         {/* Change icon */}
@@ -212,9 +256,7 @@ function TextEditor() {
         {/* Right editor */}
         <div className="flex flex-col">
           <div className="flex justify-between w-full space-x-4 items-center pl-14  h-[81px]  bg-[#F4F7FC] border-t border-[#E8EBF2]">
-            <p className="font-semibold">
-              {dataValue ? "Кириллча" : "Lotincha"}
-            </p>
+            <p className="font-semibold">{dataValue ? "Кирил" : "Lotin"}</p>
           </div>
           <Editor
             toolbarHidden
@@ -227,11 +269,25 @@ function TextEditor() {
               <button>{volume}</button>
             </div>
             <div className="flex space-x-[30px]">
-              <button>{copy}</button>
-              <button>{like}</button>
+              <button onClick={nusxarightbtn}>{copy}</button>
+              <button
+                onClick={() => {
+                  setLikebtn(!likebtn);
+                }}
+              >
+                {likebtn ? like_bold : like}
+              </button>
               <button>{share}</button>
             </div>
           </div>
+          {rnusxa && (
+            <div className="flex justify-end">
+              <div className="flex space-x-[10px] text-white mt-[12px]  bg-[#3474DF] w-[196px] h-[56px] py-[14px] px-[30px] items-center rounded-[4px]">
+                <div>Nusxa olindi</div>
+                <div>{nusxa_icon}</div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

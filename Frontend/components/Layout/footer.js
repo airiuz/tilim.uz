@@ -6,7 +6,7 @@ import { facebook, github, instagram, logo, telegram } from "../utils/icons";
 function Footer() {
   return (
     <footer>
-      <div className="max-w-[1366px] px-4 mx-auto flex justify-between items-center border-b py-[17px]">
+      <div className="max-w-[1366px] px-4 mx-auto flex justify-between items-center border-b py-[15px]">
         <div className="flex items-center space-x-2 select-none">
           <span>{logo}</span>
           <p className="text-[16px] font-semibold text-primary ">TILIM.UZ</p>
@@ -58,14 +58,14 @@ function Footer() {
           </p>
         </div>
         <div className="flex space-x-[32px]">
-          <Link href={"#"}>
-            <a className="text-[#273A5D] text-[15px]">Kontaktlar</a>
+          <Link href={"/contact"}>
+            <a className="text-[#273A5D] text-[15px]">Bog’lanish</a>
           </Link>
-          <Link href={"#"}>
-            <a className="text-[#273A5D] text-[15px]">Maxfiylik</a>
+          <Link href={"/security"}>
+            <a className="text-[#273A5D] text-[15px]">Xavfsizlik siyosat</a>
           </Link>
-          <Link href={"#"}>
-            <a className="text-[#273A5D] text-[15px]">Foydalanish shartlari</a>
+          <Link href={"/politics"}>
+            <a className="text-[#273A5D] text-[15px]">Foydalanuvchi siyosati</a>
           </Link>
         </div>
       </div>

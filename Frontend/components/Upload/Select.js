@@ -1,8 +1,8 @@
 import { useCallback, useState } from "react";
 import { check, selectArrow } from "../utils/icons";
 
-function Select() {
-  const [value, setValue] = useState({ text: "Tanlang", status: null });
+function Select({ stateTranscript }) {
+  const [value, setValue] = useState({ text: "Lotin - Кирил", status: 1 });
   const [isVisible, setIsVisible] = useState(false);
   const handleVisible = useCallback(() => {
     setIsVisible(!isVisible);
@@ -12,20 +12,15 @@ function Select() {
       className="text-sm w-full flex justify-between items-center bg-[#F4F7FC] p-1.5 rounded-full relative select-none cursor-pointer"
       onClick={handleVisible}
     >
-      <p
-        className={`pl-3 ${
-          value.text === "Tanlang" ? "text-gray-400" : null
-        } font-semibold`}
-      >
-        {value.text}
-      </p>
+      <p className="pl-3 font-semibold">{value.text}</p>
       <span>{selectArrow}</span>
       {isVisible ? (
         <div className="absolute shadow-sm inset-x-0 bg-[#F4F7FC] flex flex-col rounded-lg top-full mt-2 overflow-hidden">
           <div
             className="px-3 py-2 flex justify-between items-center cursor-pointer hover:text-primary hover:bg-[#E8EBF2] mt-2"
             onClick={() => {
-              setValue((prev) => ({ status: 1, text: "Lotin - Кирил" }));
+              stateTranscript(1);
+              setValue({ status: 1, text: "Lotin - Кирил" });
               setIsVisible(false);
             }}
           >
@@ -35,7 +30,9 @@ function Select() {
           <div
             className="px-3 py-2 flex justify-between items-center cursor-pointer hover:text-primary hover:bg-[#E8EBF2] mb-2"
             onClick={() => {
-              setValue((prev) => ({ status: 0, text: "Кирил - Lotin" }));
+              stateTranscript(0);
+
+              setValue({ status: 0, text: "Кирил - Lotin" });
               setIsVisible(false);
             }}
           >

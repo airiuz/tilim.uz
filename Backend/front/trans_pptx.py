@@ -10,21 +10,17 @@ def transliterate(file_path, file_path2, t):
 			if shape.has_text_frame:
 				text_frame = shape.text_frame
 				for paragraph in text_frame.paragraphs:
-					for run in paragraph.runs:
-						cur_text = run.text
-						new_text = mytransliterate(cur_text)
-						run.text = new_text
+					new_text = mytransliterate(paragraph.text)
+					paragraph.text = new_text
                             	
 			elif shape.shape_type == MSO_SHAPE_TYPE.GROUP:
 				for sh in shape.shapes:
 					if sh.has_text_frame:
 						text_frame = sh.text_frame
 						for paragraph in text_frame.paragraphs:
-							for run in paragraph.runs:
-								cur_text = run.text
-								new_text = mytransliterate(cur_text)
-								run.text = new_text
-								
+							new_text = mytransliterate(paragraph.text)
+							paragraph.text = new_text
+       
 					if sh.has_table:
 						for row in shape.table.rows:
 							for cell in row.cells:

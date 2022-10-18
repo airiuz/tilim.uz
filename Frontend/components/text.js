@@ -128,12 +128,14 @@ function TextEditor() {
 
     setTimeout(() => {
       setMicro(false);
+      setNusxa(false);
     }, 1500);
   }, []);
 
   const nusxabtn = useCallback((e) => {
     e.preventDefault;
     setNusxa(true);
+    setMicro(false);
     setTimeout(() => {
       setNusxa(false);
     }, 1500);
@@ -228,7 +230,7 @@ function TextEditor() {
             </p>
           </div>
           {micro && (
-            <div className="flex space-x-[10px] text-white mt-[12px]  bg-[#3474DF] w-[273px] h-[74px]  p-[15px] items-center rounded-[4px]">
+            <div className="flex absolute bottom-[-86px] space-x-[10px] text-white mt-[12px]  bg-[#3474DF] w-[273px] h-[74px]  p-[15px] items-center rounded-[4px]">
               <div>{info_icon}</div>
               <div>
                 <p>“Ovozli yozish” </p>
@@ -237,7 +239,7 @@ function TextEditor() {
             </div>
           )}
           {nusxa && (
-            <div className="flex space-x-[10px] text-white mt-[12px]  bg-[#3474DF] w-[196px] h-[56px] py-[14px] px-[30px] items-center rounded-[4px]">
+            <div className="flex absolute bottom-[-68px] space-x-[10px] text-white mt-[12px]  bg-[#3474DF] w-[196px] h-[56px] py-[14px] px-[30px] items-center rounded-[4px]">
               <div>Nusxa olindi</div>
               <div>{nusxa_icon}</div>
             </div>
@@ -246,7 +248,7 @@ function TextEditor() {
 
         {/* Change icon */}
         <button
-          className="h-[68px] w-[68px] bg-[#D3DAFD] rounded-[22px] absolute top-[97px] flex justify-center items-center"
+          className="h-[68px] w-[68px] bg-[#D3DAFD] rounded-[22px] absolute top-[97px] flex justify-center items-center z-10"
           type="button"
           onClick={changeDirection}
         >
@@ -254,7 +256,7 @@ function TextEditor() {
         </button>
 
         {/* Right editor */}
-        <div className="flex flex-col">
+        <div className="flex flex-col relative">
           <div className="flex justify-between w-full space-x-4 items-center pl-14  h-[81px]  bg-[#F4F7FC] border-t border-[#E8EBF2]">
             <p className="font-semibold">{dataValue ? "Кирил" : "Lotin"}</p>
           </div>
@@ -281,8 +283,8 @@ function TextEditor() {
             </div>
           </div>
           {rnusxa && (
-            <div className="flex justify-end">
-              <div className="flex space-x-[10px] text-white mt-[12px]  bg-[#3474DF] w-[196px] h-[56px] py-[14px] px-[30px] items-center rounded-[4px]">
+            <div className="flex justify-end ">
+              <div className="flex space-x-[10px] text-white absolute bottom-[-68px] mt-[12px]  bg-[#3474DF] w-[196px] h-[56px] py-[14px] px-[30px] items-center rounded-[4px]">
                 <div>Nusxa olindi</div>
                 <div>{nusxa_icon}</div>
               </div>

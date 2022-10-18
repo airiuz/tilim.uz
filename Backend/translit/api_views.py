@@ -12,7 +12,7 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 
-from .serializers import LoginSerializer, MyFileSerializer, MyTextSerializer, MyOutFileSerializer, NameofTopSerializer, \
+from .serializers import MyFileSerializer, MyTextSerializer, MyOutFileSerializer, NameofTopSerializer, \
     TypeFastOutSerializer, TypeFastSerializer, NameofTop, UserOutSerializer, UserSerializer
 from .models import MyFile, TypeFastModel, TypeFastOutModel
 from rest_framework.parsers import FileUploadParser, MultiPartParser, FormParser
@@ -43,7 +43,7 @@ class DocumentChangeAPIView(APIView):
         file = MyFile.objects.get(id=serializer.data.get('id'))
         myfile = file.in_file
         t = serializer.data.get('t')
-
+        
         outfile = front.translit_file.translit_file(t, myfile)
         if isinstance(outfile['out_file'], str):
             return Response(data=outfile['out_file'], status=status.HTTP_400_BAD_REQUEST)

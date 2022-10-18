@@ -47,6 +47,13 @@ body {
   background-position: center;
 }
 
+.bg-tezyoz{
+  background-image: url("../public/img/bg_about.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
 .rdw-option-wrapper {
   border: none !important;
   box-shadow: none !important;

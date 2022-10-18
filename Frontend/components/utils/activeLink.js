@@ -7,7 +7,7 @@ function ActiveLink({ href, children, active }) {
   return (
     <Link href={href}>
       <a
-        className={`flex items-center text-lg ${
+        className={`flex items-center text-[16px] ${
           asPath === href ? active : "text-[#273A5D] "
         }`}
       >

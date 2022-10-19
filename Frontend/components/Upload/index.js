@@ -101,9 +101,8 @@ function Upload() {
       const newError = fileRejections[0].file.name.split(".");
       return setError(`"${
         newError[newError.length - 1]
-      }" tipdagi xujjat yuklash mumkin
-                      emas! Iltimos xujjat tipini tekshirib qaytattan urinib
-                      ko’ring.`);
+      }" turdagi hujjat yuklash mumkin
+                      emas! Iltimos hujjat turini tekshirib qaytadan yuklang.`);
     }
     if (acceptedFiles.length === 0) {
       return;
@@ -208,7 +207,7 @@ function Upload() {
                       {error}
                     </p>
                     <p className="text-[#828696]">
-                      Yuklash mumkin bo’lgan xujjat tipi:&nbsp;
+                      Yuklash mumkin bo&rsquo;lgan xujjat turlari:&nbsp;
                       <span className="font-semibold">
                         DOCX, XLSX, PPTX, TXT.
                       </span>
@@ -221,7 +220,7 @@ function Upload() {
                   <p className="font-semibold">
                     Eslatma:&nbsp;
                     <span className="font-normal">
-                      Birvarakayiga faqat 1ta xujjat yuklay olasiz
+                      Ko&rsquo;pi bilan 1 ta hujjat yuklay olasiz
                     </span>
                   </p>
                 </div>
@@ -234,11 +233,13 @@ function Upload() {
       {data.status === "ready" || data.status === "pending" ? (
         <div className="max-w-fit mx-auto p-[30px] bg-white shadow rounded-[18px]">
           <div className="flex justify-between items-center px-5 py-[15px] bg-[#F6F6F7] text-lg rounded-full w-[658px]">
-            <span>{transcript === 1 ? "Lotin" : "Кирил"}</span>
+            <span>{transcript === 1 ? "Lotin" : "Кирилл"}</span>
             {arrow}
-            <span>{transcript === 1 ? "Кирил" : "Lotin"}</span>
+            <span>{transcript === 1 ? "Кирилл" : "Lotin"}</span>
           </div>
-          <p className="mt-[30px] mb-[10px] text-lg">Jo’natilgan xujjat:</p>
+          <p className="mt-[30px] mb-[10px] text-lg">
+            Jo&rsquo;natilgan hujjat:
+          </p>
           <div className="bg-[#F6F6F7] rounded-xl py-3 px-3 flex justify-between items-center">
             <div className="flex items-center space-x-6 w-full">
               {type}
@@ -311,7 +312,7 @@ function Upload() {
             <p className="text-lg font-medium text-center">
               Xujjat “{transcript === 1 ? "Kiril" : "Lotin"}” alifbosiga
               <br />
-              muvaffaqqiyatli o’girildi
+              muvaffaqqiyatli o&rsquo;girildi
             </p>
           </div>
           <div className="bg-[#F6F6F7] my-[30px] rounded-xl py-3 px-5 flex justify-between items-center">

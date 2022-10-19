@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-function ActiveLink({ href, children, active }) {
+function ActiveLink({ href, content, active }) {
   const { asPath } = useRouter();
 
   return (
@@ -11,7 +11,7 @@ function ActiveLink({ href, children, active }) {
           asPath === href ? active : "text-[#273A5D] "
         }`}
       >
-        {children}
+        {content}
       </a>
     </Link>
   );

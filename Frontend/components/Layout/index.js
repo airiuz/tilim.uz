@@ -15,6 +15,7 @@ function Layout(props) {
         <div className="flex-1 flex flex-col pb-80">{props.children}</div>
         <Footer />
       </div>
+      <Footer />
     </>
   );
 }

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import randomWords from "random-words";
 import Layout from "../components/Layout";
+import { HashLoader } from "react-spinners";
 const NUMB_OF_WORDS = 200;
 const SECONDS = 60;
 
@@ -110,12 +111,15 @@ function App() {
     <Layout>
       <div className="bg-tezyoz h-screen flex flex-col justify-center items-center space-y-4">
         <div className="text-6xl text-[#273A5D]">
-          Tez yozishni sinash bo'limi hozirda jarayonda
+          Tez yozishni sinash bo&apos;limi hozirda jarayonda
         </div>
         <div className="text-3xl animate-pulse text-primary">
           Tez kunda.....
         </div>
       </div>
+      {/* <div className="fixed inset-0 bg-white z-50 grid place-content-center">
+        <HashLoader color="#3474DF" />
+      </div> */}
     </Layout>
     // <div className="max-w-7xl mx-auto space-y-2">
     //   <div className="section">

@@ -15,23 +15,23 @@ function Header() {
         </Link>
         <div className="flex space-x-10">
           <ActiveLink
-            children="Lotin-Kirill"
-            href="/"
+            content={"Lotin-Kirill"}
+            href={"/"}
             active={"text-primary"}
           />
           <ActiveLink
-            children="Dokumentlar bilan ishlash"
-            href="/documents/"
+            content={"Hujjatlar bilan ishlash"}
+            href={"/documents/"}
             active={"text-primary"}
           />
           <ActiveLink
-            children="Tez yozishni sinash"
-            href="#"
+            content="Tez yozishni sinash"
+            href={"/tezYoz/"}
             active={"text-primary"}
           />
           <ActiveLink
-            children="Loyiha haqida"
-            href="/about/"
+            content={"Loyiha haqida"}
+            href={"/about/"}
             active={"text-primary"}
           />
         </div>

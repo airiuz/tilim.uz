@@ -14,7 +14,7 @@ function Contact() {
   return (
     <>
       <Layout>
-        <div className="bg-[#F6F6F7] grid place-content-center py-[100px]">
+        <div className="bg-[#F6F6F7] flex-1 grid place-content-center py-[100px]">
           <div className="w-[800px] h-[458px] bg-white flex items-center justify-between pl-[60px] pr-[69px] rounded-xl">
             <div>
               <div className="space-y-[35px]">

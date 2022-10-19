@@ -534,9 +534,9 @@ export const document = (
           width="19.2178"
           height="19.5458"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -869,6 +869,122 @@ export const document = (
         d="M22 6L12 13L2 6"
         stroke="#273A5D"
         strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  ),
+  designDev = (
+    <svg
+      width="24"
+      height="25"
+      viewBox="0 0 24 25"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M9.61301 18.5V21.5H14.387V18.5L15.969 15.292L12 9.5L8.03101 15.292L9.61301 18.5Z"
+        stroke="#828696"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M13.019 5.89307H11.019C10.743 5.89307 10.519 5.66907 10.519 5.39307V3.39307C10.519 3.11707 10.743 2.89307 11.019 2.89307H13.019C13.295 2.89307 13.519 3.11707 13.519 3.39307V5.39307C13.519 5.66907 13.295 5.89307 13.019 5.89307Z"
+        stroke="#828696"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M2.76599 15.063H4.76599C5.04199 15.063 5.26599 14.839 5.26599 14.563V12.563C5.26599 12.287 5.04199 12.063 4.76599 12.063H2.76599C2.48999 12.063 2.26599 12.287 2.26599 12.563V14.563C2.26599 14.839 2.48999 15.063 2.76599 15.063Z"
+        stroke="#828696"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M21.231 15.063H19.231C18.955 15.063 18.731 14.839 18.731 14.563V12.563C18.731 12.287 18.955 12.063 19.231 12.063H21.231C21.507 12.063 21.731 12.287 21.731 12.563V14.563C21.731 14.839 21.507 15.063 21.231 15.063Z"
+        stroke="#828696"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M10.519 4.4502C6.706 4.8952 3.746 8.1312 3.746 12.0632"
+        stroke="#828696"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M20.251 12.0631C20.251 8.14505 17.311 4.91905 13.519 4.45605"
+        stroke="#828696"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M9.60999 18.5H14.39"
+        stroke="#828696"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M12 15.5V9.5"
+        stroke="#828696"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  ),
+  developer = (
+    <svg
+      width="26"
+      height="25"
+      viewBox="0 0 26 25"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M9.99876 14.5012L7.99792 12.5003L9.99876 10.4995"
+        stroke="#828696"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M16.0013 10.4995L18.0021 12.5003L16.0013 14.5012"
+        stroke="#828696"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <rect
+        x="3.99625"
+        y="3.49658"
+        width="18.0075"
+        height="18.0075"
+        rx="5"
+        stroke="#828696"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M13.7763 9.49902L12.1086 15.5015"
+        stroke="#828696"
+        strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />

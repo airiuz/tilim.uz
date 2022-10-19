@@ -194,103 +194,102 @@ function TextEditor() {
   }, [currentContent]);
 
   return (
-    <div className="h-full">
-      <div className="flex justify-center">
-        <div className="flex flex-col relative border-t border-[#E8EBF2]">
-          <div className="flex justify-end w-full space-x-4 pr-14 items-center h-[80px]">
-            <div>
-              <p className="font-semibold">{dataValue ? "Lotin" : "Кирил"}</p>
-            </div>
-          </div>
+    <div className="flex justify-center">
+      <div className="flex flex-col relative border-t border-[#E8EBF2]">
+        <div className="flex justify-end w-full space-x-4 pr-14 items-center h-[80px]">
           <div>
-            <Editor
-              editorState={editorState}
-              stripPastedStyles={true}
-              onEditorStateChange={onEditorStateChange}
-              toolbarClassName="w-[500px] absolute top-[10px] left-0"
-              editorClassName="bg-white w-[683px] min-h-[195px] border-t border-[#E8EBF2] py-3 pl-3 pr-14"
-              toolbar={{
-                options: ["inline", "list", "history"],
-              }}
-            />
-            {dataLength && (
-              <button onClick={tozala} className="absolute top-[110px] right-6">
-                {tozalash}
-              </button>
-            )}
+            <p className="font-semibold">{dataValue ? "Lotin" : "Кирилл"}</p>
           </div>
-          <div className="w-full flex justify-between px-10 items-center h-[49px] border-b border-[#E8EBF2]">
-            <div className="flex space-x-[30px]">
-              <button onClick={microphonebtn}>{microphone}</button>
-              <button>{volume}</button>
-              <button onClick={nusxabtn}>{copy}</button>
-            </div>
-            <p className="text-[16px] font-medium">
-              {valueLength > 0 ? valueLength : 0}/5000
-            </p>
-          </div>
-          {micro && (
-            <div className="flex absolute bottom-[-86px] space-x-[10px] text-white mt-[12px]  bg-[#3474DF] w-[273px] h-[74px]  p-[15px] items-center rounded-[4px]">
-              <div>{info_icon}</div>
-              <div>
-                <p>“Ovozli yozish” </p>
-                <p>ishlab chiqish jarayonida</p>
-              </div>
-            </div>
+        </div>
+        <div>
+          <Editor
+            editorState={editorState}
+            placeholder={""}
+            stripPastedStyles={true}
+            onEditorStateChange={onEditorStateChange}
+            toolbarClassName="w-[500px] absolute top-[10px] left-0"
+            editorClassName="bg-white w-[683px] min-h-[195px] border-t border-[#E8EBF2] py-3 pl-3 pr-14"
+            toolbar={{
+              options: ["inline", "list", "history"],
+            }}
+          />
+          {dataLength && (
+            <button onClick={tozala} className="absolute top-[110px] right-6">
+              {tozalash}
+            </button>
           )}
-          {nusxa && (
-            <div className="flex absolute bottom-[-68px] space-x-[10px] text-white mt-[12px]  bg-[#3474DF] w-[196px] h-[56px] py-[14px] px-[30px] items-center rounded-[4px]">
+        </div>
+        <div className="w-full flex justify-between px-10 items-center h-[49px] border-b border-[#E8EBF2]">
+          <div className="flex space-x-[30px]">
+            <button onClick={microphonebtn}>{microphone}</button>
+            <button>{volume}</button>
+            <button onClick={nusxabtn}>{copy}</button>
+          </div>
+          <p className="text-[16px] font-medium">
+            {valueLength > 0 ? valueLength : 0}/5000
+          </p>
+        </div>
+        {micro && (
+          <div className="flex absolute bottom-[-86px] space-x-[10px] text-white mt-[12px]  bg-[#3474DF] w-[273px] h-[74px]  p-[15px] items-center rounded-[4px]">
+            <div>{info_icon}</div>
+            <div>
+              <p>“Ovozli yozish” </p>
+              <p>ishlab chiqish jarayonida</p>
+            </div>
+          </div>
+        )}
+        {nusxa && (
+          <div className="flex absolute bottom-[-68px] space-x-[10px] text-white mt-[12px]  bg-[#3474DF] w-[196px] h-[56px] py-[14px] px-[30px] items-center rounded-[4px]">
+            <div>Nusxa olindi</div>
+            <div>{nusxa_icon}</div>
+          </div>
+        )}
+      </div>
+
+      {/* Change icon */}
+      <button
+        className="h-[68px] w-[68px] bg-[#D3DAFD] rounded-[22px] absolute top-[97px] flex justify-center items-center z-10"
+        type="button"
+        onClick={changeDirection}
+      >
+        {changeIcon}
+      </button>
+
+      {/* Right editor */}
+      <div className="flex flex-col relative">
+        <div className="flex justify-between w-full space-x-4 items-center pl-14  h-[81px]  bg-[#F4F7FC] border-t border-[#E8EBF2]">
+          <p className="font-semibold">{dataValue ? "Кирилл" : "Lotin"}</p>
+        </div>
+        <Editor
+          toolbarHidden
+          readOnly
+          editorState={editorStatePreview}
+          editorClassName="bg-[#F4F7FC] w-[683px] min-h-[195px] border-t border-[#E8EBF2] py-3 pl-3"
+        />
+        <div className="w-full flex justify-between px-10 items-center h-[49px] bg-[#F4F7FC] border-b border-[#E8EBF2]">
+          <div>
+            <button>{volume}</button>
+          </div>
+          <div className="flex space-x-[30px]">
+            <button onClick={nusxarightbtn}>{copy}</button>
+            <button
+              onClick={() => {
+                setLikebtn(!likebtn);
+              }}
+            >
+              {likebtn ? like_bold : like}
+            </button>
+            <button>{share}</button>
+          </div>
+        </div>
+        {rnusxa && (
+          <div className="flex justify-end ">
+            <div className="flex space-x-[10px] text-white absolute bottom-[-68px] mt-[12px]  bg-[#3474DF] w-[196px] h-[56px] py-[14px] px-[30px] items-center rounded-[4px]">
               <div>Nusxa olindi</div>
               <div>{nusxa_icon}</div>
             </div>
-          )}
-        </div>
-
-        {/* Change icon */}
-        <button
-          className="h-[68px] w-[68px] bg-[#D3DAFD] rounded-[22px] absolute top-[97px] flex justify-center items-center z-10"
-          type="button"
-          onClick={changeDirection}
-        >
-          {changeIcon}
-        </button>
-
-        {/* Right editor */}
-        <div className="flex flex-col relative">
-          <div className="flex justify-between w-full space-x-4 items-center pl-14  h-[81px]  bg-[#F4F7FC] border-t border-[#E8EBF2]">
-            <p className="font-semibold">{dataValue ? "Кирил" : "Lotin"}</p>
           </div>
-          <Editor
-            toolbarHidden
-            readOnly
-            editorState={editorStatePreview}
-            editorClassName="bg-[#F4F7FC] w-[683px] min-h-[195px] border-t border-[#E8EBF2] py-3 pl-3"
-          />
-          <div className="w-full flex justify-between px-10 items-center h-[49px] bg-[#F4F7FC] border-b border-[#E8EBF2]">
-            <div>
-              <button>{volume}</button>
-            </div>
-            <div className="flex space-x-[30px]">
-              <button onClick={nusxarightbtn}>{copy}</button>
-              <button
-                onClick={() => {
-                  setLikebtn(!likebtn);
-                }}
-              >
-                {likebtn ? like_bold : like}
-              </button>
-              <button>{share}</button>
-            </div>
-          </div>
-          {rnusxa && (
-            <div className="flex justify-end ">
-              <div className="flex space-x-[10px] text-white absolute bottom-[-68px] mt-[12px]  bg-[#3474DF] w-[196px] h-[56px] py-[14px] px-[30px] items-center rounded-[4px]">
-                <div>Nusxa olindi</div>
-                <div>{nusxa_icon}</div>
-              </div>
-            </div>
-          )}
-        </div>
+        )}
       </div>
     </div>
   );

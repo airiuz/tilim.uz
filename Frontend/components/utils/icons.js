@@ -14,23 +14,17 @@ export const document = (
     </svg>
   ),
   copy = (
-    <svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M16 12.9V17.1C16 20.6 14.6 22 11.1 22H6.9C3.4 22 2 20.6 2 17.1V12.9C2 9.4 3.4 8 6.9 8H11.1C14.6 8 16 9.4 16 12.9Z"
-        stroke="#0D2148"
+        stroke="currentColor"
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
         d="M22 6.9V11.1C22 14.6 20.6 16 17.1 16H16V12.9C16 9.4 14.6 8 11.1 8H8V6.9C8 3.4 9.4 2 12.9 2H17.1C20.6 2 22 3.4 22 6.9Z"
-        stroke="#0D2148"
+        stroke="currentColor"
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -609,21 +603,21 @@ export const document = (
     >
       <path
         d="M12 15.5C14.21 15.5 16 13.71 16 11.5V6C16 3.79 14.21 2 12 2C9.79 2 8 3.79 8 6V11.5C8 13.71 9.79 15.5 12 15.5Z"
-        stroke="#273A5D"
+        stroke="currentColor"
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
         d="M4.35 9.64999V11.35C4.35 15.57 7.78 19 12 19C16.22 19 19.65 15.57 19.65 11.35V9.64999"
-        stroke="#273A5D"
+        stroke="currentColor"
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
         d="M10.61 6.43C11.51 6.1 12.49 6.1 13.39 6.43"
-        stroke="#273A5D"
+        stroke="currentColor"
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -654,14 +648,14 @@ export const document = (
     >
       <path
         d="M11 5L6 9H2V15H6L11 19V5Z"
-        stroke="#0D2148"
+        stroke="currentColor"
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
         d="M19.07 4.92999C20.9447 6.80527 21.9979 9.34835 21.9979 12C21.9979 14.6516 20.9447 17.1947 19.07 19.07M15.54 8.45999C16.4773 9.39763 17.0039 10.6692 17.0039 11.995C17.0039 13.3208 16.4773 14.5924 15.54 15.53"
-        stroke="#0D2148"
+        stroke="currentColor"
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -691,7 +685,7 @@ export const document = (
       />
     </svg>
   ),
-  share = (
+  dislike = (
     <svg
       width="24"
       height="24"
@@ -700,39 +694,35 @@ export const document = (
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
-        d="M18 8C19.6569 8 21 6.65685 21 5C21 3.34315 19.6569 2 18 2C16.3431 2 15 3.34315 15 5C15 6.65685 16.3431 8 18 8Z"
-        stroke="#0D2148"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+        d="M16.5197 5.65002L13.4197 3.25002C13.0197 2.85002 12.1197 2.65002 11.5197 2.65002H7.71973C6.51973 2.65002 5.21973 3.55002 4.91973 4.75002L2.51973 12.05C2.01973 13.45 2.91973 14.65 4.41973 14.65H8.41973C9.01973 14.65 9.51973 15.15 9.41973 15.85L8.91973 19.05C8.71973 19.95 9.31973 20.95 10.2197 21.25C11.0197 21.55 12.0197 21.15 12.4197 20.55L16.5197 14.45"
+        stroke="#273A5D"
+        stroke-width="1.5"
+        stroke-miterlimit="10"
       />
       <path
-        d="M6 15C7.65685 15 9 13.6569 9 12C9 10.3431 7.65685 9 6 9C4.34315 9 3 10.3431 3 12C3 13.6569 4.34315 15 6 15Z"
-        stroke="#0D2148"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+        d="M21.6201 5.65V15.45C21.6201 16.85 21.0201 17.35 19.6201 17.35H18.6201C17.2201 17.35 16.6201 16.85 16.6201 15.45V5.65C16.6201 4.25 17.2201 3.75 18.6201 3.75H19.6201C21.0201 3.75 21.6201 4.25 21.6201 5.65Z"
+        stroke="#273A5D"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  ),
+  dislike_active = (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M15.61 5.49999V15.66C15.61 16.06 15.49 16.45 15.27 16.78L12.54 20.84C12.11 21.49 11.04 21.95 10.13 21.61C9.15002 21.28 8.50002 20.18 8.71002 19.2L9.23002 15.93C9.27002 15.63 9.19002 15.36 9.02002 15.15C8.85002 14.96 8.60002 14.84 8.33002 14.84H4.22002C3.43002 14.84 2.75002 14.52 2.35002 13.96C1.97002 13.42 1.90002 12.72 2.15002 12.01L4.61002 4.51999C4.92002 3.27999 6.27002 2.26999 7.61002 2.26999H11.51C12.18 2.26999 13.12 2.49999 13.55 2.92999L14.83 3.91999C15.32 4.29999 15.61 4.87999 15.61 5.49999Z"
+        fill="#3474DF"
       />
       <path
-        d="M18 22C19.6569 22 21 20.6569 21 19C21 17.3431 19.6569 16 18 16C16.3431 16 15 17.3431 15 19C15 20.6569 16.3431 22 18 22Z"
-        stroke="#0D2148"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M8.58997 13.51L15.42 17.49"
-        stroke="#0D2148"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M15.41 6.50999L8.58997 10.49"
-        stroke="#0D2148"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+        d="M18.7901 17.61H19.8201C21.3701 17.61 22.0001 17.01 22.0001 15.53V5.47999C22.0001 3.99999 21.3701 3.39999 19.8201 3.39999H18.7901C17.2401 3.39999 16.6101 3.99999 16.6101 5.47999V15.54C16.6101 17.01 17.2401 17.61 18.7901 17.61Z"
+        fill="#3474DF"
       />
     </svg>
   ),
@@ -871,6 +861,24 @@ export const document = (
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
+      />
+    </svg>
+  ),
+  active_volume = (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M9.3 21H14.7C19.2 21 21 19.2 21 14.7V9.3C21 4.8 19.2 3 14.7 3H9.3C4.8 3 3 4.8 3 9.3V14.7C3 19.2 4.8 21 9.3 21Z"
+        fill="#3474DF"
+        stroke="#273A5D"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
       />
     </svg>
   );

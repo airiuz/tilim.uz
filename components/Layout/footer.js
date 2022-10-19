@@ -16,7 +16,7 @@ function Footer() {
         <div className="flex space-x-10">
           <ActiveLink content="Lotin-Kirill" href="/" active={"text-primary"} />
           <ActiveLink
-            content={"Dokumentlar bilan ishlash"}
+            content={"Hujjatlar bilan ishlash"}
             href={"/documents/"}
             active={"text-primary"}
           />

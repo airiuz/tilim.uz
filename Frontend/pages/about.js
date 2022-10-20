@@ -5,108 +5,126 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import Layout from "../components/Layout";
+import { designDev, developer } from "../components/utils/icons";
 
 export default function Home() {
   return (
     <>
       <Layout>
-        <section className=" min-h-screen py-10">
-          <div className="max-w-6xl mx-auto ">
-            <p className="text-center text-2xl uppercase font-semibold">
+        <div className="bg-[#ECECEC]/40 flex-1 py-[30px] px-4 relative">
+          <div className="absolute inset-x-0 inset-y-[30px] bg_about -z-10"></div>
+          <div className="max-w-[936px] mx-auto">
+            <p className="text-[#273A5D] text-[48px] font-bold">
               Loyiha haqida
             </p>
-            <div className="grid grid-cols-2 space-x-10 mt-5 text-white">
-              <div className="border p-8 rounded-xl flex items-center bg-cyan-500  shadow-lg ">
-                <p className="text-lg text-center">
-                  O‘zbek tilida bexato yozish uchun ishlab chiqilgan ushbu ilova
-                  Project Managers kompaniyasi va Milliy mass-mediani qo’llab
-                  quvvatlash va rivojlantirish jamoat fondi bilan birgalikda
-                  ishlab chiqildi.
-                </p>
-              </div>
-              <div className="flex flex-col space-y-8 text-center text-lg">
-                <p className="border p-8 rounded-xl bg-cyan-600 shadow-lg">
-                  CYRIL mobil ilovasi, matn.uz veb-sahifasi va dasturchilar
-                  uchun maxsus API xizmatlaridan foydalanish mutlaqo bepuldir.
-                  Matn.uz - O‘zbek tilida bexato yozishda yordamchingiz!
-                </p>
-                <p className="border p-8 rounded-xl bg-cyan-700 shadow-lg text-lg">
-                  CYRIL - O‘zbek tilida bexato yozishda yordamchingiz!
-                </p>
-              </div>
-            </div>
-            <div className="mt-16">
-              <p className="text-center text-2xl uppercase font-semibold">
-                Loyiha ustida ishlagan odamlar
+            <p className="mt-[20px]">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Id nibh
+              cras amet suspendisse venenatis. Suspendisse ut pulvinar auctor
+              ante. Non ullamcorper mus viverra tellus ut morbi amet imperdiet.
+              Nisi dictum fermentum ut sagittis, massa egestas. Integer
+              consequat, egestas massa vitae cursus. Nulla blandit id in
+              pellentesque neque consequat consequat. Tristique diam massa
+              purus, ac in sem in. Laoreet malesuada nunc, platea porta massa et
+              orci. Massa, viverra amet massa sagittis volutpat leo elementum
+              non a. Orci, enim nisl, pharetra cras sollicitudin vestibulum
+              libero, pellentesque eu. Velit nunc, id vel, porttitor sit
+              consectetur fringilla odio suspendisse. Egestas in nibh euismod
+              vitae vel bibendum. Viverra sed non in massa, felis imperdiet
+              purus. Integer eu ornare orci, porttitor tellus.
+            </p>
+            <div className="mt-[40px]">
+              <p className="text-[#273A5D] text-[36px] font-bold">
+                Loyiha ishtirokchilari
               </p>
-              <div className="mt-5">
-                <Swiper
-                  slidesPerView={4}
-                  spaceBetween={30}
-                  slidesPerGroup={1}
-                  loop={true}
-                  loopFillGroupWithBlank={true}
-                  autoplay={{
-                    delay: 2500,
-                    disableOnInteraction: false,
-                  }}
-                  modules={[Autoplay]}
-                >
-                  <SwiperSlide>
-                    <div className="flex flex-col items-center">
-                      <img
-                        className="h-40 w-40"
-                        src="https://cdn-icons-png.flaticon.com/512/147/147144.png"
-                      />
-                      <p className="text-lg font-semibold">
-                        Biyimbetov Azizbek
-                      </p>
-                    </div>
-                  </SwiperSlide>
-                  <SwiperSlide>
-                    <div className="flex flex-col items-center">
-                      <img
-                        className="h-40 w-40"
-                        src="https://cdn-icons-png.flaticon.com/512/147/147144.png"
-                      />
-                      <p className="text-lg font-semibold">
-                        Abdumajitov Umirzoq
-                      </p>
-                    </div>
-                  </SwiperSlide>
-                  <SwiperSlide>
-                    <div className="flex flex-col items-center">
-                      <img
-                        className="h-40 w-40"
-                        src="https://cdn-icons-png.flaticon.com/512/147/147144.png"
-                      />
-                      <p className="text-lg font-semibold">Usmonov Ulugbek</p>
-                    </div>
-                  </SwiperSlide>
-                  <SwiperSlide>
-                    <div className="flex flex-col items-center">
-                      <img
-                        className="h-40 w-40"
-                        src="https://cdn-icons-png.flaticon.com/512/147/147144.png"
-                      />
-                      <p className="text-lg font-semibold">Raximov Yahyohon</p>
-                    </div>
-                  </SwiperSlide>
-                  <SwiperSlide>
-                    <div className="flex flex-col items-center">
-                      <img
-                        className="h-40 w-40"
-                        src="https://cdn-icons-png.flaticon.com/512/147/147144.png"
-                      />
-                      <p className="text-lg font-semibold">Shoyimov Samandar</p>
-                    </div>
-                  </SwiperSlide>
-                </Swiper>
-                `
+              <div className="grid gap-8 grid-cols-3 mt-[20px] ">
+                <div className="flex items-center space-x-3">
+                  {designDev}
+                  <div className="font-medium">
+                    <p>Ism familiya</p>
+                    <p className="text-sm text-[#828696]">Ro’li</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  {designDev}
+                  <div className="font-medium">
+                    <p>Ism familiya</p>
+                    <p className="text-sm text-[#828696]">Ro’li</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  {developer}
+                  <div className="font-medium">
+                    <p>Ism familiya</p>
+                    <p className="text-sm text-[#828696]">Ro’li</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  {developer}
+                  <div className="font-medium">
+                    <p>Ism familiya</p>
+                    <p className="text-sm text-[#828696]">Ro’li</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  {developer}
+                  <div className="font-medium">
+                    <p>Ism familiya</p>
+                    <p className="text-sm text-[#828696]">Ro’li</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  {developer}
+                  <div className="font-medium">
+                    <p>Ism familiya</p>
+                    <p className="text-sm text-[#828696]">Ro’li</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  {developer}
+                  <div className="font-medium">
+                    <p>Ism familiya</p>
+                    <p className="text-sm text-[#828696]">Ro’li</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  {developer}
+                  <div className="font-medium">
+                    <p>Ism familiya</p>
+                    <p className="text-sm text-[#828696]">Ro’li</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  {developer}
+                  <div className="font-medium">
+                    <p>Ism familiya</p>
+                    <p className="text-sm text-[#828696]">Ro’li</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  {developer}
+                  <div className="font-medium">
+                    <p>Ism familiya</p>
+                    <p className="text-sm text-[#828696]">Ro’li</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  {developer}
+                  <div className="font-medium">
+                    <p>Ism familiya</p>
+                    <p className="text-sm text-[#828696]">Ro’li</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  {developer}
+                  <div className="font-medium">
+                    <p>Ism familiya</p>
+                    <p className="text-sm text-[#828696]">Ro’li</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </section>
+        </div>
       </Layout>
     </>
   );

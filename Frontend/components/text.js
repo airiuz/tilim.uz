@@ -4,11 +4,25 @@ import dynamic from "next/dynamic";
 import { useCallback, useEffect, useState } from "react";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import debounce from "./utils/debounce";
-import { changeIcon, copy, info_icon } from "./utils/icons";
-import { CopyToClipboard } from "react-copy-to-clipboard";
+import {
+  active_volume,
+  changeIcon,
+  copy,
+  dislike,
+  dislike_active,
+  info_icon,
+  like,
+  like_bold,
+  microphone,
+  nusxa,
+  nusxa_icon,
+  pencil,
+  share,
+  tozalash,
+  volume,
+} from "./utils/icons";
 import { stateFromMarkdown } from "draft-js-import-markdown";
 import { stateToMarkdown } from "draft-js-export-markdown";
-import { replaceData } from "draft-js/lib/DraftEntity";
 
 const Editor = dynamic(
   () => import("react-draft-wysiwyg").then((module) => module.Editor),
@@ -58,11 +72,20 @@ function TextEditor() {
   const [data, setData] = useState("");
   const [dataValue, setDataValue] = useState(true);
   const [copyValue, setCopyValue] = useState("");
-  const [showR, setShowR] = useState(false);
-  const [showL, setShowL] = useState(false);
-  const [alert, setAlert] = useState(false);
-  const [alertLength, setAlertLength] = useState(false);
-  const [dataLength, setDatatLength] = useState(0);
+  const [dataLength, setDatatLength] = useState(false);
+  const [micro, setMicro] = useState(false);
+  const [nusxa, setNusxa] = useState(false);
+  const [rnusxa, setRnusxa] = useState(false);
+  const [likebtn, setLikebtn] = useState(false);
+  const [lvolume, setLvolume] = useState(false);
+  const [rvolume, setRvolume] = useState(false);
+  const [dislikebtn, setDislikebtn] = useState(false);
+  const [wordError, setWordError] = useState(false);
+
+  // document
+  //   .querySelector([(title = "Bold")] < img)
+  //   .setAttribute(src, "https://www.w3schools.com/images/w3lynx_200.png");
+
   const postData = useCallback(
     debounce((currentContent, latin2cyrill) => {
       const [html, links] = convertTo(currentContent);
@@ -103,6 +126,33 @@ function TextEditor() {
     setEditorStatePreview(EditorState.createEmpty());
     setValueLength(0);
     setData("");
+    setDatatLength(false);
+  }, []);
+
+  const microphonebtn = useCallback((e) => {
+    e.preventDefault;
+    setMicro(true);
+    setNusxa(false);
+    setTimeout(() => {
+      setMicro(false);
+    }, 1500);
+  }, []);
+
+  const nusxabtn = useCallback((e) => {
+    e.preventDefault;
+    setNusxa(true);
+    setMicro(false);
+    setTimeout(() => {
+      setNusxa(false);
+    }, 1500);
+  }, []);
+
+  const nusxarightbtn = useCallback((e) => {
+    e.preventDefault;
+    setRnusxa(true);
+    setTimeout(() => {
+      setRnusxa(false);
+    }, 1500);
   }, []);
 
   const currentContent = editorState.getCurrentContent();
@@ -115,7 +165,9 @@ function TextEditor() {
           return block.text.trim();
         });
         const length = blockTexts.join("").trim().length;
-
+        if (length > 0) {
+          setDatatLength(true);
+        }
         let value = "";
         if (blockTexts.filter((t) => t).length) {
           value = blockTexts.join("\n").trim();
@@ -126,8 +178,10 @@ function TextEditor() {
         if (length <= 5000) {
           postData(newCurrentContent, dataValue);
         } else {
-          setAlertLength(true);
-          setTimeout(() => setAlertLength(false), 3000);
+          setWordError(true);
+          setTimeout(() => {
+            setWordError(false);
+          }, 2000);
         }
         setValueLength(length);
       }
@@ -141,23 +195,6 @@ function TextEditor() {
     },
     [currentContent, dataValue]
   );
-  const [tool, setTool] = useState(false);
-
-  function showToolTipRight() {
-    setShowR(true);
-    setTimeout(() => {
-      // After 3 seconds set the show value to false
-      setShowR(false);
-    }, 3000);
-  }
-
-  function showToolTipLeft() {
-    setShowL(true);
-    setTimeout(() => {
-      // After 3 seconds set the show value to false
-      setShowL(false);
-    }, 3000);
-  }
 
   const changeDirection = useCallback(() => {
     setDataValue((dataValue) => {
@@ -167,149 +204,219 @@ function TextEditor() {
   }, [currentContent]);
 
   return (
-    <div className="h-full my-6">
-      <div className="flex items-center space-x-6 my-2 justify-center">
-        <div className="flex flex-col focus:border-2 focus:border-blue-500">
-          <div className="flex justify-between w-full space-x-4 px-3 items-center py-2 bg-gray-200 rounded-t-md">
-            <div className="flex space-x-4">
-              <button
-                onClick={() => {
-                  setTool(!tool);
-                }}
-                className="bg-slate-300  py-1 px-3 rounded-xl"
-              >
-                Matn tahriri
-              </button>
-              <button
-                onClick={tozala}
-                className="bg-slate-300  py-1 px-3 rounded-xl"
-              >
-                Tozalash
-              </button>
-            </div>
+    <div className="h-full">
+      <div className="flex justify-center">
+        <div className="flex flex-col relative border-t border-[#E8EBF2]">
+          <div className="flex justify-end w-full space-x-4 pr-14 items-center h-[80px]">
             <div>
-              <p className="font-semibold">
-                {dataValue ? "Lotincha" : "Кириллча"}
-              </p>
+              <p className="font-semibold">{dataValue ? "Lotin" : "Кирил"}</p>
             </div>
           </div>
-          <Editor
-            toolbarHidden={!tool ? true : false}
-            editorState={editorState}
-            stripPastedStyles={true}
-            onEditorStateChange={onEditorStateChange}
-            toolbarClassName="bg-green-500 w-[500px] h-[100px] border-b-2 "
-            editorClassName="bg-gray-300 border-white w-[500px] min-h-[400px] max-h-[400px] p-3 overflow-y-scroll"
-            wrapperClassName="demo-wrapper"
-            toolbar={{
-              options: ["inline", "textAlign", "list", "history"],
-            }}
-          />
-          <div className="w-full flex justify-between px-4 items-center h-[50px] bg-cyan-800 rounded-b-md text-gray-200">
-            <p>{valueLength > 0 ? valueLength : 0}/5000</p>
-            <div className="flex justify-evenly items-center gap-2">
-              <CopyToClipboard text={copyValue}>
-                <div className="flex items-center space-x-2">
-                  {showR ? (
-                    <div
-                      role="tooltip"
-                      class="py-2 px-3 text-[10px] font-medium bg-gray-900 rounded-lg shadow-sm"
-                    >
-                      Nusxalandi!
-                      <div class="tooltip-arrow" data-popper-arrow></div>
-                    </div>
-                  ) : null}
-                  <button onClick={showToolTipRight}>{copy}</button>
-                </div>
-              </CopyToClipboard>
-
-              <button
-                onClick={(e) => {
-                  setAlert(true);
-                  e.preventDefault();
-                  setTimeout(() => {
-                    setAlert(false);
-                  }, 2000);
-                }}
-                className="px-4 py-1 bg-orange-600 rounded-3xl"
-              >
-                Tekshirish
+          <div>
+            <Editor
+              editorState={editorState}
+              stripPastedStyles={true}
+              onEditorStateChange={onEditorStateChange}
+              toolbarClassName="w-[500px] absolute top-[10px] left-0"
+              editorClassName="bg-white w-[683px] min-h-[195px] border-t border-[#E8EBF2] py-3 pl-3 pr-14"
+              toolbar={{
+                options: ["inline", "list", "history"],
+              }}
+            />
+            {dataLength && (
+              <button onClick={tozala} className="absolute top-[110px] right-6">
+                {tozalash}
               </button>
+            )}
+          </div>
+          <div className="w-full flex justify-between px-10 items-center h-[49px] border-b border-[#E8EBF2]">
+            <div className="flex space-x-[30px]">
+              <button
+                className="active:text-primary text-[#0D2148]"
+                onClick={microphonebtn}
+              >
+                {microphone}
+              </button>
+              <button
+                onClick={() => {
+                  setLvolume(!lvolume);
+                  setRvolume(false);
+                }}
+                className="active:text-primary text-[#0D2148]"
+              >
+                {lvolume ? active_volume : volume}
+              </button>
+              <button
+                className="active:text-primary text-[#0D2148]"
+                onClick={nusxabtn}
+              >
+                {copy}
+              </button>
+            </div>
+            <p className="text-[16px] font-medium">
+              {valueLength > 0 ? valueLength : 0}/5000
+            </p>
+          </div>
+          <div
+            className={`flex absolute bottom-[-86px] overflow-hidden space-x-[10px] text-white mt-[12px]  bg-[#3474DF] h-[74px]  py-[15px] items-center rounded-[4px] ${
+              micro
+                ? "w-[273px] px-[15px] transition-all duration-300"
+                : "w-0 px-0 ease-linear duration-300"
+            }`}
+          >
+            <div
+              className={`relative ${
+                micro
+                  ? "top-0  transition-all duration-1000"
+                  : "-top-24  transition-all duration-500"
+              }`}
+            >
+              {info_icon}
+            </div>
+            <div
+              className={`relative ${
+                micro
+                  ? "top-0  transition-all duration-1000"
+                  : "-top-24  transition-all duration-500"
+              }`}
+            >
+              <p>“Ovozli yozish” </p>
+              <p>ishlab chiqish jarayonida</p>
+            </div>
+          </div>
+          <div
+            className={`flex space-x-[10px] absolute bottom-[-68px] mt-12  text-white overflow-hidden bg-[#3474DF] h-[56px] py-[14px] items-center rounded-[4px] ease-linear duration-300 ${
+              nusxa ? "  w-[196px] px-[30px]" : "w-[0px] "
+            }`}
+          >
+            <div
+              className={`relative ${
+                nusxa
+                  ? "top-0  transition-all duration-1000"
+                  : "-top-20  transition-all duration-500"
+              }`}
+            >
+              Nusxa olindi
+            </div>
+            <div
+              className={`relative  ${
+                nusxa
+                  ? "top-0 transition-all duration-1000"
+                  : "-top-20 transition-all duration-500"
+              }`}
+            >
+              {nusxa_icon}
             </div>
           </div>
         </div>
-        <button className="h-full p-4" type="button" onClick={changeDirection}>
+
+        {/* Change icon */}
+        <button
+          className="h-[68px] w-[68px] bg-[#D3DAFD] rounded-[22px] absolute top-[97px] flex justify-center items-center z-10"
+          type="button"
+          onClick={changeDirection}
+        >
           {changeIcon}
         </button>
-        <div className="flex flex-col">
-          <div className="flex justify-between w-full space-x-4 px-3 items-center py-2  bg-gray-200 rounded-t-md">
-            <p className="font-semibold">
-              {dataValue ? "Кириллча" : "Lotincha"}
-            </p>
-            <button className="bg-gray-200 invisible text-gray-200 cursor-auto  py-1 px-3 rounded-xl">
-              Tozalash
-            </button>
+
+        {/* Right editor */}
+        <div className="flex flex-col relative">
+          <div className="flex justify-between w-full space-x-4 items-center pl-14  h-[81px]  bg-[#F4F7FC] border-t border-[#E8EBF2]">
+            <p className="font-semibold">{dataValue ? "Кирил" : "Lotin"}</p>
           </div>
-          <div
-            className={tool ? "h-[100px] bg-white border-none" : " hidden"}
-          ></div>
           <Editor
             toolbarHidden
             readOnly
             editorState={editorStatePreview}
-            toolbarClassName="bg-green-500 w-[500px] h-[100px] demo-toolbar-custom border-b-2"
-            editorClassName="bg-gray-300 border-white w-[500px] min-h-[400px] max-h-[400px] p-3 overflow-y-scroll"
-            wrapperClassName="demo-wrapper"
+            editorClassName="bg-[#F4F7FC] w-[683px] min-h-[195px] border-t border-[#E8EBF2] py-3 pl-3"
           />
-          {/* <p>{data}</p> */}
-          <div className="w-full flex justify-between px-4 items-center h-[50px] bg-cyan-800 rounded-b-md text-gray-200">
-            <p>{dataLength === "" ? 0 : dataLength}</p>
-            <CopyToClipboard text={data}>
-              <div className="flex items-center space-x-2">
-                {showL ? (
-                  <div
-                    role="tooltip"
-                    className="py-2 px-3 text-[10px] font-medium bg-gray-900 rounded-lg shadow-sm"
-                  >
-                    Nusxalandi!
-                    <div className="tooltip-arrow" data-popper-arrow></div>
-                  </div>
-                ) : (
-                  <></>
-                )}
-                <button onClick={showToolTipLeft}>{copy}</button>
+          <div className="w-full flex justify-between px-10 items-center h-[49px] bg-[#F4F7FC] border-b border-[#E8EBF2]">
+            <div>
+              <button
+                onClick={() => {
+                  setRvolume(!rvolume);
+                  setLvolume(false);
+                }}
+                className="active:text-primary text-[#0D2148]"
+              >
+                {rvolume ? active_volume : volume}
+              </button>
+            </div>
+            <div className="flex space-x-[30px]">
+              <button
+                className="text-[#0D2148] active:text-primary"
+                onClick={nusxarightbtn}
+              >
+                {copy}
+              </button>
+              <button
+                onClick={() => {
+                  setLikebtn(!likebtn);
+                }}
+              >
+                {likebtn ? like_bold : like}
+              </button>
+              <button
+                onClick={() => {
+                  setDislikebtn(!dislikebtn);
+                }}
+              >
+                {dislikebtn ? dislike_active : dislike}
+              </button>
+            </div>
+          </div>
+          <div className="flex justify-end ">
+            <div
+              className={`flex space-x-[10px] absolute bottom-[-68px] mt-12  text-white overflow-hidden bg-[#3474DF] h-[56px] py-[14px] items-center rounded-[4px] ease-linear duration-300 ${
+                rnusxa ? "  w-[196px] px-[30px]" : "w-[0px] "
+              }`}
+            >
+              <div
+                className={`relative ${
+                  rnusxa
+                    ? "top-0  transition-all duration-1000"
+                    : "-top-20  transition-all duration-700"
+                }`}
+              >
+                Nusxa olindi
               </div>
-            </CopyToClipboard>
+              <div
+                className={`relative  ${
+                  rnusxa
+                    ? "top-0 transition-all duration-1000"
+                    : "-top-20 transition-all duration-700"
+                }`}
+              >
+                {nusxa_icon}
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      {alert && (
-        <div className="absolute flex justify-center top-[56px] w-full">
-          <div className="bg-cyan-50 border w-auto border-cyan-400 rounded text-cyan-800 text-sm p-4 flex items-center space-x-2">
-            <div>{info_icon}</div>
-            <div>
-              <p>
-                <span className="font-bold">Xabarnoma: </span>
-                Tekshirish funksiyasi hozirda jarayonda, noqulaylik uchun uzur!
-              </p>
-            </div>
-          </div>
+      <div
+        className={`flex fixed top-24 z-50 inset-x-1/3 ml-8 space-x-[13px] w-[430px] px-[15px] text-white overflow-hidden bg-[#3474DF]  items-center rounded-[4px] ease-linear duration-300
+        ${wordError ? "h-[66px] py-[15px]" : "h-0 py-0"}
+        `}
+      >
+        <div
+          className={`relative  ${
+            wordError
+              ? "top-0 transition-all duration-1000"
+              : "-top-20 transition-all duration-500"
+          }`}
+        >
+          {info_icon}
         </div>
-      )}
-
-      {alertLength && (
-        <div className="absolute flex justify-center top-[56px] w-full ">
-          <div className="bg-red-50 border mx-8 border-red-400 rounded text-red-800 text-sm p-4 flex items-center space-x-2">
-            <div>{info_icon}</div>
-            <div className="w-full">
-              <p>
-                <span className="font-bold">Xatolik: </span>
-                5000 dan kop belgilarni tarjima qilmaydi
-              </p>
-            </div>
-          </div>
+        <div
+          className={`relative ${
+            wordError
+              ? "top-0  transition-all duration-1000"
+              : "-top-20  transition-all duration-500"
+          }`}
+        >
+          Belgilar sani 5000 tadan oshmasligi kerak
         </div>
-      )}
+      </div>
     </div>
   );
 }

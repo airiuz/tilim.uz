@@ -13,10 +13,8 @@ SECRET_KEY = 'qfs-j-l*75rd)%v!l&)-jg%!(!@c45m+2$e!8&fx1yfw2sxo-m'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = ['text.idtm.uz','127.0.0.1']
 ALLOWED_HOSTS = ['*']
 
-# Application definition
 
 INSTALLED_APPS = [
     'translit.apps.TranslitConfig',
@@ -33,11 +31,6 @@ INSTALLED_APPS = [
     'authuser',
 ]
 
-# REST_FRAMEWORK = {
-#     'DEFAULT_AUTHENTICATION_CLASSES': [
-#         'rest_framework.authentication.TokenAuthentication',  # <-- And here
-#     ],
-# }
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

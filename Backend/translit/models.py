@@ -3,9 +3,10 @@ from django.conf import settings
 from django.db import models
 from django.core.files.storage import FileSystemStorage
 from os.path import join as join_path
+from .storage import MyStorage
 
-input_storage = FileSystemStorage(location=settings.INPUT_ROOT)
-output_storage = FileSystemStorage(location=settings.OUTPUT_ROOT)
+input_storage = MyStorage(location=settings.INPUT_ROOT)
+output_storage = MyStorage(location=settings.OUTPUT_ROOT)
 
 
 class MyFile(models.Model):

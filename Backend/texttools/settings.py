@@ -115,7 +115,7 @@ REST_FRAMEWORK = {
         'authuser.authentication.CsrfExemptSessionAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated'
+        'rest_framework.permissions.AllowAny'
     ]}
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'

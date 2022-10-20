@@ -7,6 +7,7 @@ from os.path import join as join_path
 input_storage = FileSystemStorage(location=settings.INPUT_ROOT)
 output_storage = FileSystemStorage(location=settings.OUTPUT_ROOT)
 
+
 class MyFile(models.Model):
     id = models.AutoField(primary_key=True)
     in_file = models.FileField(storage=input_storage)
@@ -21,7 +22,7 @@ class MyOutFile(models.Model):
     out_file = models.FileField(storage=output_storage)
 
     def __str__(self):
-        return self.out_file.name        
+        return self.out_file.name
 
 
 class TypeFastModel(models.Model):
@@ -29,18 +30,30 @@ class TypeFastModel(models.Model):
 
     def __str__(self):
         return self.text[:60]
-    
+
+
 class TypeFastOutModel(models.Model):
     text_id = models.IntegerField()
     text = models.CharField(max_length=500)
     true_answers = models.IntegerField()
-    
+
     def __str__(self):
         return self.text[:50]
+
 
 class NameofTop(models.Model):
     type_fast_out_id = models.ForeignKey(TypeFastOutModel, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
-    
+
     def __str__(self):
-        return self.name    
+        return self.name
+
+
+class TextLikeUnlike(models.Model):
+    text = models.TextField()
+    like = models.BooleanField()
+
+    def __str__(self):
+        return self.text
+
+

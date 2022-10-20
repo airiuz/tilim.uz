@@ -1,23 +1,20 @@
 import random
 import json
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.views import APIView
 from django.contrib.auth.models import User
-from rest_framework import status, permissions, generics
+from rest_framework import status, generics
 from rest_framework.response import Response
-from django.contrib.auth import login, logout
 import front.translit_file, front.translit_text
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse
 
-from .serializers import LoginSerializer, MyFileSerializer, MyTextSerializer, MyOutFileSerializer, NameofTopSerializer, \
-    TypeFastOutSerializer, TypeFastSerializer, NameofTop, UserOutSerializer, UserSerializer
-from .models import MyFile, TypeFastModel, TypeFastOutModel
-from rest_framework.parsers import FileUploadParser, MultiPartParser, FormParser
-from rest_framework.viewsets import ViewSet
-from translit import serializers, type_fast
+from .serializers import MyFileSerializer, MyTextSerializer, MyOutFileSerializer, NameofTopSerializer, \
+    TypeFastOutSerializer, TypeFastSerializer, NameofTop, UserOutSerializer, UserSerializer, TextStatisticSerializer
+from .models import MyFile, TypeFastModel, TypeFastOutModel, TextLikeUnlike
+from rest_framework.parsers import FileUploadParser, MultiPartParser
+from translit import type_fast
+from rest_framework.viewsets import ViewSet, ModelViewSet
 
 
 class ChangeTextAPIView(APIView):
@@ -110,3 +107,10 @@ class CreateUser(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticated, IsAdminUser)
     serializer_class = UserSerializer
     queryset = User.objects.all()
+
+
+class TextStatisticViewSet(ModelViewSet):
+    serializer_class = TextStatisticSerializer
+    queryset = TextLikeUnlike.objects.all()
+
+

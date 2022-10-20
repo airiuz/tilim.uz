@@ -1,2 +1,6 @@
 venv/
 __pycache__
+front/files/input
+front/files/output
+db.sqlite3
+

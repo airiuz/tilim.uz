@@ -1,4 +1,5 @@
 import random
+import autocorrector
 import json
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
@@ -12,13 +13,13 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 
-from .serializers import MyFileSerializer, MyTextSerializer, MyOutFileSerializer, NameofTopSerializer, \
+from .serializers import FixWordSerializer, MyFileSerializer, MyTextSerializer, MyOutFileSerializer, NameofTopSerializer, \
     TypeFastOutSerializer, TypeFastSerializer, NameofTop, UserOutSerializer, UserSerializer
 from .models import MyFile, TypeFastModel, TypeFastOutModel
 from rest_framework.parsers import FileUploadParser, MultiPartParser, FormParser
 from rest_framework.viewsets import ViewSet
 from translit import serializers, type_fast
-
+import re
 
 class ChangeTextAPIView(APIView):
     permission_classes = (permissions.AllowAny,)
@@ -28,10 +29,22 @@ class ChangeTextAPIView(APIView):
         serializer.is_valid(raise_exception=True)
         a = serializer.data.get('data')
         t = serializer.data.get('type')
-        t = '1' if t in ['1', 'lotin'] else t == '0'
+        t = '1' if t in '1' else t == '0'
+        incorrect_words = [re.sub(r'[\.\,\:$]',r'',x) for x in a.split(' ') if autocorrector.check(x) == False]
+        print(incorrect_words)
         result = front.translit_text.to_cyrillic(a) if t=='1' else front.translit_text.to_latin(a)
-        return Response(result)
-
+        content = {'text': result, 'incorrect_words':incorrect_words}
+        return HttpResponse(json.dumps(content), content_type='application/json')
+    
+class FixWordsViewSet(ViewSet):
+    permission_classes = (permissions.AllowAny,)
+    def create(self, request):
+        serializer = FixWordSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        word = serializer.validated_data.get('word')
+        words = autocorrector.suggestions(word) if autocorrector.check(word) == False else word
+        return HttpResponse(json.dumps({'recommended':words}), content_type='application/json')
+    
 class DocumentChangeAPIView(APIView):
     parser_classes = (MultiPartParser, FileUploadParser)
     permission_classes = (permissions.AllowAny,)

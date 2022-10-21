@@ -28,6 +28,9 @@ class MyTextSerializer(serializers.Serializer):
     data = serializers.CharField(required=True)
     type = serializers.CharField(required=True)
 
+class FixWordSerializer(serializers.Serializer):
+    word = serializers.CharField()
+
 class MyFileSerializer(serializers.ModelSerializer):
     in_file = serializers.FileField(
         max_length = 10000000,

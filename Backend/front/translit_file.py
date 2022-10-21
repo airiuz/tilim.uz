@@ -8,8 +8,7 @@ def translit_file(t, myfile):
 		outfile = MyOutFile.objects.create(out_file=translated_filename)
 		outfile.save()
 		return {"out_file": outfile.out_file}
-	else:
-		return {"out_file":"Xa'tolik, fayl formati xa'to"}
+	return {"out_file":"Xa'tolik, fayl formati xa'to"}
 
 
 	# translated_filename = front.main.trans(myfile.name, t)

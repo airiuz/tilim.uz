@@ -220,6 +220,7 @@ function TextEditor() {
             <Editor
               editorState={editorState}
               stripPastedStyles={true}
+              placeholder={dataValue ? "Matinni kiriting" : "Матинни киритинг"}
               onEditorStateChange={onEditorStateChange}
               toolbarClassName="w-[500px] absolute top-[10px] left-0"
               editorClassName="bg-white w-[683px] min-h-[195px] border-t border-[#E8EBF2] py-3 pl-3 pr-14"
@@ -332,6 +333,7 @@ function TextEditor() {
             toolbarHidden
             readOnly
             editorState={editorStatePreview}
+            placeholder={dataValue ? "Матинни киритинг" : "Matinni kiriting"}
             editorClassName="bg-[#F4F7FC] w-[683px] min-h-[195px] border-t border-[#E8EBF2] py-3 pl-3"
           />
           <div className="w-full flex justify-between px-10 items-center h-[49px] bg-[#F4F7FC] border-b border-[#E8EBF2]">

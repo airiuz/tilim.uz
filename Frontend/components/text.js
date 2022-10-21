@@ -159,20 +159,22 @@ function TextEditor() {
   const onEditorStateChange = useCallback(
     (newEditorState) => {
       const newCurrentContent = newEditorState.getCurrentContent();
+
       if (newCurrentContent !== currentContent) {
         const rawContent = convertToRaw(newCurrentContent);
         const blockTexts = rawContent.blocks.map((block) => {
           return block.text.trim();
         });
+
         const length = blockTexts.join("").trim().length;
+
+        console.log(blockTexts);
         if (length > 0) {
           setDatatLength(true);
         }
         let value = "";
         if (blockTexts.filter((t) => t).length) {
           value = blockTexts.join("\n").trim();
-
-          console.log(value + "<>");
         }
         setCopyValue(value);
         if (length <= 5000) {
@@ -183,8 +185,10 @@ function TextEditor() {
             setWordError(false);
           }, 2000);
         }
-        setValueLength(length);
+
+        setValueLength(length + blockTexts.length - 1);
       }
+
       setEditorState(newEditorState);
 
       // setEditorStatePreview(
@@ -204,7 +208,7 @@ function TextEditor() {
   }, [currentContent]);
 
   return (
-    <div className="h-full">
+    <div className="h-screen">
       <div className="flex justify-center">
         <div className="flex flex-col relative border-t border-[#E8EBF2]">
           <div className="flex justify-end w-full space-x-4 pr-14 items-center h-[80px]">

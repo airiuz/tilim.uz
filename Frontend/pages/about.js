@@ -5,16 +5,17 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import Layout from "../components/Layout";
+import { designDev, developer } from "../components/utils/icons";
 
 export default function Home() {
   return (
     <>
       <Layout>
-        <div className="bg-[#ECECEC]/40 py-[30px] px-4 relative">
+        <div className="bg-[#ECECEC]/40 flex-1 py-[30px] px-4 relative">
           <div className="absolute inset-x-0 inset-y-[30px] bg_about -z-10"></div>
           <div className="max-w-[936px] mx-auto">
             <p className="text-[#273A5D] text-[48px] font-bold">
-              Loyixa haqida
+              Loyiha haqida
             </p>
             <p className="mt-[20px]">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Id nibh
@@ -33,49 +34,91 @@ export default function Home() {
             </p>
             <div className="mt-[40px]">
               <p className="text-[#273A5D] text-[36px] font-bold">
-                Loyixaga xissa qo’shganlar
+                Loyiha ishtirokchilari
               </p>
-              <div className="grid grid-cols-3 mt-[20px] ">
-                <div className="space-y-5">
-                  <div>
+              <div className="grid gap-8 grid-cols-3 mt-[20px] ">
+                <div className="flex items-center space-x-3">
+                  {designDev}
+                  <div className="font-medium">
                     <p>Ism familiya</p>
-                    <p>Ro’li</p>
-                  </div>
-                  <div>
-                    <p>Ism familiya</p>
-                    <p>Ro’li</p>
-                  </div>
-                  <div>
-                    <p>Ism familiya</p>
-                    <p>Ro’li</p>
+                    <p className="text-sm text-[#828696]">Ro’li</p>
                   </div>
                 </div>
-                <div className="space-y-5">
-                  <div>
+                <div className="flex items-center space-x-3">
+                  {designDev}
+                  <div className="font-medium">
                     <p>Ism familiya</p>
-                    <p>Ro’li</p>
-                  </div>
-                  <div>
-                    <p>Ism familiya</p>
-                    <p>Ro’li</p>
-                  </div>
-                  <div>
-                    <p>Ism familiya</p>
-                    <p>Ro’li</p>
+                    <p className="text-sm text-[#828696]">Ro’li</p>
                   </div>
                 </div>
-                <div className="space-y-5">
-                  <div>
+                <div className="flex items-center space-x-3">
+                  {developer}
+                  <div className="font-medium">
                     <p>Ism familiya</p>
-                    <p>Ro’li</p>
+                    <p className="text-sm text-[#828696]">Ro’li</p>
                   </div>
-                  <div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  {developer}
+                  <div className="font-medium">
                     <p>Ism familiya</p>
-                    <p>Ro’li</p>
+                    <p className="text-sm text-[#828696]">Ro’li</p>
                   </div>
-                  <div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  {developer}
+                  <div className="font-medium">
                     <p>Ism familiya</p>
-                    <p>Ro’li</p>
+                    <p className="text-sm text-[#828696]">Ro’li</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  {developer}
+                  <div className="font-medium">
+                    <p>Ism familiya</p>
+                    <p className="text-sm text-[#828696]">Ro’li</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  {developer}
+                  <div className="font-medium">
+                    <p>Ism familiya</p>
+                    <p className="text-sm text-[#828696]">Ro’li</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  {developer}
+                  <div className="font-medium">
+                    <p>Ism familiya</p>
+                    <p className="text-sm text-[#828696]">Ro’li</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  {developer}
+                  <div className="font-medium">
+                    <p>Ism familiya</p>
+                    <p className="text-sm text-[#828696]">Ro’li</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  {developer}
+                  <div className="font-medium">
+                    <p>Ism familiya</p>
+                    <p className="text-sm text-[#828696]">Ro’li</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  {developer}
+                  <div className="font-medium">
+                    <p>Ism familiya</p>
+                    <p className="text-sm text-[#828696]">Ro’li</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  {developer}
+                  <div className="font-medium">
+                    <p>Ism familiya</p>
+                    <p className="text-sm text-[#828696]">Ro’li</p>
                   </div>
                 </div>
               </div>

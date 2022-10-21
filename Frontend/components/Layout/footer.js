@@ -7,29 +7,27 @@ function Footer() {
   return (
     <footer>
       <div className="max-w-[1366px] px-4 mx-auto flex justify-between items-center border-b py-[15px]">
-        <div className="flex items-center space-x-2 select-none">
-          <span>{logo}</span>
-          <p className="text-[16px] font-semibold text-primary ">TILIM.UZ</p>
-        </div>
+        <Link href={"/"}>
+          <a className="flex items-center space-x-2 select-none">
+            <span>{logo}</span>
+            <p className="text-[16px] font-semibold text-primary">TILIM.UZ</p>
+          </a>
+        </Link>
         <div className="flex space-x-10">
+          <ActiveLink content="Lotin-Kirill" href="/" active={"text-primary"} />
           <ActiveLink
-            children="Lotin-Kirill"
-            href="/"
+            content={"Hujjatlar bilan ishlash"}
+            href={"/documents/"}
             active={"text-primary"}
           />
           <ActiveLink
-            children="Dokumentlar bilan ishlash"
-            href="/documents/"
+            content={"Tez yozishni sinash"}
+            href={"tezYoz"}
             active={"text-primary"}
           />
           <ActiveLink
-            children="Tez yozishni sinash"
-            href="#"
-            active={"text-primary"}
-          />
-          <ActiveLink
-            children="Loyiha haqida"
-            href="/about/"
+            content={"Loyiha haqida"}
+            href={"/about/"}
             active={"text-primary"}
           />
         </div>

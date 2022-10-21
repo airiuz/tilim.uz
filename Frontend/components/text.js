@@ -159,15 +159,12 @@ function TextEditor() {
   const onEditorStateChange = useCallback(
     (newEditorState) => {
       const newCurrentContent = newEditorState.getCurrentContent();
-
       if (newCurrentContent !== currentContent) {
         const rawContent = convertToRaw(newCurrentContent);
         const blockTexts = rawContent.blocks.map((block) => {
           return block.text.trim();
         });
-
-        const length = blockTexts.join("").trim().length;
-
+        length = blockTexts.join("").trim().length;
         console.log(blockTexts);
         if (length > 0) {
           setDatatLength(true);
@@ -186,7 +183,7 @@ function TextEditor() {
           }, 2000);
         }
 
-        setValueLength(length + blockTexts.length - 1);
+        setValueLength(length + blockTexts.length * 2 - 2);
       }
 
       setEditorState(newEditorState);

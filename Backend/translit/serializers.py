@@ -1,7 +1,7 @@
 from rest_framework import serializers
-from .models import MyFile, MyOutFile, NameofTop, TypeFastModel, TypeFastOutModel
 from rest_framework import serializers
 from django.contrib.auth.models import User
+from .models import MyFile, MyOutFile, NameofTop, TypeFastModel, TypeFastOutModel, TextLikeUnlike
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth import authenticate
 import front
@@ -27,6 +27,16 @@ class NameofTopSerializer(serializers.ModelSerializer):
 class MyTextSerializer(serializers.Serializer):
     data = serializers.CharField(required=True)
     type = serializers.CharField(required=True)
+
+class FixWordSerializer(serializers.Serializer):
+    word = serializers.CharField()
+
+
+class TextStatisticSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TextLikeUnlike
+        fields = '__all__'
+
 
 class MyFileSerializer(serializers.ModelSerializer):
     in_file = serializers.FileField(

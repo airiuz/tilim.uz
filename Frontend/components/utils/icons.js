@@ -696,15 +696,15 @@ export const document = (
       <path
         d="M16.5197 5.65002L13.4197 3.25002C13.0197 2.85002 12.1197 2.65002 11.5197 2.65002H7.71973C6.51973 2.65002 5.21973 3.55002 4.91973 4.75002L2.51973 12.05C2.01973 13.45 2.91973 14.65 4.41973 14.65H8.41973C9.01973 14.65 9.51973 15.15 9.41973 15.85L8.91973 19.05C8.71973 19.95 9.31973 20.95 10.2197 21.25C11.0197 21.55 12.0197 21.15 12.4197 20.55L16.5197 14.45"
         stroke="#273A5D"
-        stroke-width="1.5"
-        stroke-miterlimit="10"
+        strokeWidth="1.5"
+        strokeMiterlimit="10"
       />
       <path
         d="M21.6201 5.65V15.45C21.6201 16.85 21.0201 17.35 19.6201 17.35H18.6201C17.2201 17.35 16.6201 16.85 16.6201 15.45V5.65C16.6201 4.25 17.2201 3.75 18.6201 3.75H19.6201C21.0201 3.75 21.6201 4.25 21.6201 5.65Z"
         stroke="#273A5D"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   ),
@@ -876,9 +876,125 @@ export const document = (
         d="M9.3 21H14.7C19.2 21 21 19.2 21 14.7V9.3C21 4.8 19.2 3 14.7 3H9.3C4.8 3 3 4.8 3 9.3V14.7C3 19.2 4.8 21 9.3 21Z"
         fill="#3474DF"
         stroke="#273A5D"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  ),
+  designDev = (
+    <svg
+      width="24"
+      height="25"
+      viewBox="0 0 24 25"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M9.61301 18.5V21.5H14.387V18.5L15.969 15.292L12 9.5L8.03101 15.292L9.61301 18.5Z"
+        stroke="#828696"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M13.019 5.89307H11.019C10.743 5.89307 10.519 5.66907 10.519 5.39307V3.39307C10.519 3.11707 10.743 2.89307 11.019 2.89307H13.019C13.295 2.89307 13.519 3.11707 13.519 3.39307V5.39307C13.519 5.66907 13.295 5.89307 13.019 5.89307Z"
+        stroke="#828696"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M2.76599 15.063H4.76599C5.04199 15.063 5.26599 14.839 5.26599 14.563V12.563C5.26599 12.287 5.04199 12.063 4.76599 12.063H2.76599C2.48999 12.063 2.26599 12.287 2.26599 12.563V14.563C2.26599 14.839 2.48999 15.063 2.76599 15.063Z"
+        stroke="#828696"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M21.231 15.063H19.231C18.955 15.063 18.731 14.839 18.731 14.563V12.563C18.731 12.287 18.955 12.063 19.231 12.063H21.231C21.507 12.063 21.731 12.287 21.731 12.563V14.563C21.731 14.839 21.507 15.063 21.231 15.063Z"
+        stroke="#828696"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M10.519 4.4502C6.706 4.8952 3.746 8.1312 3.746 12.0632"
+        stroke="#828696"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M20.251 12.0631C20.251 8.14505 17.311 4.91905 13.519 4.45605"
+        stroke="#828696"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M9.60999 18.5H14.39"
+        stroke="#828696"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M12 15.5V9.5"
+        stroke="#828696"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  ),
+  developer = (
+    <svg
+      width="26"
+      height="25"
+      viewBox="0 0 26 25"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M9.99876 14.5012L7.99792 12.5003L9.99876 10.4995"
+        stroke="#828696"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M16.0013 10.4995L18.0021 12.5003L16.0013 14.5012"
+        stroke="#828696"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <rect
+        x="3.99625"
+        y="3.49658"
+        width="18.0075"
+        height="18.0075"
+        rx="5"
+        stroke="#828696"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M13.7763 9.49902L12.1086 15.5015"
+        stroke="#828696"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );

@@ -36,74 +36,89 @@ export default function Home() {
               <p className="text-[#273A5D] text-[36px] font-bold">
                 Loyiha ishtirokchilari
               </p>
-              <div className="grid grid-cols-3 mt-[20px] ">
-                <div className="space-y-5">
-                  <div className="flex items-center space-x-3">
-                    {designDev}
-                    <div className="font-medium">
-                      <p>Ism familiya</p>
-                      <p className="text-sm text-[#828696]">Ro’li</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    {designDev}
-                    <div className="font-medium">
-                      <p>Ism familiya</p>
-                      <p className="text-sm text-[#828696]">Ro’li</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    {developer}
-                    <div className="font-medium">
-                      <p>Ism familiya</p>
-                      <p className="text-sm text-[#828696]">Ro’li</p>
-                    </div>
+              <div className="grid gap-8 grid-cols-3 mt-[20px] ">
+                <div className="flex items-center space-x-3">
+                  {designDev}
+                  <div className="font-medium">
+                    <p>Ism familiya</p>
+                    <p className="text-sm text-[#828696]">Ro’li</p>
                   </div>
                 </div>
-                <div className="space-y-5">
-                  <div className="flex items-center space-x-3">
-                    {developer}
-                    <div className="font-medium">
-                      <p>Ism familiya</p>
-                      <p className="text-sm text-[#828696]">Ro’li</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    {developer}
-                    <div className="font-medium">
-                      <p>Ism familiya</p>
-                      <p className="text-sm text-[#828696]">Ro’li</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    {developer}
-                    <div className="font-medium">
-                      <p>Ism familiya</p>
-                      <p className="text-sm text-[#828696]">Ro’li</p>
-                    </div>
+                <div className="flex items-center space-x-3">
+                  {designDev}
+                  <div className="font-medium">
+                    <p>Ism familiya</p>
+                    <p className="text-sm text-[#828696]">Ro’li</p>
                   </div>
                 </div>
-                <div className="space-y-5">
-                  <div className="flex items-center space-x-3">
-                    {developer}
-                    <div className="font-medium">
-                      <p>Ism familiya</p>
-                      <p className="text-sm text-[#828696]">Ro’li</p>
-                    </div>
+                <div className="flex items-center space-x-3">
+                  {developer}
+                  <div className="font-medium">
+                    <p>Ism familiya</p>
+                    <p className="text-sm text-[#828696]">Ro’li</p>
                   </div>
-                  <div className="flex items-center space-x-3">
-                    {developer}
-                    <div className="font-medium">
-                      <p>Ism familiya</p>
-                      <p className="text-sm text-[#828696]">Ro’li</p>
-                    </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  {developer}
+                  <div className="font-medium">
+                    <p>Ism familiya</p>
+                    <p className="text-sm text-[#828696]">Ro’li</p>
                   </div>
-                  <div className="flex items-center space-x-3">
-                    {developer}
-                    <div className="font-medium">
-                      <p>Ism familiya</p>
-                      <p className="text-sm text-[#828696]">Ro’li</p>
-                    </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  {developer}
+                  <div className="font-medium">
+                    <p>Ism familiya</p>
+                    <p className="text-sm text-[#828696]">Ro’li</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  {developer}
+                  <div className="font-medium">
+                    <p>Ism familiya</p>
+                    <p className="text-sm text-[#828696]">Ro’li</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  {developer}
+                  <div className="font-medium">
+                    <p>Ism familiya</p>
+                    <p className="text-sm text-[#828696]">Ro’li</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  {developer}
+                  <div className="font-medium">
+                    <p>Ism familiya</p>
+                    <p className="text-sm text-[#828696]">Ro’li</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  {developer}
+                  <div className="font-medium">
+                    <p>Ism familiya</p>
+                    <p className="text-sm text-[#828696]">Ro’li</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  {developer}
+                  <div className="font-medium">
+                    <p>Ism familiya</p>
+                    <p className="text-sm text-[#828696]">Ro’li</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  {developer}
+                  <div className="font-medium">
+                    <p>Ism familiya</p>
+                    <p className="text-sm text-[#828696]">Ro’li</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  {developer}
+                  <div className="font-medium">
+                    <p>Ism familiya</p>
+                    <p className="text-sm text-[#828696]">Ro’li</p>
                   </div>
                 </div>
               </div>

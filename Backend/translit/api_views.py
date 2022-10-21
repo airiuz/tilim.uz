@@ -1,40 +1,55 @@
 import random
+import autocorrector
 import json
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.views import APIView
 from django.contrib.auth.models import User
-from rest_framework import status, permissions, generics
+from rest_framework import status, generics, permissions
 from rest_framework.response import Response
-from django.contrib.auth import login, logout
 import front.translit_file, front.translit_text
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse
-
-from .serializers import MyFileSerializer, MyTextSerializer, MyOutFileSerializer, NameofTopSerializer, \
+from .serializers import FixWordSerializer, MyFileSerializer, MyTextSerializer, MyOutFileSerializer, NameofTopSerializer, \
     TypeFastOutSerializer, TypeFastSerializer, NameofTop, UserOutSerializer, UserSerializer
 from .models import MyFile, TypeFastModel, TypeFastOutModel
 from rest_framework.parsers import FileUploadParser, MultiPartParser, FormParser
 from rest_framework.viewsets import ViewSet
 from translit import serializers, type_fast
+import re
+
+from .serializers import MyFileSerializer, MyTextSerializer, MyOutFileSerializer, NameofTopSerializer, \
+    TypeFastOutSerializer, TypeFastSerializer, NameofTop, UserOutSerializer, UserSerializer, TextStatisticSerializer
+from .models import MyFile, TypeFastModel, TypeFastOutModel, TextLikeUnlike
+from rest_framework.parsers import FileUploadParser, MultiPartParser
+from translit import type_fast
+from rest_framework.viewsets import ViewSet, ModelViewSet
 
 
 class ChangeTextAPIView(APIView):
-    permission_classes = (permissions.AllowAny,)
     @csrf_exempt
     def post(self, request):
         serializer = MyTextSerializer(data=request.data)
+
         serializer.is_valid(raise_exception=True)
         a = serializer.data.get('data')
         t = serializer.data.get('type')
-        t = '1' if t in ['1', 'lotin'] else t == '0'
+        t = '1' if t in '1' else t == '0'
+        incorrect_words = [re.sub(r'[\.\,\:$]',r'',x) for x in a.split(' ') if autocorrector.check(x) == False]
         result = front.translit_text.to_cyrillic(a) if t=='1' else front.translit_text.to_latin(a)
-        return Response(result)
-
+        content = {'text': result, 'incorrect_words':incorrect_words}
+        return HttpResponse(json.dumps(content), content_type='application/json')
+    
+class FixWordsViewSet(ViewSet):
+    permission_classes = (permissions.AllowAny,)
+    def create(self, request):
+        serializer = FixWordSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        word = serializer.validated_data.get('word')
+        words = autocorrector.suggestions(word) if autocorrector.check(word) == False else word
+        return HttpResponse(json.dumps({'recommended':words}), content_type='application/json')
+    
 class DocumentChangeAPIView(APIView):
     parser_classes = (MultiPartParser, FileUploadParser)
-    permission_classes = (permissions.AllowAny,)
 
     def post(self, request):
         serializer = MyFileSerializer(data=request.data)
@@ -43,17 +58,17 @@ class DocumentChangeAPIView(APIView):
         file = MyFile.objects.get(id=serializer.data.get('id'))
         myfile = file.in_file
         t = serializer.data.get('t')
-        
+
         outfile = front.translit_file.translit_file(t, myfile)
         if isinstance(outfile['out_file'], str):
-            return Response(data=outfile['out_file'], status=status.HTTP_400_BAD_REQUEST)
+            return Response(data=outfile['out_file'])
         else:
             serializer = MyOutFileSerializer(data=outfile)
             serializer.is_valid(raise_exception=True)
             return Response(serializer.data)
 
+
 class TypeFastAPIView(APIView):
-    permission_classes = (permissions.AllowAny,)
     def get(self, request):
         ids = [x.id for x in TypeFastModel.objects.all()]
         x = random.choice(ids)
@@ -72,26 +87,24 @@ class TypeFastAPIView(APIView):
                                                   true_answers=len(type_fast_result))
         content.save()
 
-        top_results = [x.true_answers for x in TypeFastOutModel.objects.all().order_by('-true_answers')[:20]]
+        top_results = [x.true_answers for x in TypeFastOutModel.objects.all().order_by('-true_answers')[:5]]
         all_results = [x.true_answers for x in TypeFastOutModel.objects.all().order_by('-true_answers')]
         leader = True if content.true_answers in top_results else False
-
-        place = all_results.index(content.true_answers)+1
-        return_content = {'id':content.id, 'data':type_fast_result, 'place':place, 'leader':leader}
         place = all_results.index(content.true_answers) + 1
         return_content = {'data': type_fast_result, 'place': place, 'leader': leader}
         return HttpResponse(json.dumps(return_content), content_type='application/json')
 
 
 class NameofTopAPIView(generics.ListCreateAPIView):
-    permission_classes = (permissions.AllowAny,)
     serializer_class = NameofTopSerializer
     queryset = NameofTop.objects.all()
+
 
 class CreateTextAPIView(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticated, IsAdminUser)
     serializer_class = TypeFastSerializer
     queryset = TypeFastModel.objects.all()
+
 
 class SessionUserView(APIView):
     permission_classes = (IsAuthenticated, IsAdminUser)
@@ -101,7 +114,15 @@ class SessionUserView(APIView):
         serializer = UserOutSerializer(user)
         return Response(data=serializer.data)
 
+
 class CreateUser(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticated, IsAdminUser)
     serializer_class = UserSerializer
     queryset = User.objects.all()
+
+
+class TextStatisticViewSet(ModelViewSet):
+    serializer_class = TextStatisticSerializer
+    queryset = TextLikeUnlike.objects.all()
+
+

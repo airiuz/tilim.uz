@@ -17,3 +17,4 @@ def check(suz, cyr=False):
 
 def suggestions(suz):
     return spellchecker.suggest(suz)
+

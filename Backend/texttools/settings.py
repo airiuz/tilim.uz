@@ -15,6 +15,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+CSRF_TRUSTED_ORIGINS = ['https://tilimuz.airi.uz']
 
 INSTALLED_APPS = [
     'translit.apps.TranslitConfig',
@@ -30,7 +31,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'authuser',
 ]
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

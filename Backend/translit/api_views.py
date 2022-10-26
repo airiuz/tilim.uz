@@ -9,7 +9,8 @@ from rest_framework.response import Response
 import front.translit_file, front.translit_text
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from .serializers import FixWordSerializer, MyFileSerializer, MyTextSerializer, MyOutFileSerializer, NameofTopSerializer, \
+from .serializers import FixWordSerializer, MyFileSerializer, MyTextSerializer, MyOutFileSerializer, \
+    NameofTopSerializer, \
     TypeFastOutSerializer, TypeFastSerializer, NameofTop, UserOutSerializer, UserSerializer
 from .models import MyFile, TypeFastModel, TypeFastOutModel
 from rest_framework.parsers import FileUploadParser, MultiPartParser, FormParser
@@ -34,20 +35,23 @@ class ChangeTextAPIView(APIView):
         a = serializer.data.get('data')
         t = serializer.data.get('type')
         t = '1' if t in '1' else t == '0'
-        incorrect_words = [re.sub(r'[\.\,\:$]',r'',x) for x in a.split(' ') if autocorrector.check(x) == False]
-        result = front.translit_text.to_cyrillic(a) if t=='1' else front.translit_text.to_latin(a)
-        content = {'text': result, 'incorrect_words':incorrect_words}
+        incorrect_words = [re.sub(r'[\.\,\:$]', r'', x) for x in a.split(' ') if autocorrector.check(x) == False]
+        result = front.translit_text.to_cyrillic(a) if t == '1' else front.translit_text.to_latin(a)
+        content = {'text': result, 'incorrect_words': incorrect_words}
         return HttpResponse(json.dumps(content), content_type='application/json')
-    
+
+
 class FixWordsViewSet(ViewSet):
     permission_classes = (permissions.AllowAny,)
+
     def create(self, request):
         serializer = FixWordSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         word = serializer.validated_data.get('word')
         words = autocorrector.suggestions(word) if autocorrector.check(word) == False else word
-        return HttpResponse(json.dumps({'recommended':words}), content_type='application/json')
-    
+        return HttpResponse(json.dumps({'recommended': words}), content_type='application/json')
+
+
 class DocumentChangeAPIView(APIView):
     parser_classes = (MultiPartParser, FileUploadParser)
 
@@ -124,5 +128,3 @@ class CreateUser(generics.ListCreateAPIView):
 class TextStatisticViewSet(ModelViewSet):
     serializer_class = TextStatisticSerializer
     queryset = TextLikeUnlike.objects.all()
-
-

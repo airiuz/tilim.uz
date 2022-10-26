@@ -67,5 +67,3 @@ def transliterate(file_path1, file_path2, t):
 	
 # 	replace_text(shapes)
 # 	prs.save(file_path2)
-
-

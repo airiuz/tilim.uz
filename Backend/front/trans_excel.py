@@ -24,4 +24,3 @@ def transliterate(file_path1, file_path2, t):
                     outzip.writestr(inzipinfo.filename, infile.read())
 
 
-	

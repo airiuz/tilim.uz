@@ -8,4 +8,3 @@ def transliterate(file_path, file_path2, t):
         tarjima_file.write(matn)
         return tarjima_file
     
-   

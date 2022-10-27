@@ -30,7 +30,7 @@ class NameofTopSerializer(serializers.ModelSerializer):
 
 
 class MyTextSerializer(serializers.Serializer):
-    data = serializers.CharField(required=True)
+    data = serializers.CharField(required=True, trim_whitespace=False)
     type = serializers.CharField(required=True)
 
 

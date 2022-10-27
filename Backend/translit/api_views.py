@@ -56,7 +56,7 @@ class DocumentChangeAPIView(GetAddressApiView):
 
     def post(self, request):
         # count ip address
-        ChangeTextAPIView.get_ip(request)
+        # ChangeTextAPIView.get_ip(request)
 
         serializer = MyFileSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -77,7 +77,7 @@ class DocumentChangeAPIView(GetAddressApiView):
 class TypeFastAPIView(GetAddressApiView):
     def get(self, request):
         # count ip address
-        ChangeTextAPIView.get_ip(request)
+        # ChangeTextAPIView.get_ip(request)
 
         ids = [x.id for x in TypeFastModel.objects.all()]
         x = random.choice(ids)
@@ -88,7 +88,7 @@ class TypeFastAPIView(GetAddressApiView):
     @csrf_exempt
     def post(self, request):
         # count ip address
-        ChangeTextAPIView.get_ip(request)
+        # ChangeTextAPIView.get_ip(request)
 
         serializer = TypeFastOutSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)

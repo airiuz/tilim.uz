@@ -30,8 +30,8 @@ class ChangeTextAPIView(GetAddressApiView):
 
         serializer = MyTextSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        a = serializer.data.get('data')
-        t = serializer.data.get('type')
+        a = serializer.validated_data.get('data')
+        t = serializer.validated_data.get('type')
         t = '1' if t in '1' else t == '0'
         incorrect_words = [re.sub(r'[\.\,\:$]', r'', x) for x in a.split(' ') if autocorrector.check(x) == False]
         result = front.translit_text.to_cyrillic(a) if t == '1' else front.translit_text.to_latin(a)
@@ -61,9 +61,9 @@ class DocumentChangeAPIView(GetAddressApiView):
         serializer = MyFileSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        file = MyFile.objects.get(id=serializer.data.get('id'))
+        file = MyFile.objects.get(id=serializer.validated_data.get('id'))
         myfile = file.in_file
-        t = serializer.data.get('t')
+        t = serializer.validated_data.get('t')
 
         outfile = front.translit_file.translit_file(t, myfile)
         if isinstance(outfile['out_file'], str):
@@ -92,10 +92,10 @@ class TypeFastAPIView(GetAddressApiView):
 
         serializer = TypeFastOutSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        type_m = TypeFastModel.objects.filter(id=serializer.data['text_id']).first()
-        type_fast_result = type_fast.find_difference_text(type_m.text, serializer.data['text'])
+        type_m = TypeFastModel.objects.filter(id=serializer.validated_data['text_id']).first()
+        type_fast_result = type_fast.find_difference_text(type_m.text, serializer.validated_data['text'])
 
-        content = TypeFastOutModel.objects.create(text_id=serializer.data['text_id'], text=serializer.data['text'],
+        content = TypeFastOutModel.objects.create(text_id=serializer.validated_data['text_id'], text=serializer.validated_data['text'],
                                                   true_answers=len(type_fast_result))
         content.save()
 

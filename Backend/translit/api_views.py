@@ -1,23 +1,19 @@
 import random
+
+from django.contrib.auth.models import User
+
 import autocorrector
 import json
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.views import APIView
-from django.contrib.auth.models import User
 from rest_framework import status, generics, permissions
 from rest_framework.response import Response
 import front.translit_file, front.translit_text
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from .serializers import FixWordSerializer, MyFileSerializer, MyTextSerializer, MyOutFileSerializer, \
-    NameofTopSerializer, \
-    TypeFastOutSerializer, TypeFastSerializer, NameofTop, UserOutSerializer, UserSerializer
-from .models import MyFile, TypeFastModel, TypeFastOutModel
-from rest_framework.parsers import FileUploadParser, MultiPartParser, FormParser
-from rest_framework.viewsets import ViewSet
-from translit import serializers, type_fast
+from .serializers import FixWordSerializer
 import re
-
+from .utils import GetAddressApiView
 from .serializers import MyFileSerializer, MyTextSerializer, MyOutFileSerializer, NameofTopSerializer, \
     TypeFastOutSerializer, TypeFastSerializer, NameofTop, UserOutSerializer, UserSerializer, TextStatisticSerializer
 from .models import MyFile, TypeFastModel, TypeFastOutModel, TextLikeUnlike
@@ -26,11 +22,13 @@ from translit import type_fast
 from rest_framework.viewsets import ViewSet, ModelViewSet
 
 
-class ChangeTextAPIView(APIView):
+class ChangeTextAPIView(GetAddressApiView):
     @csrf_exempt
     def post(self, request):
-        serializer = MyTextSerializer(data=request.data)
+        # count ip address
+        ChangeTextAPIView.get_ip(request)
 
+        serializer = MyTextSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         a = serializer.validated_data.get('data')
         t = serializer.validated_data.get('type')
@@ -49,13 +47,17 @@ class FixWordsViewSet(ViewSet):
         serializer.is_valid(raise_exception=True)
         word = serializer.validated_data.get('word')
         words = autocorrector.suggestions(word) if autocorrector.check(word) == False else word
+        print(request.META.get('HTTP_X_FORWARDED_FOR'))
         return HttpResponse(json.dumps({'recommended': words}), content_type='application/json')
 
 
-class DocumentChangeAPIView(APIView):
+class DocumentChangeAPIView(GetAddressApiView):
     parser_classes = (MultiPartParser, FileUploadParser)
 
     def post(self, request):
+        # count ip address
+        ChangeTextAPIView.get_ip(request)
+
         serializer = MyFileSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -72,8 +74,11 @@ class DocumentChangeAPIView(APIView):
             return Response(serializer.data)
 
 
-class TypeFastAPIView(APIView):
+class TypeFastAPIView(GetAddressApiView):
     def get(self, request):
+        # count ip address
+        ChangeTextAPIView.get_ip(request)
+
         ids = [x.id for x in TypeFastModel.objects.all()]
         x = random.choice(ids)
         text_m = TypeFastModel.objects.filter(id=x).first()
@@ -82,6 +87,9 @@ class TypeFastAPIView(APIView):
 
     @csrf_exempt
     def post(self, request):
+        # count ip address
+        ChangeTextAPIView.get_ip(request)
+
         serializer = TypeFastOutSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         type_m = TypeFastModel.objects.filter(id=serializer.validated_data['text_id']).first()

@@ -47,7 +47,6 @@ class FixWordsViewSet(ViewSet):
         serializer.is_valid(raise_exception=True)
         word = serializer.validated_data.get('word')
         words = autocorrector.suggestions(word) if autocorrector.check(word) == False else word
-        print(request.META.get('HTTP_X_FORWARDED_FOR'))
         return HttpResponse(json.dumps({'recommended': words}), content_type='application/json')
 
 
@@ -61,7 +60,7 @@ class DocumentChangeAPIView(GetAddressApiView):
         serializer = MyFileSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        file = MyFile.objects.get(id=serializer.validated_data.get('id'))
+        file = MyFile.objects.get(id=serializer.data.get('id'))
         myfile = file.in_file
         t = serializer.validated_data.get('t')
 
@@ -92,14 +91,14 @@ class TypeFastAPIView(GetAddressApiView):
 
         serializer = TypeFastOutSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        type_m = TypeFastModel.objects.filter(id=serializer.validated_data['text_id']).first()
+        type_m = TypeFastModel.objects.filter(id=serializer.data['text_id']).first()
         type_fast_result = type_fast.find_difference_text(type_m.text, serializer.validated_data['text'])
 
         content = TypeFastOutModel.objects.create(text_id=serializer.validated_data['text_id'], text=serializer.validated_data['text'],
                                                   true_answers=len(type_fast_result))
         content.save()
 
-        top_results = [x.true_answers for x in TypeFastOutModel.objects.all().order_by('-true_answers')[:5]]
+        top_results = [x.true_answers for x in TypeFastOutModel.objects.all().order_by('-true_answers')[:20]]
         all_results = [x.true_answers for x in TypeFastOutModel.objects.all().order_by('-true_answers')]
         leader = True if content.true_answers in top_results else False
         place = all_results.index(content.true_answers) + 1

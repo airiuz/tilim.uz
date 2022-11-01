@@ -61,13 +61,7 @@ class MyFileSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         file = validated_data.pop('in_file')
         t = validated_data.pop('t')
-        real_name, ext = file.name.rsplit('.')
-        mytranslate = lambda text: front.translit_text.to_cyrillic(text) if t == '1' else front.translit_text.to_latin(
-            text)
-        file_main_name = mytranslate(real_name) + '_Tilimuz.' + ext
-        file.name = file_main_name
         return MyFile.objects.create(in_file=file, t=t)
-
 
 class MyOutFileSerializer(serializers.ModelSerializer):
     out_file = serializers.FileField()

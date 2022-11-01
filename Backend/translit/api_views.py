@@ -26,7 +26,7 @@ class ChangeTextAPIView(GetAddressApiView):
     @csrf_exempt
     def post(self, request):
         # count ip address
-        ChangeTextAPIView.get_ip(request)
+        # ChangeTextAPIView.get_ip(request)
 
         serializer = MyTextSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -55,7 +55,7 @@ class DocumentChangeAPIView(GetAddressApiView):
 
     def post(self, request):
         # count ip address
-        ChangeTextAPIView.get_ip(request)
+        # ChangeTextAPIView.get_ip(request)
 
         serializer = MyFileSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -76,7 +76,7 @@ class DocumentChangeAPIView(GetAddressApiView):
 class TypeFastAPIView(GetAddressApiView):
     def get(self, request):
         # count ip address
-        ChangeTextAPIView.get_ip(request)
+        # ChangeTextAPIView.get_ip(request)
 
         ids = [x.id for x in TypeFastModel.objects.all()]
         x = random.choice(ids)
@@ -87,14 +87,15 @@ class TypeFastAPIView(GetAddressApiView):
     @csrf_exempt
     def post(self, request):
         # count ip address
-        ChangeTextAPIView.get_ip(request)
+        # ChangeTextAPIView.get_ip(request)
 
         serializer = TypeFastOutSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         type_m = TypeFastModel.objects.filter(id=serializer.data['text_id']).first()
         type_fast_result = type_fast.find_difference_text(type_m.text, serializer.validated_data['text'])
 
-        content = TypeFastOutModel.objects.create(text_id=serializer.validated_data['text_id'], text=serializer.validated_data['text'],
+        content = TypeFastOutModel.objects.create(text_id=serializer.validated_data['text_id'],
+                                                  text=serializer.validated_data['text'],
                                                   true_answers=len(type_fast_result))
         content.save()
 

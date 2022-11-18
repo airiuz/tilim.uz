@@ -27,5 +27,3 @@ class SessionViewSet(ViewSet):
     def delete(self, request):
         logout(request)
         return response.Response(status=204)
-    
-    

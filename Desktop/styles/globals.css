@@ -1,0 +1,216 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: Montserrat;
+  src: url("/fonts/Montserrat/static/Montserrat-Regular.ttf") format("truetype");
+  font-display: swap;
+}
+@font-face {
+  font-family: Montserrat;
+  src: url("/fonts/Montserrat/static/Montserrat-Medium.ttf") format("truetype");
+  font-display: swap;
+  font-weight: 500;
+}
+@font-face {
+  font-family: Montserrat;
+  src: url("/fonts/Montserrat/static/Montserrat-SemiBold.ttf")
+    format("truetype");
+  font-display: swap;
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: Montserrat;
+  src: url("/fonts/Montserrat/static/Montserrat-Bold.ttf") format("truetype");
+  font-display: swap;
+  font-weight: 700;
+}
+@font-face {
+  font-family: Montserrat;
+  src: url("/fonts/Montserrat/static/Montserrat-ExtraBold.ttf")
+    format("truetype");
+  font-display: swap;
+  font-weight: 800;
+}
+
+body {
+  font-family: "Montserrat";
+  color: #273a5d;
+}
+
+.bg_about {
+  background-image: url("../public/img/bg_about.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.bg-tezyoz {
+  background-image: url("../public/img/bg_about.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.rdw-history-wrapper {
+  margin-top: 5px;
+}
+
+.rdw-option-wrapper {
+  border: none !important;
+  box-shadow: none !important;
+  width: 44px !important;
+  height: 44px !important;
+  background: inherit;
+}
+
+.rdw-editor-toolbar {
+  margin: 0 !important;
+  display: flex !important;
+  border: none !important;
+  gap: 0px !important;
+  align-items: center !important;
+  padding: 0 !important;
+}
+
+.rdw-editor-wrapper {
+  max-width: 100% !important;
+}
+.rdw-inline-wrapper {
+  gap: 0px !important;
+  margin: 0 !important;
+}
+
+.rdw-option-active {
+  background-color: #d3dafd !important;
+  border-radius: 6px !important;
+}
+
+.rdw-list-wrapper .rdw-option-disabled {
+  display: none !important;
+}
+
+div.rdw-inline-wrapper div[title="Unordered"] {
+  display: none !important;
+}
+
+[title~="Monospace"],
+[title~="Subscript"],
+[title~="Superscript"],
+[title~="Strikethrough"],
+[title~="Indent"] {
+  display: none !important;
+}
+
+[title~="Bold"] img {
+  width: 20px;
+  height: 20px;
+  content: url("../public/img/bold.png");
+}
+
+[title~="Italic"] img {
+  width: 20px;
+  height: 20px;
+  content: url("../public/img/italic.png");
+}
+
+[title~="Underline"] img {
+  width: 20px;
+  height: 20px;
+  content: url("../public/img/underline.png");
+}
+
+[title~="Unordered"] img {
+  width: 20px;
+  height: 20px;
+  content: url("../public/img/unordered.png");
+}
+
+[title~="Ordered"] img {
+  width: 20px;
+  height: 20px;
+  content: url("../public/img/ordered.png");
+}
+
+[title~="Undo"] img {
+  width: 20px;
+  height: 20px;
+  content: url("../public/img/undo.png");
+}
+
+[title~="Redo"] img {
+  width: 20px;
+  height: 20px;
+  content: url("../public/img/redo.png");
+}
+
+.dark [title~="Bold"] img {
+  width: 20px;
+  height: 20px;
+  content: url("../public/img/darkBold.png");
+}
+
+.dark [title~="Italic"] img {
+  width: 20px;
+  height: 20px;
+  content: url("../public/img/darkItalic.png");
+}
+
+.dark [title~="Underline"] img {
+  width: 20px;
+  height: 20px;
+  content: url("../public/img/darkUnderline.png");
+}
+
+.dark [title~="Unordered"] img {
+  width: 20px;
+  height: 20px;
+  content: url("../public/img/darkUnordered.png");
+}
+
+.dark [title~="Ordered"] img {
+  width: 20px;
+  height: 20px;
+  content: url("../public/img/darkOrdered.png");
+}
+
+.dark [title~="Undo"] img {
+  width: 20px;
+  height: 20px;
+  content: url("../public/img/darkUndo.png");
+}
+
+.dark [title~="Redo"] img {
+  width: 20px;
+  height: 20px;
+  content: url("../public/img/darkRedo.png");
+}
+
+.rdw-list-wrapper {
+  display: flex !important;
+  align-items: center !important;
+  margin-top: 5px !important;
+}
+.rdw-editor-wrapper,
+.rdw-editor-main {
+  flex: 1 !important;
+  overflow: unset !important;
+}
+.dark .rdw-option-wrapper {
+  background-color: #2a303a !important;
+}
+
+.dark .rdw-option-wrapper.rdw-option-active {
+  background-color: #6a92ca !important;
+  border-radius: 6px !important;
+}
+
+.dark .editorShadow {
+  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.3);
+}
+
+.public-DraftEditorPlaceholder-hasFocus {
+  display: none;
+}

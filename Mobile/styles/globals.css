@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: Montserrat;
+  src: url("/fonts/Montserrat/static/Montserrat-Regular.ttf") format("truetype");
+  font-display: swap;
+}
+@font-face {
+  font-family: Montserrat;
+  src: url("/fonts/Montserrat/static/Montserrat-Medium.ttf") format("truetype");
+  font-display: swap;
+  font-weight: 500;
+}
+@font-face {
+  font-family: Montserrat;
+  src: url("/fonts/Montserrat/static/Montserrat-SemiBold.ttf")
+    format("truetype");
+  font-display: swap;
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: Montserrat;
+  src: url("/fonts/Montserrat/static/Montserrat-Bold.ttf") format("truetype");
+  font-display: swap;
+  font-weight: 700;
+}
+@font-face {
+  font-family: Montserrat;
+  src: url("/fonts/Montserrat/static/Montserrat-ExtraBold.ttf")
+    format("truetype");
+  font-display: swap;
+  font-weight: 800;
+}
+
+@layer base {
+  body {
+    @apply bg-white dark:bg-darkSecondary;
+  }
+}
+
+body {
+  font-family: "Montserrat";
+  color: #273a5d;
+}
+
+.public-DraftStyleDefault-block,
+.public-DraftStyleDefault-ltr {
+  margin-top: 0px !important;
+  margin-bottom: 10px !important;
+}

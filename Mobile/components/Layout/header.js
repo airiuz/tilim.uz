@@ -50,7 +50,7 @@ function Header() {
             />
             <ActiveLink
               content={"Xujjat"}
-              href={"/documents/"}
+              href={"/document/"}
               active={
                 "text-primary  border-primary  dark:text-darkPrimary dark:border-darkPrimary"
               }

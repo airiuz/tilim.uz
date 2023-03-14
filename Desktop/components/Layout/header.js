@@ -24,7 +24,7 @@ function Header() {
           />
           <ActiveLink
             content={"Hujjatlar bilan ishlash"}
-            href={"/documents/"}
+            href={"/document/"}
             active={"text-primary dark:text-darkPrimary"}
           />
           {/* <ActiveLink

@@ -34,7 +34,7 @@ function Footer() {
           />
           <ActiveLink
             content={"Hujjatlar bilan ishlash"}
-            href={"/documents/"}
+            href={"/document/"}
             active={"text-primary text-darkPrimary"}
           />
           {/* <ActiveLink

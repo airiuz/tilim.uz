@@ -1,0 +1,71 @@
+
+.translator__button__container {
+    border: 1px solid var(--border);
+    width: 401px;
+    border-radius:6px;
+    background: var(--background-translator-button);
+    padding:4px;
+    height: 48px;
+    gap:10px;
+    align-items:center;
+    display: flex;
+}
+
+.translator__button__container div {
+    padding: 12.5px 41px;
+    display: flex;
+    height: 40px;
+    align-items: center;
+    gap:15px;
+    border-radius: 6px;
+}
+
+.translator__button__container div.animation {
+    background:
+            linear-gradient(90deg, var(--blue) 50%, transparent 0) repeat-x,
+            linear-gradient(90deg, var(--blue) 50%, transparent 0) repeat-x,
+            linear-gradient(0deg, var(--blue) 50%, transparent 0) repeat-y,
+            linear-gradient(0deg, var(--blue) 50%, transparent 0) repeat-y;
+    background-size: 4px 2px, 4px 2px, 2px 4px, 2px 4px;
+    background-position: 0 0, 0 100%, 0 0, 100% 0;
+    animation: linearGradientMove .3s infinite linear;
+}
+
+.translator__button__container div.active {
+    background:var(--background-translator-button-active);
+}
+
+.translator__button__container div.active span {
+    color: var(--icon);
+}
+
+.translator__button__container div.active path {
+    fill: var(--icon)
+}
+
+.translator__button__container span {
+    display: flex;
+    align-items: center;
+    color: var(--social-icon)
+}
+
+.translator__button__container path {
+    fill: var(--social-icon)
+}
+
+@keyframes linearGradientMove {
+    100% {
+        background-position: 4px 0, -4px 100%, 0 -4px, 100% 4px;
+    }
+}
+
+.button {
+    background:var(--blue);
+    color:#fff;
+    padding: 15px 36px;
+    border-radius: 12px;
+    border:none;
+    outline: none;
+    font-weight: 500;
+    font-size: 16px;
+}

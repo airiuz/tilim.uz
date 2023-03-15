@@ -1,0 +1,57 @@
+.markdown__wrapper {
+    height:50px;
+    background: var(--background-icon);
+    display: flex;
+    align-items: center;
+    border-radius:50px;
+    gap:14px;
+    padding-left:8px;
+    padding-right:21px;
+}
+.markdown__wrapper .markdown__close {
+    width: 38px;
+    height: 38px;
+    display:flex;
+    justify-content: center;
+    border-radius: 100%;
+    align-items: center;
+    background: #677A94;
+}
+
+
+.markdown__wrapper .markdown__icons {
+    display:flex;
+    gap:12px;
+}
+
+.markdown__wrapper .markdown__icons div {
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.markdown__wrapper path {
+    fill: var(--text)
+}
+
+.markdown__wrapper div {
+    cursor:pointer;
+}
+
+.markdown__show {
+    width: 38px;
+    height: 38px;
+    border-radius:50%;
+    cursor: pointer;
+    background:var(--blue);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.markdown__show path {
+    fill: #fff
+}

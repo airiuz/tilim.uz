@@ -1,0 +1,18 @@
+
+.list__users__container {
+    width: 396px;
+    height: 636px;
+    background:var(--background-layout);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+}
+
+.list__users__container .title {
+    padding: 17px 14px;
+    border-bottom: 1px solid var(--border);
+}
+
+.list__users__container .button {
+    padding:18px;
+
+}

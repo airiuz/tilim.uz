@@ -1,0 +1,30 @@
+
+.file__upload__container {
+    border:2px dashed var(--border);
+    width: 100%;
+    height: 276px;
+    border-radius: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 34px 0;
+    justify-content: space-between;
+}
+
+.file__upload__title {
+    color: var(--text);
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+}
+
+.file__upload__icon path {
+    fill: var(--border);
+}
+
+.file__upload__description {
+    font-size: 14px;
+    line-height: 17px;
+    color: var(--mute-text);
+    text-align: center;
+}

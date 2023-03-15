@@ -1,0 +1,11 @@
+.editor {
+    padding:0 24px;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    max-height: 304px;
+    color:var(--text)
+}
+.editor__toolbar {
+
+}

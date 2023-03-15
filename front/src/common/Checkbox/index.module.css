@@ -1,0 +1,22 @@
+.checkbox__container {
+    width: 25px;
+    height: 25px;
+    border: 1px solid var(--blue);
+    background: var(--background-middle);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.checkbox__container input {
+    opacity: 0;
+    position: absolute;
+}
+
+.checkbox__container path {
+    fill: var(--blue)
+}
+

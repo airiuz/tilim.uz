@@ -1,0 +1,51 @@
+
+.file__translator__wrapper {
+    width: 677px;
+    height: 431px;
+    background: var(--background-layout);
+    border: 2px solid var(--border);
+    border-radius: 18px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.file__translator__header {
+    height: 84px;
+    padding:0 18px;
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+}
+
+.file__translator__header .checkbox__container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap:12px;
+    color: var(--text);
+}
+
+.file__upload__container {
+    padding: 18px;
+}
+
+.allowed__files {
+    display: flex;
+    gap: 11px;
+    padding-top:16px
+}
+
+.allowed__files h4 {
+    color:var(--mute-text);
+
+}
+
+.allowed__files h4 span {
+    color: #F50000;
+}
+
+.allowed__files span {
+    font-weight: 700;
+    color:var(--text);
+}

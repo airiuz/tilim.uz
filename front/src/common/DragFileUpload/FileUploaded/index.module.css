@@ -1,0 +1,51 @@
+
+
+.file__uploaded__container {
+    height: 96px;
+    width: 100%;
+    background: var(--file-upload-container);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.file__information .file__information__container {
+    display: flex;
+    align-items: center;
+    gap:15px;
+}
+
+.file__uploaded__container .icon__wrapper {
+    background: var(--background-layout);
+}
+
+.file__uploaded__container .file__information {
+    display: flex;
+    flex-direction: column;
+    gap:8px;
+}
+
+.file__uploaded__container .file__information h4 {
+    font-size: 16px;
+    line-height: 19px;
+    color: var(--opposite);
+}
+
+.file__uploaded__container .file__information span {
+    font-size: 14px;
+    line-height: 17px;
+    color: var(--mute-text);
+}
+
+.file__uploaded__container .close {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--background-translator-button);
+    border-radius: 4px;
+}
+

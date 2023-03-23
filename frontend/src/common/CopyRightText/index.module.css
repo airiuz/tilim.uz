@@ -1,0 +1,8 @@
+.copyright__text {
+    font-size: 12px;
+    text-align:center;
+    padding-top:18.5px;
+    line-height:15px;
+    font-weight:400;
+    color:var(--mute-text)
+}

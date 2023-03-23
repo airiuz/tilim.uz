@@ -49,3 +49,30 @@
     font-weight: 700;
     color:var(--text);
 }
+
+@media only screen and (max-width: 992px) {
+    .file__translator__wrapper {
+        width: 100%;
+        height: auto;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .file__translator__header {
+        flex-direction: column-reverse;
+        height: 114px;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 16px;
+    }
+    .allowed__files {
+        font-size: 14px;
+        flex-wrap: wrap;
+    }
+}
+
+@media only screen and (min-width: 200px) {
+    .file__translator__wrapper {
+        width: 1140px;
+    }
+}

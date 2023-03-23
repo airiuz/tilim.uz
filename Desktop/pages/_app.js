@@ -1,4 +1,3 @@
-
 import ThemeProvider from "../components/utils/theme";
 import "../styles/globals.css";
 

@@ -1,0 +1,23 @@
+
+.header__logo {
+    display: flex;
+    gap:12px;
+    align-items: center;
+    font-family: Montserrat, Inter, serif;
+    font-weight: 600;
+}
+
+.header__logo span {
+    color: var(--blue);
+    font-size:15px;
+}
+
+.header__logo path {
+    fill: var(--blue);
+}
+
+@media only screen and (max-width: 1160px) {
+    .header__logo svg {
+        height: 40px;
+    }
+}

@@ -1,0 +1,8 @@
+.footer__icon__wrapper {
+    display: flex;
+    gap:22px;
+}
+
+.footer__icon__wrapper path {
+    fill: var(--social-icon)
+}

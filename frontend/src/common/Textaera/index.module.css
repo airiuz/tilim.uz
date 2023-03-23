@@ -3,9 +3,6 @@
     font-size: 20px;
     font-style: normal;
     font-weight: 400;
-    max-height: 304px;
+    /*max-height: 304px;*/
     color:var(--text)
-}
-.editor__toolbar {
-
 }

@@ -1,0 +1,73 @@
+{
+  "__entry_css_mods__": {
+    "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/app/typing/page": [
+      "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/app/globals.css",
+      "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/common/Logo/index.module.css",
+      "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/common/Exit/index.module.css",
+      "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/common/SocialIcons/index.module.css",
+      "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/common/CopyRightText/index.module.css",
+      "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/layout/MobileMenu/index.module.css",
+      "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/layout/Header/index.module.css",
+      "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/layout/Footer/index.module.css",
+      "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/common/Button/index.module.css",
+      "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/common/Card/index.module.css",
+      "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css",
+      "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/common/Textaera/index.module.css",
+      "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/components/Typing/TypingInTime/FirstSection/index.module.css",
+      "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/components/Typing/TypingInTime/Keyboard/index.css",
+      "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/components/Typing/TypingInTime/Result/index.module.css",
+      "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/components/Typing/TypingInTime/index.module.css",
+      "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/components/Typing/Dashboard/ListUsers/index.module.css",
+      "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/components/Typing/Dashboard/Information/index.module.css",
+      "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/components/Typing/Dashboard/index.module.css"
+    ],
+    "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/app/page": [
+      "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/app/globals.css",
+      "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/common/Logo/index.module.css",
+      "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/common/Exit/index.module.css",
+      "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/common/SocialIcons/index.module.css",
+      "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/common/CopyRightText/index.module.css",
+      "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/layout/MobileMenu/index.module.css",
+      "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/layout/Header/index.module.css",
+      "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/layout/Footer/index.module.css",
+      "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css",
+      "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/common/Textaera/index.module.css",
+      "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/common/Markdown/index.module.css",
+      "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/common/Button/index.module.css",
+      "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/components/Translator/index.module.css",
+      "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/components/Help/index.module.css"
+    ]
+  },
+  "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/app/typing/page.tsx": [
+    "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/components/Typing/TypingInTime/index.module.css",
+    "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/components/Typing/TypingInTime/FirstSection/index.module.css",
+    "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/common/Button/index.module.css",
+    "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/common/Card/index.module.css",
+    "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css",
+    "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/common/Textaera/index.module.css",
+    "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/components/Typing/TypingInTime/Keyboard/index.css",
+    "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/components/Typing/TypingInTime/Result/index.module.css",
+    "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/components/Typing/Dashboard/ListUsers/index.module.css",
+    "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/components/Typing/Dashboard/index.module.css",
+    "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/components/Typing/Dashboard/Information/index.module.css"
+  ],
+  "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/app/layout.tsx": [
+    "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/app/globals.css",
+    "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/layout/Header/index.module.css",
+    "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/common/Logo/index.module.css",
+    "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/layout/MobileMenu/index.module.css",
+    "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/common/Exit/index.module.css",
+    "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/common/SocialIcons/index.module.css",
+    "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/common/CopyRightText/index.module.css",
+    "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/layout/Footer/index.module.css"
+  ],
+  "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/app/page.tsx": [
+    "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css",
+    "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/common/Textaera/index.module.css",
+    "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/components/Translator/index.module.css",
+    "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/common/Markdown/index.module.css",
+    "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/common/Button/index.module.css",
+    "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/components/Help/index.module.css",
+    "/Users/macbookpro/Desktop/airi/tilim.uz/frontend/src/common/Exit/index.module.css"
+  ]
+}

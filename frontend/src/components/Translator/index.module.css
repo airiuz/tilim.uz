@@ -45,3 +45,15 @@
 .translator__footer__icons__container path {
     fill: var(--icon)
 }
+
+@media only screen and (max-width: 1160px) {
+    .translator__container {
+        width: 100%;
+    }
+}
+
+@media only screen and (min-width: 2000px) {
+    .translator__container {
+        width: 1500px;
+    }
+}

@@ -1,7 +1,6 @@
 
 .translator__button__container {
     border: 1px solid var(--border);
-    width: 401px;
     border-radius:6px;
     background: var(--background-translator-button);
     padding:4px;
@@ -13,6 +12,8 @@
 
 .translator__button__container div {
     padding: 12.5px 41px;
+    flex: 1;
+    justify-content: center;
     display: flex;
     height: 40px;
     align-items: center;
@@ -36,11 +37,11 @@
 }
 
 .translator__button__container div.active span {
-    color: var(--icon);
+    color: var(--active-button-color);
 }
 
 .translator__button__container div.active path {
-    fill: var(--icon)
+    fill: var(--active-button-color)
 }
 
 .translator__button__container span {
@@ -65,7 +66,32 @@
     padding: 15px 36px;
     border-radius: 12px;
     border:none;
+    cursor:pointer;
     outline: none;
     font-weight: 500;
+    justify-content: center;
+    display: flex;
+    gap: 12px;
+    align-items: center;
     font-size: 16px;
+}
+
+.button path {
+    fill: #fff;
+}
+
+@media only screen and (max-width: 768px) {
+    .translator__button__container {
+        width: 100% !important;
+    }
+
+    .translator__button__container div {
+        padding: 12.5px 0;
+        font-size: 14px;
+        gap:10px;
+    }
+    .button {
+        padding: 15px 24px;
+        font-size:14px
+    }
 }

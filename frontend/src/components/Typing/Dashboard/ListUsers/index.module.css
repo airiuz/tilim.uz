@@ -1,0 +1,78 @@
+.list__users__container {
+  width: 396px;
+  background: var(--background-layout);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+}
+
+.list__users__container .title {
+  padding: 17px 14px;
+  display: flex;
+  gap:8px;
+  align-items: center;
+  color:var(--count);
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.list__users__container .button {
+  padding: 18px;
+  border-bottom:1px solid var(--border);
+}
+
+.list__user__item {
+  display:flex;
+  gap:12px;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  padding: 18px 23px;
+}
+
+.list__user__item .user__information {
+  display:flex;
+  gap:5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.list__user__item .user__information .name {
+  color:var(--count);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+}
+
+.list__user__item .user__information .result {
+  display: flex;
+  gap:15px;
+  color:var(--mute-text);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+}
+
+.list__user__item .number {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color:var(--count);
+  background:var(--background-icon);
+}
+
+@media only screen and (max-width: 1160px) {
+  .list__users__container {
+    width: 100%;
+    height: -webkit-fill-available;
+  }
+  .list__user__item {
+    padding:12px
+  }
+  .list__user__item .user__information .result {
+    gap:5px;
+  }
+}

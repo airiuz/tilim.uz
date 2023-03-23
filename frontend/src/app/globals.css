@@ -3,13 +3,15 @@
 
 :root {
   /* light mode variables */
-  --light-background-middle: #F4F7FB;
+  --light-background-middle: #F2F3F6;
+  /*--light-background-middle: #F4F7FB;*/
   --light-background-layout:#fff;
   --light-background-icon:#F2F7FE;
   --light-background-translator-button:#F2F7FE;
   --light-file-upload-container:#FAFCFF;
   --light-background-translator-button-active:#fff;
   --light-border:#E6EBF2;
+  --light-pause-button: #EFF4FA;
 
   --light-oppiste:#000;
   --light-blue: #3474DF;
@@ -18,7 +20,9 @@
   --light-mute-text:#828696;
   --light-social-icon:#70757C;
   --light-icon:#374957;
+  --light-active-button-color:#374957;
   --light-count:#2A2F36;
+  --light-stop-texting: #918484;
 
   /* dark mode variables */
   --dark-background-middle:#101927;
@@ -28,6 +32,7 @@
   --dark-file-upload-container:#1A2433;
   --dark-background-translator-button-active:#3474DF;
   --dark-border:#353F4D;
+  --dark-pause-button: #2C3F56;
 
   --dark-oppiste:#fff;
   --dark-blue: #70B0FF;
@@ -35,8 +40,10 @@
   --dark-link-icon:#677A94;
   --dark-mute-text:#67717F;
   --dark-social-icon:#A3B6D0;
+  --dark-active-button-color:#fff;
   --dark-icon:#fff;
   --dark-count:#fff;
+  --dark-stop-texting: #fff;
 
   /* default variables */
   --background-middle: var(--light-background-middle);
@@ -46,6 +53,7 @@
   --file-upload-container:var(--light-file-upload-container);
   --background-translator-button-active: var(--light-background-translator-button-active);
   --border:var(--light-border);
+  --pause-button: var(--light-pause-button);
 
   --opposite: var(--light-oppiste);
   --blue: var(--light-blue);
@@ -53,8 +61,10 @@
   --link-icon: var(--light-link-icon);
   --mute-text: var(--light-mute-text);
   --social-icon: var(--light-social-icon);
+  --active-button-color: var(--light-active-button-color);
   --icon: var(--light-icon);
   --count: var(--light-count);
+  --stop-texting: var(--light-stop-texting)
 }
 
 [data-theme='dark'] {
@@ -65,6 +75,7 @@
   --file-upload-container:var(--dark-file-upload-container);
   --background-translator-button-active: var(--dark-background-translator-button-active);
   --border:var(--dark-border);
+  --pause-button: var(--dark-pause-button);
 
   --opposite: var(--dark-oppiste);
   --blue: var(--dark-blue);
@@ -72,8 +83,10 @@
   --link-icon: var(--dark-link-icon);
   --mute-text: var(--dark-mute-text);
   --social-icon: var(--dark-social-icon);
+  --active-button-color: var(--dark-active-button-color);
   --icon: var(--dark-icon);
   --count: var(--dark-count);
+  --stop-texting: var(--dark-stop-texting)
 }
 
 * {
@@ -99,5 +112,13 @@ a {
   padding-top:34px;
   background: var(--background-middle);
 }
+
+@media only screen and (max-width: 1160px) {
+  .main__wrapper {
+    padding: 12px 20px;
+    height: calc(100vh - 132px);
+  }
+}
+
 
 

@@ -55,3 +55,9 @@
 .markdown__show path {
     fill: #fff
 }
+
+@media only screen and (max-width: 992px) {
+    .markdown__wrapper {
+        display: none;
+    }
+}

@@ -1,0 +1,37 @@
+
+
+.container {
+    width: 594px;
+}
+
+.container .back {
+    background: var(--background-layout);
+    color: var(--text);
+}
+
+.container .card {
+    background: var(--background-layout);
+    padding: 30px
+}
+
+.container .card .title {
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 44px;
+    color: var(--count);
+    padding-bottom: 20px;
+}
+
+.container .card .result {
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 21px;
+    color: var(--count);
+    padding-bottom: 35.5px;
+}
+
+.container .card__wrapper {
+    display: flex;
+    gap:18px;
+    padding-bottom: 159px;
+}

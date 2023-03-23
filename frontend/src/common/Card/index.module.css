@@ -1,0 +1,13 @@
+.container {
+    padding:24px;
+    font-weight: 400;
+    font-size: 16px;
+    border:1px solid var(--border);
+    border-radius: 12px;
+    text-align: center;
+    line-height: 150%;
+    color: var(--count);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}

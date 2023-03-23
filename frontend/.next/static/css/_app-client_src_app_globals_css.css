@@ -1,0 +1,128 @@
+/*!***************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[2].oneOf[13].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[2].oneOf[13].use[3]!./src/app/globals.css ***!
+  \***************************************************************************************************************************************************************************************************************************************************************/
+@import url('https://fonts.googleapis.com/css2?family=Clicker+Script&family=Inter:wght@300;400;500;600;700&family=Poppins:wght@200;300;400;500;600&family=Source+Sans+Pro:ital,wght@0,300;0,400;1,300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Clicker+Script&family=Montserrat:wght@300;400;500;600;700&family=Poppins:wght@200;300;400;500;600&family=Source+Sans+Pro:ital,wght@0,300;0,400;1,300&display=swap');
+
+:root {
+  /* light mode variables */
+  --light-background-middle: #F2F3F6;
+  /*--light-background-middle: #F4F7FB;*/
+  --light-background-layout:#fff;
+  --light-background-icon:#F2F7FE;
+  --light-background-translator-button:#F2F7FE;
+  --light-file-upload-container:#FAFCFF;
+  --light-background-translator-button-active:#fff;
+  --light-border:#E6EBF2;
+  --light-pause-button: #EFF4FA;
+
+  --light-oppiste:#000;
+  --light-blue: #3474DF;
+  --light-text:#677A94;
+  --light-link-icon:#677A94;
+  --light-mute-text:#828696;
+  --light-social-icon:#70757C;
+  --light-icon:#374957;
+  --light-active-button-color:#374957;
+  --light-count:#2A2F36;
+  --light-stop-texting: #918484;
+
+  /* dark mode variables */
+  --dark-background-middle:#101927;
+  --dark-background-layout:#1D2736;
+  --dark-background-icon:#0E1827;
+  --dark-background-translator-button:#162030;
+  --dark-file-upload-container:#1A2433;
+  --dark-background-translator-button-active:#3474DF;
+  --dark-border:#353F4D;
+  --dark-pause-button: #2C3F56;
+
+  --dark-oppiste:#fff;
+  --dark-blue: #70B0FF;
+  --dark-text:#A3B6D0;
+  --dark-link-icon:#677A94;
+  --dark-mute-text:#67717F;
+  --dark-social-icon:#A3B6D0;
+  --dark-active-button-color:#fff;
+  --dark-icon:#fff;
+  --dark-count:#fff;
+  --dark-stop-texting: #fff;
+
+  /* default variables */
+  --background-middle: var(--light-background-middle);
+  --background-layout: var(--light-background-layout);
+  --background-icon: var(--light-background-icon);
+  --background-translator-button: var(--light-background-translator-button);
+  --file-upload-container:var(--light-file-upload-container);
+  --background-translator-button-active: var(--light-background-translator-button-active);
+  --border:var(--light-border);
+  --pause-button: var(--light-pause-button);
+
+  --opposite: var(--light-oppiste);
+  --blue: var(--light-blue);
+  --text: var(--light-text);
+  --link-icon: var(--light-link-icon);
+  --mute-text: var(--light-mute-text);
+  --social-icon: var(--light-social-icon);
+  --active-button-color: var(--light-active-button-color);
+  --icon: var(--light-icon);
+  --count: var(--light-count);
+  --stop-texting: var(--light-stop-texting)
+}
+
+[data-theme='dark'] {
+  --background-middle: var(--dark-background-middle);
+  --background-layout: var(--dark-background-layout);
+  --background-icon: var(--dark-background-icon);
+  --background-translator-button: var(--dark-background-translator-button);
+  --file-upload-container:var(--dark-file-upload-container);
+  --background-translator-button-active: var(--dark-background-translator-button-active);
+  --border:var(--dark-border);
+  --pause-button: var(--dark-pause-button);
+
+  --opposite: var(--dark-oppiste);
+  --blue: var(--dark-blue);
+  --text: var(--dark-text);
+  --link-icon: var(--dark-link-icon);
+  --mute-text: var(--dark-mute-text);
+  --social-icon: var(--dark-social-icon);
+  --active-button-color: var(--dark-active-button-color);
+  --icon: var(--dark-icon);
+  --count: var(--dark-count);
+  --stop-texting: var(--dark-stop-texting)
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  font-family: Inter, serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.main__wrapper {
+  height:calc(100vh - 198px);
+  padding-top:34px;
+  background: var(--background-middle);
+}
+
+@media only screen and (max-width: 1160px) {
+  .main__wrapper {
+    padding: 12px 20px;
+    height: calc(100vh - 132px);
+  }
+}
+
+
+
+

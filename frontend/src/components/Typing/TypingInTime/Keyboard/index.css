@@ -1,0 +1,152 @@
+h1 {
+    text-align: center;
+    font-size: 1.8em;
+    font-family: monospace;
+    padding: 0.7em;
+}
+
+.keyboard__wrapper {
+    flex:1;
+    padding:30.25px 36.95px;
+    background: var(--background-layout);
+    border-radius: 18px;
+    display: flex;
+    flex-direction: column;
+}
+
+.keyboard {
+    text-align: center;
+    font-size: 14px;
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    flex:1;
+    gap:10.65px;
+}
+
+.keyboard__row {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    gap:10px;
+}
+
+.keyboard__row--h1 {
+    height: 1.7em;
+    line-height: 1.4em;
+}
+
+.keyboard__row--h3 {
+    height: 3.3em;
+}
+
+.keyboard__row > * {
+    position: relative;
+    background: var(--background-middle);
+    text-align: center;
+    color: var(--count);
+    float: left;
+    border-radius: 10px;
+    padding: 0.2em;
+    flex: 1;
+    box-sizing: border-box;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s ease;
+    border:1px solid var(--border);
+    -webkit-user-select: none;
+}
+
+.keyboard__row--h1 > div {
+    width: 3.5em;
+}
+
+.keyboard__row > div[data-pressed],
+.keyboard__row > div:active {
+    background: var(--opposite);
+    color: #aaa;
+    transform: scale(1.1);
+    position: relative;
+    z-index: 1000;
+}
+
+.key--w3 {
+    flex:1.3
+}
+
+.key--w4 {
+    flex: 1.4;
+}
+
+.key--w5 {
+    flex: 1.5;
+}
+
+.key--w6 {
+    flex:1.6
+}
+
+.key--space {
+   flex:5
+}
+
+.key--double > * {
+    padding-top: 0.1em;
+}
+
+.key--letter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.key--bottom-left > * {
+    position: absolute;
+    text-align: left;
+    bottom: 0.4em;
+    left: 0.4em;
+}
+
+.key--bottom-right > * {
+    position: absolute;
+    text-align: right;
+    bottom: 0.8em;
+    right: 0.8em;
+}
+
+.key--fn > * {
+    font-size: 0.6em;
+    line-height: 1em;
+    padding-top: 1.2em;
+    padding-right: 0.2em;
+    text-align: right;
+    float: right;
+}
+
+.key--word > * {
+    font-size: 0.8em;
+}
+
+.key--arrow--tall > *,
+.key--arrow > * {
+    font-size: 0.5em;
+    line-height: 3em;
+}
+
+
+.key--arrow--tall > * {
+    padding-top: 0.2em;
+}
+
+.keyboard > .keyboard__row {
+    text-align: center;
+}
+
+@media only screen and (max-width: 1160px) {
+    .keyboard__wrapper {
+        display: none;
+    }
+}

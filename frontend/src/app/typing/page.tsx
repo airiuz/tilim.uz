@@ -1,3 +1,5 @@
-export default function Typing() {
-    return <div>Typing</div>
+import {Typing} from "@/src/components/Typing";
+
+export default function TypingPage() {
+    return <Typing />
 }

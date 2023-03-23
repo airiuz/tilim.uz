@@ -1,6 +1,6 @@
 
 .file__upload__container {
-    border:2px dashed var(--border);
+    border: 2px dashed var(--border);
     width: 100%;
     height: 276px;
     border-radius: 18px;
@@ -27,4 +27,14 @@
     line-height: 17px;
     color: var(--mute-text);
     text-align: center;
+}
+
+@media only screen and (max-width: 768px) {
+    .file__upload__description {
+        display: none;
+    }
+    .file__upload__container {
+        height: none;
+        gap:24px
+    }
 }

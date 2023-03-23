@@ -1,6 +1,7 @@
-/.idea
+.idea
 
 .DS_Store
+
 node_modules/
 .idea/
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
@@ -14,6 +15,7 @@ node_modules/
 /coverage
 
 # next.js
+*/.next/*
 /.next/
 /out/
 

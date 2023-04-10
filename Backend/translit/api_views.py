@@ -20,7 +20,7 @@ from .models import MyFile, TypeFastModel, TypeFastOutModel, TextLikeUnlike
 from rest_framework.parsers import FileUploadParser, MultiPartParser
 from translit import type_fast
 from rest_framework.viewsets import ViewSet, ModelViewSet
-
+from front.translit_text import to_cyrillic, to_latin
 
 class ChangeTextAPIView(GetAddressApiView):
     @csrf_exempt
@@ -32,9 +32,10 @@ class ChangeTextAPIView(GetAddressApiView):
         serializer.is_valid(raise_exception=True)
         a = serializer.validated_data.get('data')
         t = serializer.validated_data.get('type')
-        t = '1' if t in '1' else t == '0'
-        incorrect_words = [re.sub(r'[\.\,\:$]', r'', x) for x in a.split(' ') if autocorrector.check(x) == False]
-        result = front.translit_text.to_cyrillic(a) if t == '1' else front.translit_text.to_latin(a)
+        translate = to_cyrillic if t=='1' else to_latin
+
+        incorrect_words = [re.sub(r'[\.\,\:$]', r'', translate(x)) for x in a.split(' ') if autocorrector.check(x) == False]
+        result = translate(a)
         content = {'text': result, 'incorrect_words': incorrect_words}
         return HttpResponse(json.dumps(content), content_type='application/json')
 

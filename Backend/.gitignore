@@ -14,6 +14,7 @@ pip-delete-this-directory.txt
 
 # Unit test / coverage reports
 htmlcov/
+uz-hunspell/
 .tox/
 .coverage
 .coverage.*

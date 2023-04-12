@@ -46,8 +46,14 @@ class FixWordsViewSet(ViewSet):
     def create(self, request):
         serializer = FixWordSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+
         word = serializer.validated_data.get('word')
+        t = serializer.validated_data.get("type")
+        word = to_latin(word) if t == '1' else word
         words = autocorrector.suggestions(word) if autocorrector.check(word) == False else word
+        if t=='1' and isinstance(words, list):
+            words = [to_cyrillic(x) for x in words]
+        words = to_cyrillic(words) if isinstance(words, str) and t=='1' else words
         return HttpResponse(json.dumps({'recommended': words}), content_type='application/json')
 
 

@@ -35,6 +35,7 @@ class MyTextSerializer(serializers.Serializer):
 
 
 class FixWordSerializer(serializers.Serializer):
+    type = serializers.CharField()
     word = serializers.CharField()
 
 

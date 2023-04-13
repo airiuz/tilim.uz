@@ -17,6 +17,7 @@ class TypeFastSerializer(serializers.ModelSerializer):
 class TypeFastOutSerializer(serializers.Serializer):
     text_id = serializers.IntegerField()
     text = serializers.CharField(max_length=500)
+    t = serializers.CharField()
 
 
 class NameofTopSerializer(serializers.ModelSerializer):
@@ -33,6 +34,8 @@ class MyTextSerializer(serializers.Serializer):
     data = serializers.CharField(required=True, trim_whitespace=False)
     type = serializers.CharField(required=True)
 
+class ChooseLanguageSerializer(serializers.Serializer):
+    t = serializers.CharField()
 
 class FixWordSerializer(serializers.Serializer):
     type = serializers.CharField()

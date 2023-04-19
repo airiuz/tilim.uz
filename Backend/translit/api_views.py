@@ -34,7 +34,7 @@ class ChangeTextAPIView(GetAddressApiView):
         a = serializer.validated_data.get('data')
         t = serializer.validated_data.get('type')
         translate = to_cyrillic if t=='1' else to_latin
-
+        a = translate(a)
         incorrect_words = [re.sub(r'[\.\,\:$]', r'', translate(x)) for x in a.split(' ') if autocorrector.check(x) == False]
         result = translate(a)
         content = {'text': result, 'incorrect_words': incorrect_words}

@@ -17,7 +17,7 @@ urlpatterns = [
                   path('change/', ChangeTextAPIView.as_view()),
                   path('changefile/', DocumentChangeAPIView.as_view()),
                   path('typefast/', TypeFastAPIView.as_view()),
-                #   path('typefast/', TypeFastAPIView.as_view()),
+                  path('topusers/', TypeFastAPIView.as_view()),
                   path('gettext/', TypeFastGetTextAPIView.as_view()),
                   path('accounted/', NameofTopAPIView.as_view()),
                   path('createtext/', CreateTextAPIView.as_view()),

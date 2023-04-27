@@ -43,9 +43,10 @@ class TypeFastOutModel(models.Model):
         return self.text[:50]
 
 
-class NameofTop(models.Model):
-    type_fast_out_id = models.ForeignKey(TypeFastOutModel, on_delete=models.CASCADE)
+class TopUsers(models.Model):
     name = models.CharField(max_length=200)
+    place = models.IntegerField()
+    t = models.CharField(max_length=200)
 
     def __str__(self):
         return self.name

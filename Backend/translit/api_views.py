@@ -15,7 +15,7 @@ from .serializers import FixWordSerializer
 from front.translit_text import to_cyrillic, to_latin
 from .utils import GetAddressApiView
 from .serializers import MyFileSerializer, MyTextSerializer, MyOutFileSerializer, NameofTopSerializer, \
-    TypeFastOutSerializer, TypeFastSerializer, NameofTop, \
+    TypeFastOutSerializer, TypeFastSerializer, TopUsers, \
     UserOutSerializer, UserSerializer, TextStatisticSerializer, ChooseLanguageSerializer
 from .models import MyFile, TypeFastModel, TypeFastOutModel, TextLikeUnlike
 from rest_framework.parsers import FileUploadParser, MultiPartParser
@@ -119,16 +119,22 @@ class TypeFastGetTextAPIView(GetAddressApiView):
         content = {"text_id":text_m.id, "text":text_to_send}
         return HttpResponse(json.dumps(content), content_type='application/json')
 
-class NameofTopAPIView(generics.ListCreateAPIView):
-    serializer_class = NameofTopSerializer
-    queryset = NameofTop.objects.all()
-
 
 class CreateTextAPIView(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticated, IsAdminUser)
     serializer_class = TypeFastSerializer
     queryset = TypeFastModel.objects.all()
 
+class TopUsersViewSet(ViewSet):
+    def list(self, request):
+        queryset = TopUsers.objects.all()
+        serializer = NameofTopSerializer(queryset, many=True)
+        return Response(serializer.data)
+    def create(self, request):
+        serializer = NameofTopSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
 
 class SessionUserView(APIView):
     permission_classes = (IsAuthenticated, IsAdminUser)

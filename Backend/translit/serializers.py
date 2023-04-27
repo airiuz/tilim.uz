@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import MyFile, MyOutFile, NameofTop, TypeFastModel, TypeFastOutModel, TextLikeUnlike
+from .models import MyFile, MyOutFile, TopUsers, TypeFastModel, TypeFastOutModel, TextLikeUnlike
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth import authenticate
 import front
@@ -22,14 +22,9 @@ class TypeFastOutSerializer(serializers.Serializer):
 
 class NameofTopSerializer(serializers.ModelSerializer):
     class Meta:
-        model = NameofTop
-        fields = ['type_fast_out_id', 'name']
-
-    def create(self, validated_data):
-        return NameofTop.objects.create(type_fast_out_id=validated_data.pop('type_fast_out_id'),
-                                        name=validated_data.pop('name'))
-
-
+        model = TopUsers
+        fields = ["name", "place", "t"]
+   
 class MyTextSerializer(serializers.Serializer):
     data = serializers.CharField(required=True, trim_whitespace=False)
     type = serializers.CharField(required=True)

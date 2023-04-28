@@ -47,7 +47,7 @@ export const ListUsers = () => {
         />
       </div>
       <div>
-        {!loading ? (
+        {loading ? (
           <div className={styles.loading__container}>
             <Skeleton width={"100%"} height={"40px"} />
             <Skeleton width={"100%"} height={"40px"} />

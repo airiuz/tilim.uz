@@ -8,10 +8,30 @@ import {
 import { RocketIcon } from "@/src/common/Utils/icons";
 import KeyboardImage from "../../../../assets/images/keyboard.png";
 import Image from "next/image";
-import { useShowStore } from "@/src/components/Typing/index.store";
+import { useTypingStore } from "@/src/store/typing.store";
+import useAxios from "@/src/hooks/axios.hook";
+import { useCallback, useEffect } from "react";
 
 export const Dashboard = () => {
-  const { setShow } = useShowStore();
+  const { setShow, setLanguage, setLoading, language, setText } =
+    useTypingStore();
+
+  const { fetchData } = useAxios();
+
+  const handleClick = (first: boolean) => {
+    setLanguage(Number(!first));
+  };
+
+  const handleStart = useCallback(async () => {
+    setLoading(true);
+    const result = await fetchData("gettext/", "POST", {
+      t: String(language),
+    });
+    setLoading(false);
+    setShow(true);
+    if (result) setText(result);
+  }, [language]);
+
   return (
     <div className={styles.dashboard__container}>
       <div className={styles.text__1}>TEZ YOZISHNI SINASH</div>
@@ -25,12 +45,14 @@ export const Dashboard = () => {
       </div>
       <div className={styles.text__3}>Yozuv turini tanlang:</div>
       <TranslatorButton
-        animation={false}
+        animation={Boolean(language)}
+        secondBtnActive={Boolean(language)}
         firstChild={<LotinForTranslator />}
         secondChild={<KirilForTranslator />}
         width="331px"
+        onClick={handleClick}
       />
-      <div className={styles.start} onClick={() => setShow(true)}>
+      <div className={styles.start} onClick={handleStart}>
         <Button className={""}>Boshlash {RocketIcon}</Button>
       </div>
       <div className={styles.image__container}>

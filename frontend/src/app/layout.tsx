@@ -3,6 +3,7 @@ import Header from "@/src/layout/Header";
 import Footer from "@/src/layout/Footer";
 import React from "react";
 import { Providers } from "@/src/providers";
+import { Help } from "../components/Help";
 
 export const metadata = {
   title: "Tilim.uz",
@@ -19,7 +20,8 @@ export default function RootLayout({
       <body>
         <Providers>
           <Header />
-          <div className="main__wrapper">{children}</div>
+          <div>{children}</div>
+          <Help />
           <Footer />
         </Providers>
       </body>

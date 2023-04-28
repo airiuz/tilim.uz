@@ -1,59 +1,64 @@
-@import url('https://fonts.googleapis.com/css2?family=Clicker+Script&family=Inter:wght@300;400;500;600;700&family=Poppins:wght@200;300;400;500;600&family=Source+Sans+Pro:ital,wght@0,300;0,400;1,300&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Clicker+Script&family=Montserrat:wght@300;400;500;600;700&family=Poppins:wght@200;300;400;500;600&family=Source+Sans+Pro:ital,wght@0,300;0,400;1,300&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Clicker+Script&family=Inter:wght@300;400;500;600;700&family=Poppins:wght@200;300;400;500;600&family=Source+Sans+Pro:ital,wght@0,300;0,400;1,300&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Clicker+Script&family=Montserrat:wght@300;400;500;600;700&family=Poppins:wght@200;300;400;500;600&family=Source+Sans+Pro:ital,wght@0,300;0,400;1,300&display=swap");
 
 :root {
   /* light mode variables */
-  --light-background-middle: #F2F3F6;
+  --light-background-middle: #f2f3f6;
   /*--light-background-middle: #F4F7FB;*/
-  --light-background-layout:#fff;
-  --light-background-icon:#F2F7FE;
-  --light-background-translator-button:#F2F7FE;
-  --light-file-upload-container:#FAFCFF;
-  --light-background-translator-button-active:#fff;
-  --light-border:#E6EBF2;
-  --light-pause-button: #EFF4FA;
+  --light-background-layout: #fff;
+  --light-background-icon: #f2f7fe;
+  --light-background-translator-button: #f2f7fe;
+  --light-file-upload-container: #fafcff;
+  --light-background-translator-button-active: #fff;
+  --light-border: #e6ebf2;
+  --light-pause-button: #eff4fa;
 
-  --light-oppiste:#000;
-  --light-blue: #3474DF;
-  --light-text:#677A94;
-  --light-link-icon:#677A94;
-  --light-mute-text:#828696;
-  --light-social-icon:#70757C;
-  --light-icon:#374957;
-  --light-active-button-color:#374957;
-  --light-count:#2A2F36;
+  --light-oppiste: #000;
+  --light-blue: #3474df;
+  --light-text: #677a94;
+  --light-link-icon: #677a94;
+  --light-mute-text: #828696;
+  --light-social-icon: #70757c;
+  --light-icon: #374957;
+  --light-active-button-color: #374957;
+  --light-count: #2a2f36;
   --light-stop-texting: #918484;
+  --light-about-title: #273a5d;
 
   /* dark mode variables */
-  --dark-background-middle:#101927;
-  --dark-background-layout:#1D2736;
-  --dark-background-icon:#0E1827;
-  --dark-background-translator-button:#162030;
-  --dark-file-upload-container:#1A2433;
-  --dark-background-translator-button-active:#3474DF;
-  --dark-border:#353F4D;
-  --dark-pause-button: #2C3F56;
+  --dark-background-middle: #101927;
+  --dark-background-layout: #1d2736;
+  --dark-background-icon: #0e1827;
+  --dark-background-translator-button: #162030;
+  --dark-file-upload-container: #1a2433;
+  --dark-background-translator-button-active: #3474df;
+  --dark-border: #353f4d;
+  --dark-pause-button: #2c3f56;
 
-  --dark-oppiste:#fff;
-  --dark-blue: #70B0FF;
-  --dark-text:#A3B6D0;
-  --dark-link-icon:#677A94;
-  --dark-mute-text:#67717F;
-  --dark-social-icon:#A3B6D0;
-  --dark-active-button-color:#fff;
-  --dark-icon:#fff;
-  --dark-count:#fff;
+  --dark-oppiste: #fff;
+  --dark-blue: #70b0ff;
+  --dark-text: #a3b6d0;
+  --dark-link-icon: #677a94;
+  --dark-mute-text: #67717f;
+  --dark-social-icon: #a3b6d0;
+  --dark-active-button-color: #fff;
+  --dark-icon: #fff;
+  --dark-count: #fff;
   --dark-stop-texting: #fff;
+  --dark-about-title: #fff;
 
   /* default variables */
   --background-middle: var(--light-background-middle);
   --background-layout: var(--light-background-layout);
   --background-icon: var(--light-background-icon);
   --background-translator-button: var(--light-background-translator-button);
-  --file-upload-container:var(--light-file-upload-container);
-  --background-translator-button-active: var(--light-background-translator-button-active);
-  --border:var(--light-border);
+  --file-upload-container: var(--light-file-upload-container);
+  --background-translator-button-active: var(
+    --light-background-translator-button-active
+  );
+  --border: var(--light-border);
   --pause-button: var(--light-pause-button);
+  --about-title: var(--light-about-title);
 
   --opposite: var(--light-oppiste);
   --blue: var(--light-blue);
@@ -64,18 +69,21 @@
   --active-button-color: var(--light-active-button-color);
   --icon: var(--light-icon);
   --count: var(--light-count);
-  --stop-texting: var(--light-stop-texting)
+  --stop-texting: var(--light-stop-texting);
 }
 
-[data-theme='dark'] {
+[data-theme="dark"] {
   --background-middle: var(--dark-background-middle);
   --background-layout: var(--dark-background-layout);
   --background-icon: var(--dark-background-icon);
   --background-translator-button: var(--dark-background-translator-button);
-  --file-upload-container:var(--dark-file-upload-container);
-  --background-translator-button-active: var(--dark-background-translator-button-active);
-  --border:var(--dark-border);
+  --file-upload-container: var(--dark-file-upload-container);
+  --background-translator-button-active: var(
+    --dark-background-translator-button-active
+  );
+  --border: var(--dark-border);
   --pause-button: var(--dark-pause-button);
+  --about-title: var(--dark-about-title);
 
   --opposite: var(--dark-oppiste);
   --blue: var(--dark-blue);
@@ -86,7 +94,7 @@
   --active-button-color: var(--dark-active-button-color);
   --icon: var(--dark-icon);
   --count: var(--dark-count);
-  --stop-texting: var(--dark-stop-texting)
+  --stop-texting: var(--dark-stop-texting);
 }
 
 * {
@@ -107,10 +115,70 @@ a {
   text-decoration: none;
 }
 
+main {
+  height: 100%;
+}
+
+button[disabled] {
+  opacity: 0.5;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 16px;
+  background-color: var(--mute-text);
+}
+
+::-webkit-scrollbar-track {
+  border: none;
+  background-color: var(--background-middle);
+}
+
 .main__wrapper {
-  height:calc(100vh - 198px);
-  padding-top:34px;
+  height: calc(100vh - 198px);
   background: var(--background-middle);
+}
+
+.rdw-editor-wrapper {
+  height: 100%;
+}
+
+.fullHeight {
+  min-height: calc(100vh - 198px);
+  height: auto !important;
+}
+
+section.container {
+  padding-top: 34px;
+  padding-bottom: 36px;
+}
+
+.static__text {
+  width: 1140px;
+  background: var(--background-layout);
+  box-shadow: 0px 0px 40px rgba(52, 116, 223, 0.05);
+  border-radius: 18px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 30px;
+}
+
+.static__text h2 {
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 44px;
+  color: var(--about-title);
+  padding-bottom: 20px;
+}
+
+.static__text div {
+  font-weight: 400;
+  font-size: 16px;
+  color: var(--about-title);
+  line-height: 26px;
 }
 
 @media only screen and (max-width: 1160px) {
@@ -118,7 +186,13 @@ a {
     padding: 12px 20px;
     height: calc(100vh - 132px);
   }
+  .fullHeight {
+    min-height: calc(100vh - 132px);
+    padding: 0;
+  }
+
+  .static__text {
+    width: 100%;
+    border-radius: 0;
+  }
 }
-
-
-

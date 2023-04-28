@@ -1,0 +1,22 @@
+.wrapper {
+  position: relative;
+}
+
+.wrapper svg {
+  width: 100%;
+}
+
+.time {
+  width: 70px;
+  height: 70px;
+  background: var(--background-layout);
+  border-radius: 100%;
+  display: flex;
+  color: var(--count);
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 7px;
+  left: 7px;
+}

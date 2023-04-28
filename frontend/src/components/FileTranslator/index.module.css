@@ -1,3 +1,8 @@
+.section {
+    height: 100%;
+    overflow-y: scroll;
+    padding-top: 34px;
+}
 
 .file__translator__wrapper {
     width: 677px;
@@ -5,13 +10,15 @@
     background: var(--background-layout);
     border: 2px solid var(--border);
     border-radius: 18px;
+    display: flex;
+    flex-direction: column;
     margin-left: auto;
     margin-right: auto;
 }
 
 .file__translator__header {
     height: 84px;
-    padding:0 18px;
+    padding: 0 18px;
     justify-content: space-between;
     display: flex;
     align-items: center;
@@ -22,8 +29,9 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap:12px;
+    gap: 12px;
     color: var(--text);
+    cursor: pointer;
 }
 
 .file__upload__container {
@@ -33,11 +41,11 @@
 .allowed__files {
     display: flex;
     gap: 11px;
-    padding-top:16px
+    padding-top: 16px
 }
 
 .allowed__files h4 {
-    color:var(--mute-text);
+    color: var(--mute-text);
 
 }
 
@@ -47,13 +55,161 @@
 
 .allowed__files span {
     font-weight: 700;
-    color:var(--text);
+    color: var(--text);
+}
+
+.file__container {
+    background: var(--background-middle);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    height: 96px;
+    justify-content: space-between;
+    display: flex;
+    width: 100%;
+    padding: 12px;
+    align-items: center;
+}
+
+.file__container.rejected__file {
+    background: rgba(255, 250, 250, 1);
+}
+
+.file__container .fileItem__wrapper {
+    display: flex;
+    gap: 15px;
+}
+
+.file__container .icon__container {
+    background: var(--background-layout);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 89px;
+    border-radius: 12px;
+    height: 72px;
+}
+
+.rejected__file .icon__container {
+    background:#FFEEEE;
+}
+
+.rejected__file .icon__container path {
+    fill: #F50000;
+}
+
+.file__container .fileItem__wrapper {
+    display: flex;
+    gap: 15px;
+}
+
+.file__container .data__container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+    line-height: 19px;
+}
+
+.file__container .data__container h3 {
+    color: var(--opposite);
+    font-weight: 400;
+    font-size: 16px;
+}
+
+.file__container .data__container span {
+    color: var(--mute-text);
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+}
+
+.result__container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 12px;
+    justify-content: space-between;
+    flex: 1;
+}
+
+.wrapper__2 {
+    width: 100%;
+}
+
+.wrapper__3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.result__container .loading {
+    background: rgba(52, 116, 223, 0.1);
+    color: var(--mute-text);
+}
+
+.allowed__files__2 h4 {
+    font-size: 14px;
+    line-height: 140%;
+    padding-top: 18px;
+    font-weight: 600;
+    color: var(--text);
+    display: flex;
+    gap: 3px;
+}
+
+.allowed__files__2 span:not(:first-child) {
+    font-weight: 700;
+    padding-left: 11px;
+    color: var(--text);
+}
+
+.allowed__files__2 span:first-child {
+    color: #F50000 !important;
+}
+
+.success {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.successText {
+    color:#15AD24 ;
+}
+
+.successText path {
+    fill: #15AD24;
 }
 
 @media only screen and (max-width: 992px) {
     .file__translator__wrapper {
         width: 100%;
+        min-height: 420px;
         height: auto;
+        padding-top: 12px;
+    }
+
+    .file__container {
+        height: 62px;
+    }
+
+    .file__container .icon__container {
+        height: 46px;
+        width: 56px;
+    }
+
+    .file__container .icon__container svg {
+        width: 21.83px;
+        height: 26.19px
+    }
+
+    .wrapper__3 {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .wrapper__3 button {
+        width:100%
     }
 }
 
@@ -65,14 +221,9 @@
         justify-content: center;
         gap: 16px;
     }
+
     .allowed__files {
         font-size: 14px;
         flex-wrap: wrap;
-    }
-}
-
-@media only screen and (min-width: 200px) {
-    .file__translator__wrapper {
-        width: 1140px;
     }
 }

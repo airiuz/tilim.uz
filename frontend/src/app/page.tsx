@@ -1,12 +1,11 @@
-import {Translator} from "@/src/components/Translator";
-import {Help, HelpButton} from "@/src/components/Help";
+import { Translator } from "@/src/components/Translator";
+import { Help, HelpButton } from "@/src/components/Help";
 
-export default function Home() {
+export default async function Home() {
   return (
-    <main>
-        <Translator />
-        <Help />
-        <HelpButton />
+    <main className="main__wrapper">
+      <Translator />
+      <HelpButton />
     </main>
-  )
+  );
 }

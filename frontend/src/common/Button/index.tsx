@@ -9,6 +9,8 @@ interface ITranslatorButton {
   secondChild: ReactNode;
   width?: string;
   className?: string;
+  onClick?: (first: boolean) => void;
+  secondBtnActive?: boolean;
 }
 
 export const TranslatorButton = ({
@@ -17,20 +19,35 @@ export const TranslatorButton = ({
   secondChild,
   width = "401px",
   className,
+  onClick,
+  secondBtnActive,
 }: ITranslatorButton) => {
   const [activeButton, setActiveButton] = useState<{
     first: boolean;
     second: boolean;
   }>({
     first: !animation,
-    second: false,
+    second: Boolean(secondBtnActive),
   });
+
+  const handleClick = (first: boolean) => {
+    setActiveButton((prev) => ({
+      first,
+      second: !first,
+    }));
+
+    if (onClick) {
+      onClick(first);
+    }
+  };
+
   return (
     <div
       className={`${styles.translator__button__container} ${className}`}
       style={{ width }}
     >
       <div
+        onClick={() => handleClick(true)}
         className={`${
           !(activeButton.first || activeButton.second)
             ? styles.animation
@@ -42,6 +59,7 @@ export const TranslatorButton = ({
         {firstChild}
       </div>
       <div
+        onClick={() => handleClick(false)}
         className={`${
           !(activeButton.first || activeButton.second)
             ? styles.animation
@@ -63,10 +81,23 @@ export const ArrowForTranslator = () => <span>{ArrowIcon}</span>;
 interface IButton {
   children: ReactNode;
   className?: string;
+  onClick?: () => void;
+  [key: string]: any;
 }
 
-export const Button = ({ children, className = "" }: IButton) => {
+export const Button = ({
+  children,
+  className = "",
+  onClick,
+  ...rest
+}: IButton) => {
   return (
-    <button className={`${styles.button} ${className}`}>{children}</button>
+    <button
+      {...rest}
+      onClick={onClick}
+      className={`${styles.button} ${className}`}
+    >
+      {children}
+    </button>
   );
 };

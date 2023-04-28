@@ -8,7 +8,7 @@
     display: flex;
     margin-right: auto;
     margin-left: auto;
-    justify-content: space-between;
+    gap:100px;
     align-items: center;
     width:1140px;
 }
@@ -127,6 +127,8 @@
 .theme__switcher__container {
     display: flex;
     gap:12px;
+    position: absolute;
+    right: 41px;
 }
 
 .header__question__button {
@@ -171,6 +173,7 @@
     .theme__switcher__container svg {
         height: 35px;
         width: 35px;
+        position: relative;
     }
 }
 

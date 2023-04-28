@@ -1,0 +1,56 @@
+.container {
+  background: var(--background-layout);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  min-width: 130px;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  z-index: 10000;
+  transition: all 0.15s ease, transform 0.4s ease-out, opacity 0.1s ease-in,
+    max-height 0.4s ease-out;
+  padding: 10px 0;
+  max-height: auto;
+}
+
+.container.loading {
+  max-height: 100px;
+  padding: 10px 8px;
+}
+
+.container .item {
+  display: flex;
+  padding: 5px 12px;
+  justify-content: space-between;
+  cursor: pointer;
+  color: var(--opposite);
+  font-size: 14px;
+}
+
+.container .item .checked {
+  opacity: 0;
+}
+
+.container .item .checked path {
+  fill: var(--blue);
+}
+
+.container .item:hover {
+  color: var(--blue);
+  background: var(--background-middle);
+}
+
+.container .item:hover .checked {
+  opacity: 1;
+}
+
+.container::after {
+  content: " ";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent var(--border) transparent;
+}

@@ -2,25 +2,25 @@ import { useDropzone } from "react-dropzone";
 import axios from "axios";
 import FormData from "form-data";
 import { HashLoader } from "react-spinners";
-import { useCallback, useState, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
+  arrow,
+  changeArrow,
+  download,
   excel,
+  info,
   powerPoint,
   txtFile,
   upload,
   uploadBin,
-  uploadSuccess,
-  uploadWord,
-  info,
-  word,
-  warning,
-  arrow,
+  uploadError,
   uploadExcel,
   uploadPptx,
+  uploadSuccess,
   uploadTxt,
-  download,
-  uploadError,
-  changeArrow,
+  uploadWord,
+  warning,
+  word,
 } from "../utils/icons";
 import Select from "./Select";
 import Link from "next/link";
@@ -36,6 +36,7 @@ function Upload() {
   const [sizeFile, setSizeFile] = useState(0);
   const [error, setError] = useState(null);
   const [data, setData] = useState({ status: null, path: null });
+
   const {
     getRootProps,
     getInputProps,
@@ -100,6 +101,7 @@ function Upload() {
     },
     [data]
   );
+
   useEffect(() => {
     if (fileRejections[0]?.errors) {
       if (fileRejections[0]?.errors[0].code === "file-invalid-type") {
@@ -151,6 +153,7 @@ function Upload() {
     setSizeFile(
       () => `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`
     );
+
     setData((prev) => ({ ...prev, status: "ready" }));
   }, [acceptedFiles, fileRejections]);
 

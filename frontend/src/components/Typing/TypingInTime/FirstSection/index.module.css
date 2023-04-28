@@ -1,141 +1,130 @@
 .container {
-    width: 100%;
-    background : var(--background-layout);
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    flex:1;
-    display: flex;
-    flex-direction: column;
+  width: 100%;
+  background: var(--background-layout);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
 }
 
 .container .header {
-    padding:24px;
-    border-bottom: 1px solid var(--border);
-    display:flex;
-    justify-content: space-between;
+  padding: 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
 }
 
 .container .header .buttons__container {
-    display: flex;
-    gap:18px;
+  display: flex;
+  gap: 18px;
 }
 
 .container .header .buttons__container .child__section {
-    display: flex;
-    gap:18px;
+  display: flex;
+  gap: 18px;
 }
 
 .container .header .buttons__container button {
-    width: 86px;
-    padding: 0;
-    height: 86px;
-    background:rgba(244, 129, 129, 0.1);
-    flex-direction: column;
-    gap:15px;
+  width: 86px;
+  padding: 0;
+  height: 86px;
+  background: rgba(244, 129, 129, 0.1);
+  flex-direction: column;
+  gap: 15px;
 }
 
 .container .header .buttons__container .stop__button {
-    background:rgba(244, 129, 129, 0.1);
+  background: rgba(244, 129, 129, 0.1);
 }
 
 .container .header .buttons__container button span:last-child {
-    font-size: 12px;
-    line-height: 15px;
-    color: var(--stop-texting);
+  font-size: 12px;
+  line-height: 15px;
+  color: var(--stop-texting);
 }
 
 .container .header .buttons__container .pause__button {
-    background:var(--pause-button);
+  background: var(--pause-button);
 }
 
 .container .header .buttons__container .pause__button path {
-    fill: var(--blue)
-}
-
-.container .header .time__container {
-    width: 84px;
-    height: 84px;
-    background: linear-gradient(180deg, #3474DF 0%, #8A3ADA 100%);
-    border-radius: 100%;
-    position: relative;
-}
-
-.container .header .time {
-    width: 70px;
-    height: 70px;
-    background: var(--background-layout);
-    border-radius: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    top: 7px;
-    left: 7px;
+  fill: var(--blue);
 }
 
 .container .header .time span:first-child {
-    font-weight: 700;
-    font-size: 21px;
-    line-height: 25px;
-    color: var(--count);
+  font-weight: 700;
+  font-size: 21px;
+  line-height: 25px;
+  color: var(--count);
 }
 
 .container .header .time span:last-child {
-    font-weight: 400;
-    font-size: 9.8px;
-    line-height: 12px;
-    color: var(--mute-text);
+  font-weight: 400;
+  font-size: 9.8px;
+  line-height: 12px;
+  color: var(--mute-text);
 }
 
 .container .header .mark {
-    padding:12px 24px
+  padding: 12px 24px;
 }
 
 .container .text__wrapper {
-    padding: 12px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+  margin: 12px;
+  /*font-family: monospace;*/
+  height: 50px;
 }
 
 .container .text__wrapper .text__editor__wrapper {
-    border:1px solid var(--border);
-    flex:1;
-    border-radius: 12px;
-    background: var(--file-upload-container);
+  border: 1px solid var(--border);
+  flex: 1;
+  border-radius: 12px;
+  background: var(--file-upload-container);
 }
 
 @media only screen and (max-width: 1160px) {
-    .container {
-        flex:0.7;
-    }
-    .container .header {
-        gap:11px;
-        flex-direction: column;
-    }
+  .container {
+    flex: 0.5;
+  }
+  .container .header {
+    gap: 11px;
+    flex-direction: column;
+  }
 
-    .container .header .buttons__container:last-child {
-        display: flex;
-        gap:18px;
-    }
+  .container .header .buttons__container:last-child {
+    display: flex;
+    gap: 18px;
+  }
 
-    .container .header .buttons__container button {
-        flex:1;
-        flex-direction: row;
-        height: auto;
-        padding:9px 0;
-    }
+  .container .header .buttons__container button {
+    flex: 1;
+    flex-direction: row;
+    height: auto;
+    padding: 9px 0;
+  }
 
-    .container .header .buttons__container .child__section {
-        flex-direction: column;
-        gap:11px;
-        align-items: center;
-        flex:1;
-    }
+  .container .header .buttons__container .child__section {
+    flex-direction: column;
+    gap: 11px;
+    align-items: center;
+    flex: 1;
+  }
 
-    .container .header .buttons__container .child__section .mark {
-        width: 100%;
-    }
+  .container .header .buttons__container .child__section .mark {
+    width: 100%;
+  }
+}
 
+@media only screen and (max-width: 440px) {
+  .container .header .buttons__container .child__section .mark {
+    width: 100%;
+    padding: 12px 0;
+    font-size: 0.8rem;
+  }
+  .container .header .buttons__container .child__section {
+    gap: auto;
+  }
 }

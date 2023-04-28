@@ -1,5 +1,11 @@
-import {Typing} from "@/src/components/Typing";
+import { Help } from "@/src/components/Help";
+import { Typing } from "@/src/components/Typing";
+import { IUser } from "@/src/constants";
 
-export default function TypingPage() {
-    return <Typing />
+export default async function TypingPage() {
+  return (
+    <div className="main__wrapper">
+      <Typing />
+    </div>
+  );
 }

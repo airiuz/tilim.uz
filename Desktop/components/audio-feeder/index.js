@@ -102,8 +102,8 @@ AudioFeeder.prototype.bufferSize = 0;
  * Duration of the minimum buffer size, in seconds.
  * If the amount of buffered data falls below this,
  * caller will receive a synchronous 'starved' event
- * with a last chance to buffer more data.
  *
+ * with a last chance to buffer more data.
  * @type {number}
  * @readonly
  */

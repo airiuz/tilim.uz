@@ -47,10 +47,14 @@ export const ListUsers = () => {
         />
       </div>
       <div>
-        {loading ? (
-          <Skeleton width={"100%"} height={"100%"} />
+        {!loading ? (
+          <div className={styles.loading__container}>
+            <Skeleton width={"100%"} height={"40px"} />
+            <Skeleton width={"100%"} height={"40px"} />
+            <Skeleton width={"100%"} height={"40px"} />
+          </div>
         ) : (
-          topUsers.map((user) => <ListItem />)
+          topUsers.map((user, i) => <ListItem key={i} />)
         )}
       </div>
     </div>

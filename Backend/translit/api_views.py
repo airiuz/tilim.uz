@@ -37,13 +37,13 @@ class ChangeTextAPIView(GetAddressApiView):
         translated = to_latin(a)
         incorrect_words = [re.sub(r'[\.\,\:$]', r'', translate(x)) for x in translated.split(' ') if autocorrector.check(x) == False]
         result = translate(a)
+        incorrect_words = [x for x in incorrect_words if x.isalpha()]
         content = {'text': result, 'incorrect_words': incorrect_words}
         return HttpResponse(json.dumps(content), content_type='application/json')
 
 
 class FixWordsViewSet(ViewSet):
     permission_classes = (permissions.AllowAny,)
-
     def create(self, request):
         serializer = FixWordSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)

@@ -23,19 +23,19 @@ export const MobileMenu = ({
         </div>
         <div className={styles.mobile__menu__body}>
           <div>
-            <Link href={Links.HOME} className={styles.mobile__menu__item}>
+            <Link href={Links.ABOUT} className={styles.mobile__menu__item}>
               <span>Loyiha haqida</span>
               <span>{ArrowRightIcon}</span>
             </Link>
-            <Link href={Links.ABOUT} className={styles.mobile__menu__item}>
+            <Link href={Links.USERPOLICY} className={styles.mobile__menu__item}>
               <span>Foydalanish huquqlari</span>
               <span>{ArrowRightIcon}</span>
             </Link>
-            <Link href={Links.ABOUT} className={styles.mobile__menu__item}>
+            <Link href={Links.SECURITY} className={styles.mobile__menu__item}>
               <span>Xavfsizlik</span>
               <span>{ArrowRightIcon}</span>
             </Link>
-            <Link href={Links.ABOUT} className={styles.mobile__menu__item}>
+            <Link href={Links.TERMS} className={styles.mobile__menu__item}>
               <span>Qoidalar</span>
               <span>{ArrowRightIcon}</span>
             </Link>

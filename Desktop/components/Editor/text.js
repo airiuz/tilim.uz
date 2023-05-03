@@ -32,8 +32,6 @@ function convertTo(currentContent) {
 
   const newCurrentContent = convertFromRaw(rawContent);
   let markdown = stateToMarkdown(newCurrentContent);
-  // markdown = markdown.replaceAll("\n", "ĭ");
-  // markdown = markdown.replaceAll(" ", "Į ");
 
   return [markdown, links];
 }

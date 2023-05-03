@@ -1,19 +1,31 @@
 "use client";
 import styles from "./index.module.css";
-import { QuestionIcon, xMark } from "@/src/common/Utils/icons";
+import { QuestionIcon } from "@/src/common/Utils/icons";
 import { useHelpStore } from "@/src/store/help.store";
 import Lottie from "lottie-react";
 import DesktopDark from "../../assets/lottier/Web dark.json";
 import DesktopLight from "../../assets/lottier/Web light.json";
+import MobileDark from "../../assets/lottier/Mobile dark.json";
+import MobileLight from "../../assets/lottier/Mobile light.json";
 import { useThemeStore } from "@/src/store/theme.store";
 import { THEME } from "@/src/constants";
 import { Exit } from "@/src/common/Exit";
+import { useMemo } from "react";
 
 export const Help = () => {
   const { show, setShow } = useHelpStore();
   const { theme } = useThemeStore();
 
-  const lottier = theme === THEME.DARK ? DesktopDark : DesktopLight;
+  const mobile = useMemo(() => window && window.innerWidth < 1160, []);
+
+  let lottier =
+    theme === THEME.DARK
+      ? mobile
+        ? MobileDark
+        : DesktopDark
+      : mobile
+      ? MobileLight
+      : DesktopLight;
 
   if (show)
     return (

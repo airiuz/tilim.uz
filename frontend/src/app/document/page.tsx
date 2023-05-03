@@ -1,6 +1,9 @@
-import {FileTranslator} from "@/src/components/FileTranslator";
-
+import { FileTranslator } from "@/src/components/FileTranslator";
 
 export default function Document() {
-    return <FileTranslator />
+  return (
+    <div className="main__wrapper">
+      <FileTranslator />
+    </div>
+  );
 }

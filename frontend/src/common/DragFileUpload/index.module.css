@@ -29,12 +29,41 @@
     text-align: center;
 }
 
-@media only screen and (max-width: 768px) {
+.input__container {
+    position: relative;
+}
+
+.input__container input {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    cursor: pointer;
+}
+
+.button {
+    content: "Kompyuterdan tanglang"
+}
+
+@media only screen and (max-width: 1140px) {
+
+    .button {
+        content: "Yuklang"
+    }
+
     .file__upload__description {
         display: none;
     }
+
     .file__upload__container {
-        height: none;
-        gap:24px
+        height: auto;
+        gap: 24px
     }
+
+}
+
+@media only screen and (max-width: 768px) {
+
+
 }

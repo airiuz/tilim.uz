@@ -1,45 +1,105 @@
-import {InformationTextWrapper} from "@/src/components/InformationPage";
-
-export default function SecurityPage() {
-    return (
-        <InformationTextWrapper>
-            <h2>
-                Foydalanuvchi siyosati
-            </h2>
-            <pre>
-                1. Umumiy qoidalar
-                1.1.Matn.uz tizimi faoliyati demokratiya, insonparvarlik, barcha uchun ochiqligi, umuminsoniy qadriyatlar ustunligi, shaxsning erkin rivojlanishi prinsiplariga asoslangan.
-                1.2. Matn.uz tizimidan foydalanish bepul.
-
-                2. Matn.uz tizimining asosiy vazifalari
-                2.1. Berilgan matnning imlo xatolari mavjud yoki yo‘qligini tekshirish, universal izohli lug‘at, lotin alifbosida keltirilgan matnni kirill alifbosiga o‘girib berish (shu o‘rinda kirill alifbosidagi matnni lotin alifbosiga o‘girish), matn tahriri.
-                2.2. Dasturchilar uchun REST-API xizmati.
-
-                3. Foydalanuvchilarning huquq va majburiyatlari
-                3.1. Tizimdan foydalanish huquqi fuqaroligi, yoshi, ijtimoiy va boshqa kelib chiqishidan qat’i nazar, turli hududlarda yashovchi barcha aholiga, shu jumladan ishlab chiqarish korxonalari va tashkilotlarga beriladi.
-                3.2. Foydalanuvchilar quyidagi huquqlarga ega:
-                - Tizim fondidan kerakli so‘zlar haqida to‘liq izoh olish;
-                - Tizim tomonidan ko‘rsatiladigan imloviy xatolar tekshirish, onlayn tahrirlash va boshqa xizmat turlaridan foydalanish;
-                - Tizimning kamchiliklarini ko‘rsatish (qayta aloqa bo‘limi) hamda izohli lug‘at omborini to‘ldirish;
-                3.3. Tizimning xizmatlaridan foydalanish mutlaqo bepul va ro‘yxatdan o‘tish talab etilmaydi.
-                3.4. Foydalanuvchilarga cheklanmagan ravishda o‘z materiallarini tekshirish imkoniyati beriladi.
-                Dasturchilarga REST-API xizmati maxsus kelishuv hamda bepul ravishda taqdim etiladi.
-                3.5. Tizimni rivojlantirish bo‘yicha takliflar berish hamda hamkorlikka chorlash.
-                3.6. Foydalanuvchilarni tizimga kiritilayotgan ma’lumotlarga (yangi so‘z qo‘shish, so‘zga izoh berish, qayta aloqa xizmatidan foydalanish) e’tibor bilan qarashga chorlaymiz.
-                Tizim faoliyatida kamchiliklar aniqlansa, Matn.uz xodimlariga xabar berishlarini so‘raymiz.
-                3.7. Matn.uz tizimiga zarar yetkazgan shaxslar, qonunga binoan jinoiy yoki boshqa javobgarlikka tortiladi.
-                3.8. ARM fondidan hujjatlar va materiallarni yo‘qotgan yoki unga qayta tiklab bo‘lmaydigan darajada zarar yetkazgan foydalanuvchilar ARM xodimlari tomonidan tan olingan teng qiymatli xuddi shunday hujjat va materiallar bilan o‘zgartirishlari (shu jumladan, nusxalari bilan) kerak bo‘ladi. Buning imkoni bo‘lmagan hollarda ularning qiymati 5 barobar narxda undiriladi. Ko‘p miqdorli (bir necha barobar ko‘p miqdordagi to‘lov) amaldagi belgilangan hujjatlar asosida yo‘qotilgan va zarar ko‘rgan nashrlarning bahosidan kelib chiqqan holda ARM xodimlari yoki jalb etilgan mutaxassislar tomonidan aniqlanadi.
-                3.9. Tizimdan foydalanish qoidalarini buzgan foydalanuvchilar ma’lum muddatga rahbariyat tomonidan o‘rnatilgan Tizimdan foydalanish huquqidan mahrum etilishi mumkin.
-
-                4. Foydalanuvchilarga xizmat ko‘rsatish bo‘yicha Tizimning majburiyatlari
-                4.1. Tizimdagi materiallardan qoidalar asosida foydalanishni ta’minlash hamda ularni saqlash va hisobot ishlarini amalga oshirish, izohli lug‘atni yuritish;
-                - foydalanuvchilarga yuqorida ko‘rsatib o‘tilgan turdagi xizmatlardan foydalanishlarini ta’minlashi;
-                - foydalanuvchilarning talablarini o‘rganish va imkon qadar qondirib borish;
-                - xizmatlarni mukammallashtirish maqsadida foydalanuvchilar bilan ishlashning turli individual va guruhli shaklini qo‘llash;
-                - foydalanuvchilarga xizmat ko‘rsatishda yuqori madaniyat namunasini ko‘rsatish va kasb mahoratini ta’minlash;
-                - kerakli axborotlarni mustaqil ravishda izlashni o‘rgatish bo‘yicha ko‘nikmalarni rivojlantirish uchun sharoit yaratish;
-                - tizimning ijobiy qiyofasini yaratishga ko‘maklashish, ARM tomonidan ko‘rsatiladigan xizmatlarni va fondlarni targ‘ib qilish, foydalanuvchilarning talablarini o‘rganish va ularning xohishlarini inobatga olgan holda yangidan-yangi xizmat turlarini yaratib borish.
-            </pre>
-        </InformationTextWrapper>
-    )
+export default function Security() {
+  return (
+    <div className="main__wrapper fullHeight">
+      <section className="container">
+        <div className="static__text">
+          <h2>Xavfsizlik siyosati</h2>
+          <div>
+            “Xavfsizlik siyosati” hujjati (bundan buyon matnda “siyosat” deb
+            yuritiladi) Internet foydalanuvchilari (bundan keyin – “siz” yoki
+            “maʼlumotlar”dan foydalanish qoidalarini anglatadi) va sayt
+            egasining (bundan keyin – “biz” yoki “Maʼmuriyat”) maʼlumotlarini
+            anglatadi. <br />
+            1. Qayta ishlangan maʼlumotlar
+            <br />
+            1.1. Saytdagi imkoniyatlardan foydalangan holda biz sizning shaxsiy
+            maʼlumotlaringizni yig‘maymiz.
+            <br />
+            1.2. Saytda to‘plangan barcha maʼlumotlar (bundan keyin
+            “Anonimlashtirilgan maʼlumotlar” deb nomlanadi) anonim shaklda qabul
+            qilinadi.
+            <br />
+            1.3. Anonim maʼlumotlar quyidagilarni o‘z ichiga oladi:
+            <br />
+            1.3.1. Saytning onlayn imkoniyatlari va dasturiy modullaridan
+            foydalanib, foydalanuvchining ismi, telefon raqami va elektron
+            pochta manzilidan foydalangan holdagi maʼlumot;
+            <br />
+            1.3.2. Siz foydalanadigan dasturiy taʼminot sozlamalariga qarab,
+            avtomatik ravishda anonim shaklda uzatiladigan maʼlumotlar.
+            <br />
+            1.4. Maʼmuriyat foydalanuvchidan Sayt yordamida to‘plangan anonim
+            maʼlumotlarning tarkibidagi talablarni belgilash huquqiga ega.
+            <br />
+            1.5. Agar biror-bir maʼlumot majburiy deb belgilanmagan bo‘lsa, uni
+            taqdim etish yoki oshkor qilish Foydalanuvchi ixtiyorida bo‘ladi.
+            Shu bilan birga, siz cheksiz doiralarning bunday maʼlumotlarga
+            kirishiga rozilik bildirasiz. Ko‘rsatilgan maʼlumotlar taqdim
+            qilingan yoki boshqa shaklda ochilgan paytdan boshlab hammaga ochiq
+            bo‘ladi.
+            <br />
+            1.6. Maʼmuriyat taqdim etilgan maʼlumotlarning to‘g‘riligini
+            tekshirmaydi va Foydalanuvchi ushbu Siyosatga muvofiq ularni qayta
+            ishlashga zarur roziligini oladi. Foydalanuvchi vijdonan harakat
+            qiladi va ehtiyotkorlik bilan ishlaydi hamda bunday maʼlumotlarni
+            yangilab turish, undan foydalanish uchun barcha zarur roziliklarni
+            olishga harakat qiladi. Siz Saytda uchinchi tomon dasturlaridan
+            foydalanish imkoniyatini tan olasiz va qabul qilasiz, buning
+            natijasida bunday shaxslar 1.3-bandda ko‘rsatilgan maʼlumotlarni
+            sizga nomaʼlum shaklda olishlari va uzatishlari mumkin. <br />
+            1.7. Uchinchi tomon dasturlari yordamida anonim maʼlumotni yig‘ish
+            tarkibi va shartlari bevosita ularning egalari tomonidan belgilanadi
+            hamda quyidagilarni o‘z ichiga olishi mumkin: <br />
+            Brauzer maʼlumotlari (turi, versiyasi, “cookie” fayllari); <br />
+            Qurilma maʼlumotlari va uning holati; <br />
+            Operatsion tizim maʼlumotlari (turi, versiyasi, ekran o‘lchamlari);{" "}
+            <br />
+            So‘rov maʼlumotlari (vaqt, o‘tish manbai, IP manzili). <br />
+            1.8. Maʼmuriyat uchinchi tomon tomonidan foydalanuvchining Anonim
+            maʼlumotlarini ishlatish tartibi uchun javobgar bo‘lmaydi. <br />
+            Maʼlumotlarni qayta ishlash maqsadlari <br />
+            2.1. Maʼmuriyat maʼlumotlardan quyidagi maqsadlarda foydalanadi:{" "}
+            <br />
+            2.1.1. Kirish so‘rovlari va foydalanuvchi bilan aloqani qayta
+            ishlash; <br />
+            2.1.2. Axborot xizmatlari, shu jumladan reklama materiallarini
+            tarqatish; <br />
+            2.1.3. Marketing, statistik va boshqa tadqiqotlarini o‘tkazish;{" "}
+            <br />
+            2.1.4. Saytdagi reklama materiallarini yo‘naltirish. <br />
+            <br />
+            3.1. Maʼmuriyat maʼlumotlarni saqlaydi va ularni ichki qoidalarga
+            muvofiq ruxsatsiz kirish va tarqatishdan himoya qiladi.
+            <br /> 3.2. Olingan maʼlumotlarga nisbatan maxfiylik saqlanadi, agar
+            ular Foydalanuvchi tomonidan ochiq bo‘lsa, shuningdek saytda
+            ishlatiladigan uchinchi tomon texnologiyalari va dasturlari yoki
+            foydalanuvchi tomonidan ishlatiladigan dasturiy taʼminot ushbu
+            shaxslar yoki boshqa foydalanuvchilar va internet foydalanuvchilari
+            bilan ochiq almanishuvni taʼminlagan hollar bundan mustasno.
+            <br /> 3.3. Ish sifatini yaxshilash uchun 1 (bir) yil davomida
+            Saytdan foydalanish doirasida Foydalanuvchi tomonidan amalga
+            oshirilgan harakatlar to‘g‘risidagi jurnal fayllarini saqlash
+            huquqiga ega. <br />
+            4. Maʼlumot uzatish <br />
+            4.1. Maʼmuriyat quyidagi hollarda maʼlumotlarni uchinchi shaxslarga
+            uzatish huquqiga ega: - Foydalanuvchi bunday harakatlarga, shu
+            jumladan foydalanuvchi maʼlum bir maʼlumotni berishni cheklamaydigan
+            dasuturiy taʼminot sozlamalarini ishlatgan holatlarda roziligini
+            bildiradi; - Maʼlumotni qayta ishlash, maqsadga muvofiq uzatish
+            talab etiladi: - Foydalanuvchi tomonidan sodir etilgan qonunbuzarlik
+            sababli, Maʼmuriyat huquqlari qonuniy himoya qilinadi.
+            <br />
+            5. Maxfiylik siyosatining o‘zgarishi <br />
+            5.1. Ushbu Siyosat Maʼmuriyat tomonidan bir tomonlama tartibda
+            foydalanuvchi tomonidan ogohlantirilmasdan o‘zgartilirishi yoki
+            bekor qilinishi mumkin. Agar Siyosatning yangi variantida boshqacha
+            qoidalar nazarda tutilgan bo‘lmasa, yangi siyosat Saytga
+            joylashtirilgan paytdan boshlab kuchga kiradi.
+            <br />
+            5.2. Siyosatning joriy talqini saytga joylashtirilgan.
+          </div>
+        </div>
+      </section>
+    </div>
+  );
 }

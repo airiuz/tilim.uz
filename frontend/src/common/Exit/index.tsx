@@ -1,10 +1,13 @@
 import styles from "./index.module.css";
-import { xMark } from "@/src/common/Utils/icons";
+import { useThemeStore } from "@/src/store/theme.store";
+import { THEME } from "@/src/constants";
+import { xMarkDarkTheme, xMark } from "@/src/common/Utils/icons";
 
 export const Exit = ({ handleClick }: { handleClick?: () => void }) => {
+  const { theme } = useThemeStore();
   return (
     <div onClick={handleClick} className={styles.close}>
-      {xMark}
+      {theme === THEME.DARK ? xMarkDarkTheme : xMark}
     </div>
   );
 };

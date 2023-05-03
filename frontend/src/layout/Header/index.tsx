@@ -18,9 +18,12 @@ import { Logo } from "@/src/common/Logo";
 import { MobileMenu } from "@/src/layout/MobileMenu";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useHelpStore } from "@/src/store/help.store";
 
 export default function Header() {
   const pathname = usePathname();
+
+  const { setShow } = useHelpStore();
 
   const [open, setOpen] = useState(false);
 
@@ -105,7 +108,12 @@ export default function Header() {
           </div>
         </div>
         <div className={styles.theme__switcher__container}>
-          <div className={styles.header__question__button}>{QuestionIcon}</div>
+          <div
+            onClick={() => setShow(true)}
+            className={styles.header__question__button}
+          >
+            {QuestionIcon}
+          </div>
           <div onClick={switchTheme}>
             {theme === THEME.LIGHT ? DarkModeBtn : LightModeBtn}
           </div>

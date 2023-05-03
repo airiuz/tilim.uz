@@ -61,9 +61,15 @@ export default function Footer() {
         </div>
         <div>
           <div className={styles.footer__text__wrapper}>
-            <div className={styles.footer__text}>Xavfsizlik siyosat</div>
-            <div className={styles.footer__text}>Foydalanuvchi siyosati</div>
-            <div className={styles.footer__text}>Qoidalar</div>
+            <Link href={Links.SECURITY} className={styles.footer__text}>
+              Xavfsizlik siyosat
+            </Link>
+            <Link href={Links.USERPOLICY} className={styles.footer__text}>
+              Foydalanuvchi siyosati
+            </Link>
+            <Link href={Links.TERMS} className={styles.footer__text}>
+              Qoidalar
+            </Link>
           </div>
           <CopyRightText />
         </div>

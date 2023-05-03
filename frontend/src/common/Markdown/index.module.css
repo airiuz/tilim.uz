@@ -56,6 +56,14 @@
     fill: #fff
 }
 
+.active {
+    background: var(--blue);
+}
+
+.active path {
+    fill: var(--background-layout)
+}
+
 @media only screen and (max-width: 992px) {
     .markdown__wrapper {
         display: none;

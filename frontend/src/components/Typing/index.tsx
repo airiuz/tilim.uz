@@ -1,12 +1,17 @@
 "use client";
-import {useShowStore} from "@/src/components/Typing/index.store";
-import {TypingTime} from "@/src/components/Typing/TypingInTime";
-import {TypingDashboard} from "@/src/components/Typing/Dashboard";
+import { TypingTime } from "@/src/components/Typing/TypingInTime";
+import { TypingDashboard } from "@/src/components/Typing/Dashboard";
+import styles from "./index.module.css";
+import { useTypingStore } from "@/src/store/typing.store";
+import { IUser } from "@/src/constants";
+import { useEffect } from "react";
 
 export const Typing = () => {
-    const {show} = useShowStore()
+  const { show } = useTypingStore();
 
-    if(show)
-        return <TypingTime />
-    return <TypingDashboard />
-}
+  return (
+    <section className={styles.section}>
+      {show ? <TypingTime /> : <TypingDashboard />}
+    </section>
+  );
+};

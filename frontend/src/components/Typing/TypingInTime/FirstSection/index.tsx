@@ -1,61 +1,91 @@
 "use client";
 import styles from "./index.module.css";
 import { Button } from "@/src/common/Button";
-import { PauseIcon, StopTextingIcon, xMark } from "@/src/common/Utils/icons";
+import { PauseIcon, StopTextingIcon } from "@/src/common/Utils/icons";
 import { Card } from "@/src/common/Card";
-import { TextEditor } from "@/src/common/Textaera";
-import { useEffect, useRef, useState } from "react";
+import { TypingDiv } from "@/src/common/Textaera/typing/typing";
+import { useTypingStore } from "@/src/store/typing.store";
+import { CountDown } from "@/src/common/CountDown";
+import { useEffect, useState } from "react";
+import { useTypingHook } from "@/src/hooks/typing.hook";
 
 export const FirstSection = () => {
-  const [height, setHeight] = useState<number>(110);
-  const wrapper = useRef<HTMLDivElement>(null);
+  const {
+    words,
+    chars,
+    accuracy,
+    setPause,
+    setPassed,
+    setTime,
+    text,
+    setReadonly,
+  } = useTypingStore();
 
-  useEffect(() => {
-    if (wrapper && wrapper.current) setHeight(wrapper.current.clientHeight);
-  }, []);
+  const { handlePassed } = useTypingHook({ content: "" });
+
+  const [started, setStarted] = useState(false);
+
+  const handlePause = () => {
+    setReadonly(true);
+    setPause(true);
+    setTime(false);
+  };
+
+  const handleStop = () => {
+    handlePassed();
+    setTime(false);
+  };
 
   return (
     <div className={styles.container}>
       <div className={styles.header}>
         <div className={styles.buttons__container}>
-          <Button className={styles.stop__button}>
+          <Button
+            className={styles.stop__button}
+            disabled={!started}
+            onClick={handleStop}
+          >
             <span>{StopTextingIcon}</span>
             <span>Yakunlash</span>
           </Button>
-          <Button className={styles.pause__button}>
+          <Button
+            className={styles.pause__button}
+            disabled={!started}
+            onClick={handlePause}
+          >
             <span>{PauseIcon}</span>
             <span>Pauza</span>
           </Button>
         </div>
         <div className={styles.buttons__container}>
           <div className={styles.child__section}>
-            <div className={styles.time__container}>
-              <div className={styles.time}>
-                <span>60</span>
-                <span>soniya</span>
-              </div>
-            </div>
+            <CountDown />
+
             <Card className={styles.mark}>
-              <span>0</span>
+              <span>{chars}</span>
               <span>belgilar/daqiqa</span>
             </Card>
           </div>
 
           <div className={styles.child__section}>
             <Card className={styles.mark}>
-              <span>0</span>
+              <span>{words}</span>
               <span>so'zlar/daqiqa</span>
             </Card>
             <Card className={styles.mark}>
-              <span>0</span>
+              <span>{accuracy}</span>
               <span>% aniqlik</span>
             </Card>
           </div>
         </div>
       </div>
+
       <div className={styles.text__wrapper}>
-        <div className={styles.text__editor__wrapper} ref={wrapper}>
-          <TextEditor maxHeight={height} placeholder={""} />
+        <div className={styles.text__editor__wrapper}>
+          <TypingDiv
+            content={text?.text || "Something went wrong"}
+            setStarted={setStarted}
+          />
         </div>
       </div>
     </div>

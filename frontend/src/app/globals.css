@@ -181,6 +181,11 @@ section.container {
   line-height: 26px;
 }
 
+span[style="color: red;"] span {
+  /* CSS rules */
+  color: red !important;
+}
+
 @media only screen and (max-width: 1160px) {
   .main__wrapper {
     padding: 12px 20px;

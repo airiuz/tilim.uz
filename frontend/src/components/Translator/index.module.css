@@ -36,6 +36,19 @@
   margin-right: 25px;
 }
 
+.translator__body span:not(a span) {
+  font-family: "Inter", sans-serif !important;
+  font-size: 20px !important;
+  color: var(--text);
+}
+
+.translator__body a span {
+  font-family: "Inter", sans-serif !important;
+  font-size: 20px !important;
+  text-decoration: underline;
+  color: #007bff !important;
+}
+
 .translator__header {
   padding: 0 20px;
   display: flex;

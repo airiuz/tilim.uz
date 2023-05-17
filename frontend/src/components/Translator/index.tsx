@@ -134,9 +134,8 @@ export const Translator = () => {
               setEditorState={setEditorState}
               clear
               minHeight={minHeight}
-              className={styles.translator__body}
+              className={`${styles.translator__body} ${styles.initialStyles}`}
               placeholder="Matnni kiriting"
-              stripPastedStyles={true}
             />
           </div>
           <div ref={footer} className={styles.translator__footer}>

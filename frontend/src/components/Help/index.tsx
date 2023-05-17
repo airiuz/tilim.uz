@@ -16,7 +16,10 @@ export const Help = () => {
   const { show, setShow } = useHelpStore();
   const { theme } = useThemeStore();
 
-  const mobile = useMemo(() => window && window.innerWidth < 1160, []);
+  const mobile = useMemo(
+    () => typeof window !== undefined && window.innerWidth < 1160,
+    []
+  );
 
   let lottier =
     theme === THEME.DARK

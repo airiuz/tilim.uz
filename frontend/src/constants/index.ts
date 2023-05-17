@@ -42,3 +42,10 @@ export interface IUser {
   accuracy?: number;
   t: string | number;
 }
+
+export type WebSocketMessage =
+  | string
+  | ArrayBuffer
+  | SharedArrayBuffer
+  | Blob
+  | ArrayBufferView;

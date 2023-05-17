@@ -1,15 +1,16 @@
-import htmlToDraft from "html-to-draftjs";
+"use client";
 import { ContentState, EditorState } from "draft-js";
 import { useCallback, useEffect, useState } from "react";
-import {
-  ITooltipPosition,
-  useTextEditorStore,
-} from "@/src/store/translate.store";
+import { useTextEditorStore } from "@/src/store/translate.store";
 import { usePathname } from "next/navigation";
 import { ITextEditorLink, Links } from "../constants";
-import { extractWord } from "../common/Utils";
-import { convertFrom, convertTo } from "../common/Textaera/converters";
+import { convertTo } from "../common/Textaera/converters";
 import { convertToHTML } from "draft-convert";
+
+let htmlToDraft: any = null;
+if (typeof window === "object") {
+  htmlToDraft = require("html-to-draftjs").default;
+}
 
 export const useTranslateHook = () => {
   const {
@@ -22,10 +23,9 @@ export const useTranslateHook = () => {
     tooltipPosition,
   } = useTextEditorStore();
 
-  const [translatedHtmlContent, setTranslatedHtmlContent] =
-    useState<string>("");
+  let pathname = "";
 
-  const pathname = usePathname();
+  if (typeof window !== "undefined") pathname = usePathname();
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -78,7 +78,8 @@ export const useTranslateHook = () => {
         });
       } else window.removeEventListener("click", eventListener);
       return () => {
-        return window.removeEventListener("click", eventListener);
+        if (typeof window !== "undefined")
+          return window.removeEventListener("click", eventListener);
       };
     }
   }, [pathname, incorrectWords]);

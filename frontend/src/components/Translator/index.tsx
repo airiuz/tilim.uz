@@ -36,7 +36,9 @@ import { useTranslateHook } from "@/src/hooks/translate.hook";
 import { CorrectWordsTooltip } from "@/src/common/CorrectWordsTooltip";
 import { convertToHTML } from "draft-convert";
 
-const TextEditor = React.lazy(() => import("@/src/common/Textaera"));
+import TextEditor from "@/src/common/Textaera";
+
+// const TextEditor = React.lazy(() => import("@/src/common/Textaera"));
 
 export const Translator = () => {
   const [minHeight, setMinHeight] = useState(219);

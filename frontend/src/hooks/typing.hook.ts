@@ -1,8 +1,13 @@
+"use client";
 import { useTypingStore } from "@/src/store/typing.store";
 import { useState } from "react";
-import htmlToDraft from "html-to-draftjs";
 import { ContentState, EditorState } from "draft-js";
 import useAxios from "./axios.hook";
+
+let htmlToDraft: any = null;
+if (typeof window === "object") {
+  htmlToDraft = require("html-to-draftjs").default;
+}
 
 export const useTypingHook = ({ content }: { content: string }) => {
   const [errors, setErrors] = useState<number[]>([]);
@@ -53,7 +58,12 @@ export const useTypingHook = ({ content }: { content: string }) => {
       setErrors((prev) => Array.from(new Set([...prev, text.length - 1])));
     }
 
-    const contentBlock = htmlToDraft(`<span>${text.join("")}</span>`);
+    const htmlString =
+      text[text.length - 1] === " "
+        ? `${text.slice(0, text.length - 1).join("")}&nbsp;`
+        : `${text.join("")}`;
+
+    const contentBlock = htmlToDraft(htmlString);
     const contentState = ContentState.createFromBlockArray(
       contentBlock.contentBlocks
     );

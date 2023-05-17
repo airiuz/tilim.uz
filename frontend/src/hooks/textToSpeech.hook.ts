@@ -1,6 +1,6 @@
-import useWebSocket, { WebSocketMessage } from "@/src/hooks/websocket.hook";
 import { useCallback, useRef } from "react";
 import dynamic from "next/dynamic";
+import { WebSocketMessage } from "../constants";
 // import AudioFeeder from "audio-feeder";
 
 const AudioFeeder = dynamic(async () => await import("audio-feeder"), {

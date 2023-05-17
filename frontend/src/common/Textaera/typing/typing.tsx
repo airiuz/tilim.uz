@@ -72,7 +72,7 @@ export const TypingDiv = ({
     }
     if (text.length === 1) {
       setStarted(true);
-      setTime(true);
+      // setTime(true);
     }
   }, [editorState]);
 
@@ -86,12 +86,12 @@ export const TypingDiv = ({
         className="typingEditor"
         editorState={editorState}
         setEditorState={handleChange}
+        readOnly={readonly}
+        onBlur={handleBLur}
         style={{
           left: `calc(60.2% - ${step}px)`,
           width: ref && ref.current ? ref.current.offsetWidth : "300%",
         }}
-        readonly={readonly}
-        onBlur={handleBLur}
       />
       <div
         className="content"

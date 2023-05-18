@@ -27,8 +27,8 @@ import { TextToSpeech } from "@/src/common/TextToSpeech";
 import { SpeechToText } from "@/src/common/SpeechToText";
 import { Rate } from "@/src/common/Rate";
 import { Copy } from "@/src/common/Copy";
-import { Tooltip } from "react-tooltip";
-import "react-tooltip/dist/react-tooltip.css";
+// import { Tooltip } from "react-tooltip";
+// import "react-tooltip/dist/react-tooltip.css";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { EditorState } from "draft-js";
@@ -151,7 +151,7 @@ export const Translator = () => {
             </div>
             <div className={styles.footer__icons__container}>
               <Rate />
-              <Tooltip
+              {/* <Tooltip
                 isOpen={count >= 5000}
                 className={styles.tooltip}
                 classNameArrow={styles.custom__arrow}
@@ -165,7 +165,7 @@ export const Translator = () => {
                     “Разрещить” tugamasini bosing
                   </span>
                 </div>
-              </Tooltip>
+              </Tooltip> */}
               <span
                 data-tooltip-id="my-tooltip-limit"
                 className={`${count >= 5000 && styles.red}`}

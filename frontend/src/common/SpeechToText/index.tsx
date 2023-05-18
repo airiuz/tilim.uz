@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useSpeechToTextHook } from "@/src/hooks/speechToText.hook";
 import { useTextEditorStore } from "@/src/store/translate.store";
 import { ContentState, EditorState } from "draft-js";
-import { Tooltip } from "react-tooltip";
+// import { Tooltip } from "react-tooltip";
 import styles from "./index.module.css";
 
 export const SpeechToText = ({ className = "" }: { className?: string }) => {
@@ -50,7 +50,7 @@ export const SpeechToText = ({ className = "" }: { className?: string }) => {
         open && styles.mute
       }`}
     >
-      <Tooltip
+      {/* <Tooltip
         isOpen={open}
         className={styles.tooltip}
         id="my-tooltip"
@@ -64,7 +64,7 @@ export const SpeechToText = ({ className = "" }: { className?: string }) => {
             tugamasini bosing
           </span>
         </div>
-      </Tooltip>
+      </Tooltip> */}
       <span data-tooltip-id="my-tooltip" data-tooltip-place={"bottom"}>
         {MicrophoneIcon}
       </span>

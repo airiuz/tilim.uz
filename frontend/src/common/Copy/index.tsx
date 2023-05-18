@@ -1,6 +1,6 @@
 import { CheckedIcon, CopyIcon } from "@/src/common/Utils/icons";
 import { useTextEditorStore } from "@/src/store/translate.store";
-import { Tooltip } from "react-tooltip";
+// import { Tooltip } from "react-tooltip";
 import { useState } from "react";
 import styles from "./index.module.css";
 
@@ -16,7 +16,7 @@ export const Copy = () => {
   };
   return (
     <>
-      <Tooltip
+      {/* <Tooltip
         isOpen={open}
         className={styles.tooltip}
         id="my-tooltip-copy"
@@ -26,7 +26,7 @@ export const Copy = () => {
           <span>Nusxa olindi</span>
           <span>{CheckedIcon}</span>
         </div>
-      </Tooltip>
+      </Tooltip> */}
       <div data-tooltip-id="my-tooltip-copy" onClick={handleClick}>
         {CopyIcon}
       </div>

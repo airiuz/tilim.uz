@@ -72,7 +72,7 @@ export const TypingDiv = ({
     }
     if (text.length === 1) {
       setStarted(true);
-      // setTime(true);
+      setTime(true);
     }
   }, [editorState]);
 

@@ -5,7 +5,9 @@ import dynamic from "next/dynamic";
 import { Loader } from "../components/Loader";
 import React, { Suspense } from "react";
 
-const Translator = dynamic(() => import("../components/Translator"));
+const Translator = dynamic(() => import("../components/Translator"), {
+  loading: () => <Loader />,
+});
 
 // const HelpButton = dynamic(async () => await import("@/src/components/Help"));
 

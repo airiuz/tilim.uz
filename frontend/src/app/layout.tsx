@@ -1,7 +1,6 @@
 import "./globals.css";
 import Header from "@/src/layout/Header";
 import Footer from "@/src/layout/Footer";
-import React from "react";
 import { Providers } from "@/src/providers";
 import { Help } from "../components/Help";
 

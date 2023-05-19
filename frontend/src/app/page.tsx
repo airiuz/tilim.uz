@@ -12,6 +12,7 @@ const Translator = dynamic(() => import("../components/Translator"), {
 // const HelpButton = dynamic(async () => await import("@/src/components/Help"));
 
 export default async function Home() {
+  const a = await fetch("https://jsonplaceholder.typicode.com/todos/1");
   return (
     <main className="main__wrapper">
       <Translator />

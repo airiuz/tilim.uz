@@ -40,7 +40,7 @@ import styles from "./index.module.css";
 
 // const TextEditor = React.lazy(() => import("@/src/common/Textaera"));
 
-export const Translator = () => {
+const Translator = () => {
   const [minHeight, setMinHeight] = useState(219);
   const { editorState, setEditorState, setIncorrectWords, setLanguage } =
     useTextEditorStore();
@@ -182,3 +182,5 @@ export const Translator = () => {
     </section>
   );
 };
+
+export default Translator;

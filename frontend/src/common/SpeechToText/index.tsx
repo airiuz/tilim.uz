@@ -7,8 +7,8 @@ import { useEffect, useState } from "react";
 import { useSpeechToTextHook } from "@/src/hooks/speechToText.hook";
 import { useTextEditorStore } from "@/src/store/translate.store";
 import { ContentState, EditorState } from "draft-js";
-// import { Tooltip } from "react-tooltip";
 import styles from "./index.module.css";
+import Tooltip from "../Tooltip";
 
 export const SpeechToText = ({ className = "" }: { className?: string }) => {
   const [capturing, setCapturing] = useState(false);
@@ -50,27 +50,27 @@ export const SpeechToText = ({ className = "" }: { className?: string }) => {
         open && styles.mute
       }`}
     >
-      {/* <Tooltip
-        isOpen={open}
+      <Tooltip
+        open={open}
         className={styles.tooltip}
-        id="my-tooltip"
-        classNameArrow={styles.custom__arrow}
-        place={"bottom"}
+        content={
+          <div className={styles.tooltip__content}>
+            <span>{toolTipIcon}</span>
+            <span>
+              Mikrafonga ruxsat berish uchun chap tomondagi <br /> “Разрещить”
+              tugamasini bosing
+            </span>
+          </div>
+        }
+        position="bottom"
       >
-        <div className={styles.tooltip__content}>
-          <span>{toolTipIcon}</span>
-          <span>
-            Mikrafonga ruxsat berish uchun chap tomondagi <br /> “Разрещить”
-            tugamasini bosing
-          </span>
-        </div>
-      </Tooltip> */}
-      <span data-tooltip-id="my-tooltip" data-tooltip-place={"bottom"}>
-        {MicrophoneIcon}
-      </span>
-      <span className={styles.text}>
-        {open && <span>Mikrafonga ruxsat berishingiz kutilmoqda....</span>}
-      </span>
+        <span data-tooltip-id="my-tooltip" data-tooltip-place={"bottom"}>
+          {MicrophoneIcon}
+        </span>
+        <span className={styles.text}>
+          {open && <span>Mikrafonga ruxsat berishingiz kutilmoqda....</span>}
+        </span>
+      </Tooltip>
     </div>
   );
 };

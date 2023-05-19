@@ -161,7 +161,7 @@ h1 {
   }
 }
 
-@media only screen and (min-height: 1000px) {
+@media only screen and (min-height: 800px) {
   .keyboard__row.first__row,
   .keyboard__row.last__row {
     display: flex;

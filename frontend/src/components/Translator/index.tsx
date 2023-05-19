@@ -8,7 +8,6 @@ import React, {
   useState,
 } from "react";
 import { toolTipIcon } from "@/src/common/Utils/icons";
-import styles from "./index.module.css";
 import Markdown from "@/src/common/Markdown";
 import {
   ArrowForTranslator,
@@ -27,16 +26,17 @@ import { TextToSpeech } from "@/src/common/TextToSpeech";
 import { SpeechToText } from "@/src/common/SpeechToText";
 import { Rate } from "@/src/common/Rate";
 import { Copy } from "@/src/common/Copy";
-// import { Tooltip } from "react-tooltip";
-// import "react-tooltip/dist/react-tooltip.css";
 import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
 import { EditorState } from "draft-js";
 import { useTranslateHook } from "@/src/hooks/translate.hook";
 import { CorrectWordsTooltip } from "@/src/common/CorrectWordsTooltip";
 import { convertToHTML } from "draft-convert";
 
 import TextEditor from "@/src/common/Textaera";
+import Tooltip from "@/src/common/Tooltip";
+
+import "react-loading-skeleton/dist/skeleton.css";
+import styles from "./index.module.css";
 
 // const TextEditor = React.lazy(() => import("@/src/common/Textaera"));
 
@@ -151,28 +151,29 @@ export const Translator = () => {
             </div>
             <div className={styles.footer__icons__container}>
               <Rate />
-              {/* <Tooltip
-                isOpen={count >= 5000}
+
+              <Tooltip
+                open={count >= 5000}
                 className={styles.tooltip}
-                classNameArrow={styles.custom__arrow}
-                id="my-tooltip-limit"
-                place={"bottom"}
+                content={
+                  <div className={styles.tooltip__content}>
+                    <span>{toolTipIcon}</span>
+                    <span>
+                      Diqqat! siz belgilangan limitdan ortiqcha so’z <br />
+                      kiritdingiz!
+                    </span>
+                  </div>
+                }
+                position="bottom"
               >
-                <div className={styles.tooltip__content}>
-                  <span>{toolTipIcon}</span>
-                  <span>
-                    Mikrafonga ruxsat berish uchun chap tomondagi <br />{" "}
-                    “Разрещить” tugamasini bosing
-                  </span>
-                </div>
-              </Tooltip> */}
-              <span
-                data-tooltip-id="my-tooltip-limit"
-                className={`${count >= 5000 && styles.red}`}
-              >
-                {count}
-                /5000
-              </span>
+                <span
+                  data-tooltip-id="my-tooltip-limit"
+                  className={`${count >= 5000 && styles.red}`}
+                >
+                  {count}
+                  /5000
+                </span>
+              </Tooltip>
             </div>
           </div>
         </div>

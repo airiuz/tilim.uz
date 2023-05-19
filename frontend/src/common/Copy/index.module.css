@@ -1,16 +1,10 @@
-
 .copied {
-    display: flex;
-    gap: 8px;
-    color: var(--blue)
+  display: flex;
+  gap: 8px;
+  color: var(--blue);
+  font-size: 12px;
 }
 
 .copied path {
-    fill: var(--blue)
-}
-
-.tooltip {
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    background: var(--background-layout);
+  fill: var(--blue);
 }

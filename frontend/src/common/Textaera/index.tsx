@@ -5,13 +5,6 @@ import styles from "./index.module.css";
 import { Exit } from "@/src/common/Exit";
 import { ContentState, EditorState } from "draft-js";
 
-// const RichTextEditor = dynamic(
-//   () => import("react-draft-wysiwyg").then((mod) => mod.Editor),
-//   {
-//     ssr: false,
-//   }
-// );
-
 const RichTextEditor = dynamic(
   () => import("react-draft-wysiwyg").then((mod) => mod.Editor),
   { ssr: false }

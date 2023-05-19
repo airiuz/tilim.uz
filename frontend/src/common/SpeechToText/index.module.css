@@ -1,46 +1,56 @@
-
 .microphone {
-    display: flex;
-    align-items: center;
-    position: relative;
+  display: flex;
+  align-items: center;
+  position: relative;
 }
 
 .mute path {
-    fill: var(--mute-text) !important;
+  fill: var(--mute-text) !important;
 }
 
 .microphone span {
-    font-size: 12px;
+  font-size: 12px;
 }
 
 .microphone span.text span {
-    color: var(--mute-text);
-    padding-left: 11px;
+  color: var(--mute-text);
+  padding-left: 11px;
 }
 
 .tooltip {
-    border: 1px solid var(--border);
-    border-radius: 12px !important;
-    color: var(--text) !important;
-    background: var(--background-layout) !important;
-    padding:13px !important;
-    top:45px !important;
-    left:-11% !important;
+  border-radius: 12px !important;
+  color: var(--text) !important;
+  transform: translateX(-47.5%) !important;
+}
+
+.tooltip::after {
+  left: 11% !important;
 }
 
 .tooltip__content {
-    display: flex;
-    align-items: center;
-    gap:18px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
 }
 
 .tooltip__content path {
-    fill: var(--blue) !important;
+  fill: var(--blue) !important;
 }
 
 @media only screen and (max-width: 1160px) {
-    .microphone span.text {
-        display: none;
-    }
+  .microphone span.text {
+    display: none;
+  }
+  .tooltip {
+    transform: translateX(-6%) !important;
+  }
+  .tooltip::after {
+    left: 6% !important;
+  }
+}
 
+@media only screen and (max-width: 576px) {
+  .tooltip {
+    width: 230px;
+  }
 }

@@ -93,7 +93,7 @@ class TypeFastAPIView(GetAddressApiView):
         type_fast_result = type_fast.find_difference_text(model_text, serializer.validated_data['text'])
         content = TypeFastOutModel.objects.create(text_id=serializer.validated_data['text_id'],
                                                   text=serializer.validated_data['text'],
-                                                  true_answers=len(type_fast_result),
+                                                  true_answers=len(type_fast_result["true_answers"]),
                                                   alpha = serializer.validated_data['t'])
         content.save()
 
@@ -101,7 +101,8 @@ class TypeFastAPIView(GetAddressApiView):
         all_results = [x.true_answers for x in TypeFastOutModel.objects.filter(alpha=alpha).order_by('-true_answers')]
         leader = True if content.true_answers in top_results else False
         place = all_results.index(content.true_answers) + 1
-        return_content = {'data': type_fast_result, 'place': place, 'leader': leader}
+        return_content = {'data': type_fast_result['true_answers'], 'place': place, 'leader': leader, 
+                 "percent":type_fast_result['percent']}
         return HttpResponse(json.dumps(return_content), content_type='application/json')
 
 

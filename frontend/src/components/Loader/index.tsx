@@ -4,7 +4,7 @@ export const Loader = () => {
       style={{
         display: "flex",
         width: "100%",
-        height: "calc(100vh - 196px)",
+        height: "calc(100vh - 198px)",
         justifyContent: "center",
         alignItems: "center",
       }}

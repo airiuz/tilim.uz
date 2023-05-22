@@ -49,6 +49,7 @@ class TopUsers(models.Model):
     t = models.CharField(max_length=200)
     true_answers = models.IntegerField()
     percent = models.IntegerField()
+    chars = models.IntegerField()
 
     def __str__(self):
         return self.name

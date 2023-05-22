@@ -100,7 +100,7 @@ class TypeFastAPIView(GetAddressApiView):
         leader = True if content.true_answers in top_results else False
         place = all_results.index(content.true_answers) + 1
         return_content = {'data': type_fast_result['true_answers'], 'place': place, 'leader': leader, 
-                 "percent":type_fast_result['percent']}
+                 "percent":type_fast_result['percent'], "chars":type_fast_result['chars']}
         return HttpResponse(json.dumps(return_content), content_type='application/json')
 
 

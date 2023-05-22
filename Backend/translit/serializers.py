@@ -23,7 +23,7 @@ class TypeFastOutSerializer(serializers.Serializer):
 class NameofTopSerializer(serializers.ModelSerializer):
     class Meta:
         model = TopUsers
-        fields = ["name", "place", "t", "true_answers", "percent"]
+        fields = ["name", "place", "t", "true_answers", "percent", "chars"]
    
 class MyTextSerializer(serializers.Serializer):
     data = serializers.CharField(required=True, trim_whitespace=False)

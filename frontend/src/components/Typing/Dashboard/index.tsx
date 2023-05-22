@@ -8,10 +8,10 @@ import { useMemo, useState } from "react";
 export const TypingDashboard = () => {
   const [first, setFirst] = useState(true);
 
-  const desktop = useMemo(
-    () => typeof window !== undefined && window.innerWidth > 1160,
-    []
-  );
+  let desktop = true;
+
+  if (typeof window !== "undefined")
+    desktop = useMemo(() => window.innerWidth > 1160, []);
 
   const handleCLick = (first: boolean) => {
     setFirst(first);

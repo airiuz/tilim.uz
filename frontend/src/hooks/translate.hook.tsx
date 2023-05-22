@@ -1,15 +1,16 @@
-import htmlToDraft from "html-to-draftjs";
+"use client";
 import { ContentState, EditorState } from "draft-js";
 import { useCallback, useEffect, useState } from "react";
-import {
-  ITooltipPosition,
-  useTextEditorStore,
-} from "@/src/store/translate.store";
+import { useTextEditorStore } from "@/src/store/translate.store";
 import { usePathname } from "next/navigation";
 import { ITextEditorLink, Links } from "../constants";
-import { extractWord } from "../common/Utils";
-import { convertFrom, convertTo } from "../common/Textaera/converters";
+import { convertTo } from "../common/Textaera/converters";
 import { convertToHTML } from "draft-convert";
+
+let htmlToDraft: any = null;
+if (typeof window === "object") {
+  htmlToDraft = require("html-to-draftjs").default;
+}
 
 export const useTranslateHook = () => {
   const {
@@ -22,62 +23,65 @@ export const useTranslateHook = () => {
     tooltipPosition,
   } = useTextEditorStore();
 
-  const [translatedHtmlContent, setTranslatedHtmlContent] =
-    useState<string>("");
+  let pathname = "";
 
-  const pathname = usePathname();
+  if (typeof window !== "undefined") pathname = usePathname();
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    let eventListener: any;
-    if (pathname === Links.HOME) {
-      const position = {
-        top: 0,
-        left: 0,
-      };
-      eventListener = window.addEventListener("click", (e: MouseEvent) => {
-        const tooltip: HTMLElement | null = document.getElementById(
-          "correctWordsTooltip"
-        );
-        const target = e.target as HTMLElement;
-
-        if (tooltip && tooltip !== target && !tooltip.contains(target)) {
-          const opacity = Number(
-            !!(
-              incorrectWords.find((word) =>
-                Boolean(target.innerText)
-                  ? clearWord(target.innerText) === clearWord(word)
-                  : false
-              ) &&
-              target.parentElement?.nodeName === "SPAN" &&
-              target.parentElement?.getAttribute("data-offset-key")
-            )
+    if (typeof window !== "undefined") {
+      let eventListener: any;
+      if (pathname === Links.HOME) {
+        const position = {
+          top: 0,
+          left: 0,
+        };
+        eventListener = window.addEventListener("click", (e: MouseEvent) => {
+          const tooltip: HTMLElement | null = document.getElementById(
+            "correctWordsTooltip"
           );
-          if (opacity) {
-            position.top = e.clientY + 20;
-            position.left = e.clientX - 60;
-            setTooltipPosition({
-              top: e.clientY + 20,
-              left: e.clientX - 60,
-              opacity,
-              zIndex: "10000",
-              transform: "translateY(0px)",
-            });
-            setSelectedWord(target.innerText);
-          } else {
-            setTooltipPosition({
-              top: position.top,
-              left: position.left,
-              opacity,
-              zIndex: "-1",
-              transform: "translateY(10px)",
-            });
-            setSelectedWord("");
+          const target = e.target as HTMLElement;
+
+          if (tooltip && tooltip !== target && !tooltip.contains(target)) {
+            const opacity = Number(
+              !!(
+                incorrectWords.find((word) =>
+                  Boolean(target.innerText)
+                    ? clearWord(target.innerText) === clearWord(word)
+                    : false
+                ) &&
+                target.parentElement?.nodeName === "SPAN" &&
+                target.parentElement?.getAttribute("data-offset-key")
+              )
+            );
+            if (opacity) {
+              position.top = e.clientY + 20;
+              position.left = e.clientX - 60;
+              setTooltipPosition({
+                top: e.clientY + 20,
+                left: e.clientX - 60,
+                opacity,
+                zIndex: "10000",
+                transform: "translateY(0px)",
+              });
+              setSelectedWord(target.innerText);
+            } else {
+              setTooltipPosition({
+                top: position.top,
+                left: position.left,
+                opacity,
+                zIndex: "-1",
+                transform: "translateY(10px)",
+              });
+              setSelectedWord("");
+            }
           }
-        }
-      });
-    } else window.removeEventListener("click", eventListener);
-    return () => window.removeEventListener("click", eventListener);
+        });
+      } else window.removeEventListener("click", eventListener);
+      return () => {
+        if (typeof window !== "undefined")
+          return window.removeEventListener("click", eventListener);
+      };
+    }
   }, [pathname, incorrectWords]);
 
   const replaceToCorrectVersion = (word: string) => {

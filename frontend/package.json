@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@nextui-org/react": "^1.0.0-beta.12",
     "@types/node": "18.14.6",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",
@@ -26,9 +25,7 @@
     "html-to-draftjs": "^1.5.0",
     "lottie-react": "^2.4.0",
     "next": "13.2.3",
-    "next-themes": "^0.2.1",
     "rc-progress": "^3.4.1",
-    "rc-tooltip": "^6.0.1",
     "react": "18.2.0",
     "react-contenteditable": "^3.3.7",
     "react-countdown-circle-timer": "^3.2.1",
@@ -38,7 +35,6 @@
     "react-html-string": "^0.1.0",
     "react-id-generator": "^3.0.2",
     "react-loading-skeleton": "^3.2.0",
-    "react-tooltip": "^5.10.4",
     "typescript": "4.9.5",
     "zustand": "^4.3.6"
   },

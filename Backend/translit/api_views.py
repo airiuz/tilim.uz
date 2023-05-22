@@ -82,8 +82,6 @@ class DocumentChangeAPIView(GetAddressApiView):
 class TypeFastAPIView(GetAddressApiView):
     @csrf_exempt
     def post(self, request):
-        # count ip address
-        ChangeTextAPIView.get_ip(request)
 
         serializer = TypeFastOutSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)

@@ -132,7 +132,7 @@ export default function Header() {
         </div>
         <MobileMenu show={open} handleClose={handleOpen} />
       </header>
-      <div ref={ref} style={{ display: "none" }}>
+      <div ref={ref}>
         <Loader />
       </div>
     </>

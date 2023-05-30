@@ -79,14 +79,21 @@ export const Result = () => {
     return { title: "Toshbaqadan sal tezroq", src: four };
   }, [place]);
 
-  const handleSubmit = useCallback(async () => {
-    await fetchData("/topusers/", "POST", {
-      place,
-      name,
-      t: String(language),
-    });
-    handleBack();
-  }, []);
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      const res = await fetchData("/topusers/", "POST", {
+        place,
+        name,
+        t: String(language),
+        true_answers: words,
+        chars,
+        percent: accuracy,
+      });
+      handleBack();
+    },
+    [name]
+  );
 
   return (
     <div className={styles.container}>

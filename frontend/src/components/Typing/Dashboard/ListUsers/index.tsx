@@ -22,13 +22,17 @@ export const ListUsers = () => {
 
   useEffect(() => {
     (async function () {
-      const users = await fetchData("/topusers/", "GET");
-      if (users) setUsers(users);
+      const users: IUser[] = await fetchData("/topusers/", "GET");
+      if (users) {
+        console.log(users.filter((user) => Number(user.t) === 0));
+        setUsers(users);
+        setTopUsers(users.filter((user) => Number(user.t) === 0));
+      }
     })();
   }, []);
 
   const handleClick = (first: boolean) => {
-    setTopUsers(users.filter((user) => Number(first) === Number(user.t)));
+    setTopUsers(users.filter((user) => Number(first) !== Number(user.t)));
   };
 
   return (
@@ -54,7 +58,7 @@ export const ListUsers = () => {
             <Skeleton width={"100%"} height={"40px"} />
           </div>
         ) : (
-          topUsers.map((user, i) => <ListItem key={i} />)
+          topUsers.map((user, i) => <ListItem key={i} user={user as any} />)
         )}
       </div>
     </div>

@@ -24,7 +24,21 @@ class NameofTopSerializer(serializers.ModelSerializer):
     class Meta:
         model = TopUsers
         fields = ["name", "place", "t", "true_answers", "percent", "chars"]
-   
+    def create(self, validated_data):
+        place = validated_data.pop('place')
+        t = validated_data.pop('t')
+        topusers = TopUsers.objects.filter(t=t)
+        lower_users = topusers.filter(place__gte=place)
+        for x in lower_users:
+            x.place += 1
+            x.save()
+        over_users = TopUsers.objects.filter(place__gt=20)
+        over_users.delete()
+
+        return TopUsers.objects.create(name=validated_data.pop('name'), place=place,
+                                       t=t, true_answers=validated_data.pop('true_answers'),
+                                       percent=validated_data.pop("percent"), chars=validated_data.pop("chars"))
+
 class MyTextSerializer(serializers.Serializer):
     data = serializers.CharField(required=True, trim_whitespace=False)
     type = serializers.CharField(required=True)

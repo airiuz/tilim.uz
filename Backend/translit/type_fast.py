@@ -10,3 +10,12 @@ def find_difference_text(m_text, input_text):
     return {"true_answers":difference, "percent":percent, "chars":chars}
 
 
+def place_finder(topusers, percent):
+    for x in topusers:
+            if x.percent>=percent:
+                place = x.place + 1 
+
+    # return 
+        
+
+

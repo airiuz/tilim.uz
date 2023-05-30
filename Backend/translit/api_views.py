@@ -89,16 +89,25 @@ class TypeFastAPIView(GetAddressApiView):
         alpha = serializer.data.get('t')
         model_text = to_cyrillic(str(type_m.text)) if alpha == '1' else str(type_m.text)
         type_fast_result = type_fast.find_difference_text(model_text, serializer.validated_data['text'])
-        content = TypeFastOutModel.objects.create(text_id=serializer.validated_data['text_id'],
-                                                  text=serializer.validated_data['text'],
-                                                  true_answers=len(type_fast_result["true_answers"]),
-                                                  alpha = serializer.validated_data['t'])
-        content.save()
+        # content = TypeFastOutModel.objects.create(text_id=serializer.validated_data['text_id'],
+        #                                           text=serializer.validated_data['text'],
+        #                                           true_answers=len(type_fast_result["true_answers"]),
+        #                                           alpha = serializer.validated_data['t'])
+        # content.save()
 
-        top_results = [x.true_answers for x in TypeFastOutModel.objects.filter(alpha=alpha).order_by('-true_answers')[:20]]
-        all_results = [x.true_answers for x in TypeFastOutModel.objects.filter(alpha=alpha).order_by('-true_answers')]
-        leader = True if content.true_answers in top_results else False
-        place = all_results.index(content.true_answers) + 1
+        percent = type_fast_result['percent']
+        true_answers=len(type_fast_result["true_answers"])
+        # top_results = [x.true_answers for x in TypeFastOutModel.objects.filter(alpha=alpha).order_by('-true_answers')[:10]]
+        
+        # leader = True if true_answers in top_results else False
+        place = 1
+        topusers = TopUsers.objects.filter(t=alpha).order_by("percent")
+        for x in topusers:
+            # 70 
+            if x.percent>=percent:
+                place = x.place + 1 
+                break
+        leader = True if place <= 20 else False
         return_content = {'data': type_fast_result['true_answers'], 'place': place, 'leader': leader, 
                  "percent":type_fast_result['percent'], "chars":type_fast_result['chars']}
         return HttpResponse(json.dumps(return_content), content_type='application/json')
@@ -130,7 +139,7 @@ class TopUsersViewSet(ViewSet):
         serializer = NameofTopSerializer(queryset, many=True)
         return Response(serializer.data)
     def create(self, request):
-        serializer = NameofTopSerializer(data=request.data)
+        serializer = NameofTopSerializer (data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)

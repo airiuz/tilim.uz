@@ -6,7 +6,7 @@ export const Loader = () => {
       style={{
         display: "flex",
         width: "100%",
-        height: "calc(100vh - 92px)",
+        height: "calc(100vh -px)",
         justifyContent: "center",
         alignItems: "center",
         zIndex: "10000",
@@ -15,8 +15,6 @@ export const Loader = () => {
         position: "absolute",
       }}
     >
-      {/* loading... */}
-
       <HashLoader size={50} color={"#123abc"} loading />
     </div>
   );

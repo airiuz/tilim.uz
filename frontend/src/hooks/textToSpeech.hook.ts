@@ -1,6 +1,6 @@
 import { useCallback, useRef } from "react";
 import { WebSocketMessage } from "../constants";
-import AudioFeeder from "audio-feeder";
+import AudioFeeder from "../components/audio-feeder";
 //
 // const AudioFeeder = dynamic(async () => await import("audio-feeder"), {
 //   ssr: false,

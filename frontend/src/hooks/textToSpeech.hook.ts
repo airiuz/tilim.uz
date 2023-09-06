@@ -1,11 +1,11 @@
 import { useCallback, useRef } from "react";
 import dynamic from "next/dynamic";
 import { WebSocketMessage } from "../constants";
-// import AudioFeeder from "audio-feeder";
+import AudioFeeder from "audio-feeder";
 
-const AudioFeeder = dynamic(async () => await import("audio-feeder"), {
-  ssr: false,
-});
+// const AudioFeeder = dynamic(async () => await import("audio-feeder"), {
+//   ssr: false,
+// });
 
 export const useTextToSpeech = ({
   text,
@@ -17,7 +17,7 @@ export const useTextToSpeech = ({
   setAudio: (audio: string | null) => void;
 }) => {
   const socket = useRef<WebSocket | null>();
-  const feeder = useRef<any>();
+  const feeder = useRef<any>(null);
 
   const handleClick = () => {
     if (audio) {
@@ -38,7 +38,7 @@ export const useTextToSpeech = ({
       // @ts-ignore
       feeder.current = new AudioFeeder();
       feeder.current.init(2, 24000);
-
+      //
       socket.current = new WebSocket("wss://oyqiz.airi.uz/ws/speech/");
 
       socket.current.binaryType = "arraybuffer";

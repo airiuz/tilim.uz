@@ -24,7 +24,6 @@ export const ListUsers = () => {
     (async function () {
       const users: IUser[] = await fetchData("/topusers/", "GET");
       if (users) {
-        console.log(users.filter((user) => Number(user.t) === 0));
         setUsers(users);
         setTopUsers(users.filter((user) => Number(user.t) === 0));
       }
@@ -50,7 +49,7 @@ export const ListUsers = () => {
           onClick={handleClick}
         />
       </div>
-      <div>
+      <div className={styles.list__users}>
         {loading ? (
           <div className={styles.loading__container}>
             <Skeleton width={"100%"} height={"40px"} />

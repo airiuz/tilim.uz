@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useCallback, useRef } from "react";
+import { Dispatch, SetStateAction, useCallback, useRef, useState } from "react";
 
 export const useSpeechToTextHook = ({
   capturing,
@@ -28,54 +28,64 @@ export const useSpeechToTextHook = ({
 
   const stream = async () => {
     try {
-      setOpen(true);
-      setCapturing(true);
-      mediaStream.current = await navigator.mediaDevices.getUserMedia({
-        video: false,
-        audio: {
-          channelCount: 1,
-          sampleRate: 16000,
-        },
-      });
-
       setOpen(false);
-      const audioContext = new AudioContext({ sampleRate: 16000 });
-
-      const scriptProcessor = audioContext.createScriptProcessor(2048, 1, 1);
-
-      scriptProcessor.connect(audioContext.destination);
-
-      await audioContext.resume();
-
-      const source = audioContext.createMediaStreamSource(mediaStream.current);
-      source.connect(scriptProcessor);
 
       socket.current = new WebSocket("wss://oyqiz.airi.uz/ws/live/");
 
-      socket.current.onopen = () => {
+      socket.current.onerror = () => {
+        console.log("error");
+      };
+
+      socket.current.onopen = async () => {
         console.log("socket opened");
+
+        mediaStream.current = await navigator.mediaDevices.getUserMedia({
+          video: false,
+          audio: {
+            channelCount: 1,
+            sampleRate: 16000,
+          },
+        });
+
+        const audioContext = new AudioContext({ sampleRate: 16000 });
+
+        const scriptProcessor = audioContext.createScriptProcessor(2048, 1, 1);
+
+        scriptProcessor.connect(audioContext.destination);
+
+        await audioContext.resume();
+
+        const source = audioContext.createMediaStreamSource(
+          mediaStream.current
+        );
+        source.connect(scriptProcessor);
+
+        scriptProcessor.onaudioprocess = (e) => {
+          const left = e.inputBuffer.getChannelData(0);
+          const data = makeWavData(left);
+
+          if (socket.current?.readyState === 1) {
+            socket.current.send(data);
+          }
+        };
+
+        setCapturing(true);
+        setOpen(true);
       };
 
       socket.current.onclose = () => {
         console.log("socket closed");
+        setOpen(false);
+        stopCapturing();
       };
 
       socket.current.onmessage = (event) => {
         const data = JSON.parse(event.data);
         onData(data);
       };
-
-      scriptProcessor.onaudioprocess = (e) => {
-        const left = e.inputBuffer.getChannelData(0);
-        const data = makeWavData(left);
-
-        if (socket.current?.readyState === 1) {
-          socket.current.send(data);
-        }
-      };
     } catch (error) {
       console.error(error);
-      setOpen(true);
+      setOpen(false);
     }
   };
 

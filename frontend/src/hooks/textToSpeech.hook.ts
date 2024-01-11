@@ -1,4 +1,4 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useRef, useState } from "react";
 import { WebSocketMessage } from "../constants";
 import AudioFeeder from "../components/audio-feeder";
 //
@@ -6,17 +6,17 @@ import AudioFeeder from "../components/audio-feeder";
 //   ssr: false,
 // });
 
-export const useTextToSpeech = ({
-  text,
-  audio,
-  setAudio,
-}: {
+interface ITextToSpeech {
   text: string;
   audio: string | null;
   setAudio: (audio: string | null) => void;
-}) => {
+}
+
+export const useTextToSpeech = ({ text, audio, setAudio }: ITextToSpeech) => {
   const socket = useRef<WebSocket | null>();
   const feeder = useRef<any>(null);
+
+  const [connected, setConnected] = useState(false);
 
   const handleClick = () => {
     if (audio) {
@@ -41,13 +41,10 @@ export const useTextToSpeech = ({
       socket.current = new WebSocket("wss://oyqiz.airi.uz/ws/speech/");
 
       socket.current.binaryType = "arraybuffer";
-      socket.current.onmessage = (event: MessageEvent<WebSocketMessage>) => {
-        console.log(event.data);
-        const floatArray = new Float32Array(event.data as ArrayBuffer);
-        feeder.current.bufferData([floatArray, floatArray]);
-      };
+
       socket.current.onopen = () => {
         console.log("socket opened");
+        setConnected(true);
         socket.current?.send(audio);
         feeder.current.waitUntilReady(() => {
           feeder.current.start();
@@ -58,21 +55,32 @@ export const useTextToSpeech = ({
         });
       };
 
+      socket.current.onmessage = (event: MessageEvent<WebSocketMessage>) => {
+        console.log(event.data);
+        const floatArray = new Float32Array(event.data as ArrayBuffer);
+        feeder.current.bufferData([floatArray, floatArray]);
+      };
+
+      socket.current.onerror = () => setConnected(false);
+
       socket.current.onclose = () => {
         console.log("socket.current.onclose");
+        setConnected(false);
       };
     } else {
       if (feeder.current) {
         feeder.current.stop();
         feeder.current.close();
         feeder.current = null;
+        setConnected(false);
       }
       if (socket && socket.current?.readyState !== 3) {
         socket.current?.close();
         socket.current = null;
+        setConnected(false);
       }
     }
   }, [audio, socket]);
 
-  return { handleClick, handleActivate };
+  return { handleClick, handleActivate, connected };
 };

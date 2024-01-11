@@ -34,6 +34,10 @@ export const Help = () => {
   if (show)
     return (
       <div className={styles.help__wrapper}>
+        <div
+          onClick={() => setShow(false)}
+          className={styles.help__empty}
+        ></div>
         <div className={styles.help__drawer}>
           <div className={styles.title__wrapper}>
             <h3 className={styles.title}>Yordam</h3>

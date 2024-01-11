@@ -19,6 +19,7 @@
   top: 0;
   left: 0;
   background: rgba(23, 50, 95, 0.3);
+  display: flex;
   z-index: 1000;
 }
 
@@ -28,6 +29,11 @@
   width: 499px;
   background: var(--background-layout);
   padding: 30px;
+}
+
+.help__wrapper .help__empty {
+  flex: 1;
+  height: 100vh;
 }
 
 .help__wrapper .help__drawer .title__wrapper {

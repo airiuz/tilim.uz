@@ -1,5 +1,5 @@
 import { AudioIcon } from "@/src/common/Utils/icons";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTextToSpeech } from "@/src/hooks/textToSpeech.hook";
 
 interface ITextToSpeech {
@@ -10,7 +10,7 @@ interface ITextToSpeech {
 export const TextToSpeech = ({ text, className }: ITextToSpeech) => {
   const [audio, setAudio] = useState<null | string>(null);
 
-  const { handleClick, handleActivate } = useTextToSpeech({
+  const { handleClick, handleActivate, connected } = useTextToSpeech({
     text,
     audio,
     setAudio,
@@ -21,7 +21,7 @@ export const TextToSpeech = ({ text, className }: ITextToSpeech) => {
   }, [audio]);
 
   return (
-    <div onClick={handleClick} className={`${audio && className}`}>
+    <div onClick={handleClick} className={`${connected && className}`}>
       {AudioIcon}
     </div>
   );

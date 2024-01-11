@@ -6,14 +6,15 @@ import "./index.css";
 import { useTypingStore } from "@/src/store/typing.store";
 import { useTypingHook } from "@/src/hooks/typing.hook";
 
-export const TypingDiv = ({
-  content,
-  setStarted,
-}: {
+interface ITypingDiv {
   content: string;
   setStarted: (started: boolean) => void;
-}) => {
-  const { handleReplace, handleAccuracy } = useTypingHook({ content });
+}
+
+export const TypingDiv: React.FC<ITypingDiv> = ({ content, setStarted }) => {
+  const { handleReplace, handleAccuracy, handlePassed } = useTypingHook({
+    content,
+  });
 
   const ref = useRef<HTMLDivElement | null>(null);
 
@@ -23,6 +24,8 @@ export const TypingDiv = ({
   );
 
   const [step, setStep] = useState(0);
+
+  const [count, setCount] = useState(0);
 
   const { setTime, pause, setTypedText, readonly, setReadonly } =
     useTypingStore();
@@ -34,23 +37,27 @@ export const TypingDiv = ({
 
   const handleChange = useCallback(
     (newState: EditorState) => {
-      let text = newState.getCurrentContent().getPlainText().split("");
+      let text = newState.getCurrentContent().getPlainText();
 
       if (text.length > content.length) text = text.slice(0, content.length);
 
       const prevText = editorState.getCurrentContent().getPlainText();
 
-      if (text.length < prevText.length) return;
+      if (text.length < prevText.length) {
+        const state = handleReplace(prevText.split(""));
+        setEditorState(EditorState.moveFocusToEnd(state));
+        return;
+      }
 
-      handleAccuracy(text.join(""));
+      handleAccuracy(text);
 
-      const state = handleReplace(text);
+      const state = handleReplace(text.split(""));
 
       setEditorState(EditorState.moveFocusToEnd(state));
 
       setTypedText(newState.getCurrentContent().getPlainText());
     },
-    [editorState, pause]
+    [editorState, pause, count]
   );
 
   useEffect(() => {
@@ -68,13 +75,18 @@ export const TypingDiv = ({
       prevText !== text
     ) {
       const w = ref.current?.offsetWidth / content.length;
-      setStep((prev) => (prev += w));
+      setStep(text.length * w);
+      setCount(text.length);
     }
     if (text.length === 1) {
       setStarted(true);
       setTime(true);
     }
   }, [editorState]);
+
+  useEffect(() => {
+    if (count === content.length) handlePassed();
+  }, [count]);
 
   const handleClick = () => setReadonly(false);
 
@@ -96,9 +108,14 @@ export const TypingDiv = ({
       <div
         className="content"
         ref={ref}
-        style={{ left: `calc(60% - ${step}px)` }}
+        style={{ left: `calc(60.2% - ${step}px)` }}
       >
-        {content}
+        {/* {content} */}
+        {content.split("").map((char, i) => (
+          <span key={i} style={{ opacity: i < count ? 0 : 1 }}>
+            {char}
+          </span>
+        ))}
       </div>
     </div>
   );

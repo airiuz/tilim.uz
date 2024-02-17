@@ -4,6 +4,7 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import styles from "./index.module.css";
 import { Exit } from "@/src/common/Exit";
 import { ContentState, EditorState } from "draft-js";
+import { useSttStore } from "@/src/store/stt.store";
 
 const RichTextEditor = dynamic(
   () => import("react-draft-wysiwyg").then((mod) => mod.Editor),
@@ -36,6 +37,8 @@ export default function TextEditor({
     }
   }, []);
 
+  const { setText } = useSttStore();
+
   const handleEditorChange = (newState: EditorState) => {
     const selectionState = newState.getSelection();
 
@@ -58,6 +61,7 @@ export default function TextEditor({
   const handleClear = () => {
     const emptyState = EditorState.createEmpty();
     setEditorState(emptyState);
+    setText([]);
   };
 
   return (

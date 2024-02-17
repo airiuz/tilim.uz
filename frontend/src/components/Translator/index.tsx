@@ -37,6 +37,7 @@ import Tooltip from "@/src/common/Tooltip";
 
 import "react-loading-skeleton/dist/skeleton.css";
 import styles from "./index.module.css";
+import { useSttStore } from "@/src/store/stt.store";
 
 // const TextEditor = React.lazy(() => import("@/src/common/Textaera"));
 
@@ -46,9 +47,11 @@ const Translator = () => {
     useTextEditorStore();
   const footer = useRef<HTMLDivElement | null>(null);
 
+  const { capturing, loading } = useSttStore();
+
   const { findWords, clearWord } = useTranslateHook();
 
-  const { fetchData, loading, error } = useAxios();
+  const { fetchData } = useAxios();
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -95,6 +98,16 @@ const Translator = () => {
       footer.current?.scrollIntoView();
   };
 
+  const placeholder = useMemo(
+    () =>
+      capturing
+        ? "Yozilmoqda..."
+        : loading
+        ? "qayta ishlanmoqda..."
+        : "Matnni kiriting",
+    [loading, capturing]
+  );
+
   return (
     <section className={styles.section}>
       <Suspense
@@ -137,7 +150,7 @@ const Translator = () => {
               clear
               minHeight={minHeight}
               className={`${styles.translator__body} ${styles.initialStyles}`}
-              placeholder="Matnni kiriting"
+              placeholder={placeholder}
             />
           </div>
           <div ref={footer} className={styles.translator__footer}>

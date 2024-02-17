@@ -9,48 +9,45 @@ import { useTextEditorStore } from "@/src/store/translate.store";
 import { ContentState, EditorState } from "draft-js";
 import styles from "./index.module.css";
 import Tooltip from "../Tooltip";
+import { useSttStore } from "@/src/store/stt.store";
+import { useSttHook } from "@/src/hooks/stt.hook";
+
+export interface IData {
+  text: string;
+}
 
 export const SpeechToText = ({ className = "" }: { className?: string }) => {
-  const [capturing, setCapturing] = useState(false);
+  const { capturing } = useSttStore();
 
-  const [open, setOpen] = useState(false);
+  const { switchRecordMicrophone } = useSttHook();
 
-  const { setEditorState } = useTextEditorStore();
+  // const { setEditorState } = useTextEditorStore();
 
-  const [text, setText] = useState<string[]>([]);
+  // const [text, setText] = useState<string[]>([]);
 
-  const onData = (data: { text: string; is_final: boolean }) => {
-    if (data.is_final) {
-      setText((prev) => [...prev, data.text]);
-    } else {
-      setText((prev) => [
-        ...prev.filter((_, i) => i !== prev.length - 1),
-        data.text,
-      ]);
-    }
-  };
+  // const onData = (data: IData) => {
+  //   if (data.is_final) {
+  //     setText((prev) => [...prev, data.text]);
+  //   } else {
+  //     setText((prev) => [
+  //       ...prev.filter((_, i) => i !== prev.length - 1),
+  //       data.text,
+  //     ]);
+  //   }
+  // };
 
-  useEffect(() => {
-    setEditorState(
-      EditorState.createWithContent(ContentState.createFromText(text.join(" ")))
-    );
-  }, [text]);
-
-  const { onClick } = useSpeechToTextHook({
-    capturing,
-    setCapturing,
-    onData,
-    setOpen,
-  });
+  // const { onClick } = useSpeechToTextHook({
+  //   onData,
+  // });
 
   return (
     <div
-      onClick={onClick}
-      className={`${capturing && className} ${styles.microphone} ${
-        open && styles.mute
-      }`}
+      onClick={switchRecordMicrophone}
+      className={`${capturing && className} `}
     >
-      <Tooltip
+      <span>{MicrophoneIcon}</span>
+      {/* <audio className="customaudio" controls></audio> */}
+      {/* <Tooltip
         open={open}
         className={styles.tooltip}
         content={
@@ -70,7 +67,7 @@ export const SpeechToText = ({ className = "" }: { className?: string }) => {
         <span className={styles.text}>
           {open && <span>Mikrafonga ruxsat berishingiz kutilmoqda....</span>}
         </span>
-      </Tooltip>
+      </Tooltip> */}
     </div>
   );
 };

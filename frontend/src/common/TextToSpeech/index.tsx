@@ -1,6 +1,7 @@
 import { AudioIcon } from "@/src/common/Utils/icons";
 import { useEffect, useState } from "react";
 import { useTextToSpeech } from "@/src/hooks/textToSpeech.hook";
+import { useTTSHook } from "@/src/hooks/tts.hook";
 
 interface ITextToSpeech {
   text: string;
@@ -10,15 +11,17 @@ interface ITextToSpeech {
 export const TextToSpeech = ({ text, className }: ITextToSpeech) => {
   const [audio, setAudio] = useState<null | string>(null);
 
-  const { handleClick, handleActivate, connected } = useTextToSpeech({
-    text,
-    audio,
-    setAudio,
-  });
+  // const { handleClick, handleActivate, connected } = useTextToSpeech({
+  //   text,
+  //   audio,
+  //   setAudio,
+  // });
 
-  useEffect(() => {
-    handleActivate();
-  }, [audio]);
+  // useEffect(() => {
+  //   handleActivate();
+  // }, [audio]);
+
+  const { handleClick, connected } = useTTSHook({ text });
 
   return (
     <div onClick={handleClick} className={`${connected && className}`}>

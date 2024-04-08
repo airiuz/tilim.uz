@@ -14,13 +14,17 @@ export const useTTSHook = (props: ITextToSpeech) => {
 
   useEffect(() => {
     if (!window) return;
-    if (editorState.getCurrentContent().getPlainText().trim() === "") {
+    if (
+      editorState.getCurrentContent().getPlainText().trim() === "" &&
+      audio &&
+      audio.current
+    ) {
       setConnected(false);
       audio.current.pause();
     }
   }, [editorState]);
 
-  const audio = useRef(new Audio());
+  const audio = useRef<HTMLAudioElement | null>(null);
 
   const handleAudioEnd = () => {
     setConnected(false);
@@ -28,7 +32,9 @@ export const useTTSHook = (props: ITextToSpeech) => {
 
   const handleClick = useCallback(() => {
     if (!connected && props.text.trim() !== "") {
+      if (!window) return;
       setConnected(true);
+      audio.current = new Audio();
       audio.current.src =
         "https://file-examples.com/storage/fe0e2ce82f660c1579f31b4/2017/11/file_example_WAV_1MG.wav";
       audio.current.play();
@@ -36,7 +42,7 @@ export const useTTSHook = (props: ITextToSpeech) => {
       audio.current.addEventListener("ended", handleAudioEnd);
     } else {
       setConnected(false);
-      audio.current.pause();
+      audio.current?.pause();
     }
   }, [connected, props.text]);
 

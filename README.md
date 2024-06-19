@@ -1,2 +1,3 @@
 # tilim.uz
-Tilim.uz loyihasining kodlari
+Tilim.uz loyihasining kodlari saqlanadi
+``` 

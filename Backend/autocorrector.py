@@ -1,6 +1,7 @@
 import re
 
 import hunspell
+import re
 from texttools.settings import BASE_DIR
 from os.path import join as join_path
 

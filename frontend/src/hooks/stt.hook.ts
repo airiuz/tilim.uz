@@ -100,9 +100,13 @@ export const useSttHook = () => {
 
   const fetchData = useCallback(async (body: any) => {
     try {
-      const data = await axios.post("https://oyqiz.airi.uz/wavdata", body);
+      const data = await axios.post("/wavdata", body, {
+        baseURL: "",
+      });
       return data.data.text;
-    } catch (error) {}
+    } catch (error) {
+      return " ";
+    }
   }, []);
 
   function setWavHeader(
@@ -153,14 +157,3 @@ export const useSttHook = () => {
 
   return { switchRecordMicrophone, capturing };
 };
-
-function blobToBase64(blob: Blob) {
-  return new Promise((resolve, _) => {
-    const reader = new FileReader();
-    reader.onloadend = () => resolve(reader.result);
-    reader.readAsDataURL(blob);
-  });
-}
-function setEditorState(arg0: any) {
-  throw new Error("Function not implemented.");
-}

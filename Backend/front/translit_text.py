@@ -1,5 +1,6 @@
 import string
 import re
+from front.lotin import to_latin
 
 LATIN_TO_CYRILLIC = {
     'a': 'а',
@@ -1215,104 +1216,104 @@ def to_cyrillic(text):
     return a
 
 
-def to_latin(text):
-    """Transliterate cyrillic text to latin using the following rules:
-    1. ц = s at the beginning of a word.
-    ц = ts in the middle of a word after a vowel.
-    ц = s in the middle of a word after consonant (DEFAULT in CYRILLIC_TO_LATIN)
-        цирк = sirk
-        цех = sex
-        федерация = federatsiya
-        функция = funksiya
-    2. е = ye at the beginning of a word or after a vowel.
-    е = e in the middle of a word after a consonant (DEFAULT).
-    """
-    beginning_rules = {
-        'ц': 's',
-        'е': 'ye',
-    }
-    after_vowel_rules = {
-        'ц': 'ts',
-        'е': 'ye',
-    }
-
-    text2 = []
-    first = ''
-    for i in text:
-        if i in [' ', "\n", "\t"]:
-            if first != '':
-                text2.append(first)
-                first = ''
-            text2.append(i)
-        else:
-            first += i
-    if first != '':
-        text2.append(first)
-
-    text = text.lower()
-
-    text = re.sub(
-        r'\b(%s)' % '|'.join(beginning_rules.keys()),
-        lambda x: beginning_rules[x.group(1)],
-        text,
-        flags=re.U
-    )
-
-    text = re.sub(
-        r'(%s)(%s)' % ('|'.join(CYRILLIC_VOWELS),
-                       '|'.join(after_vowel_rules.keys())),
-        lambda x: '%s%s' % (x.group(1), after_vowel_rules[x.group(2)]),
-        text,
-        flags=re.U
-    )
-
-    text = re.sub(
-        r'(%s)' % '|'.join(CYRILLIC_TO_LATIN.keys()),
-        lambda x: CYRILLIC_TO_LATIN[x.group(1)],
-        text,
-        flags=re.U
-    )
-    text = re.sub(r"\byanada\b", "yana-da", text)
-    a = ""
-    text1 = []
-    first = ''
-    for i in text:
-        if i in [' ', "\n", "\t"]:
-            if first != '':
-                text1.append(first)
-                first = ''
-            text1.append(i)
-        else:
-            first += i
-    if first != '':
-        text1.append(first)
-
-    i = 0
-    while i < len(text2):
-        if text2[i] == ' ':
-            a += ' '
-        elif i + 1 < len(text2) and text2[i] + text2[i + 1] == '\n':
-            a += '\n'
-            i += 1
-        elif i + 1 < len(text2) and text2[i] + text2[i + 1] == '\t':
-            a += '\t'
-            i += 1
-        else:
-            if text2[i].isupper():
-                a += text1[i].upper()
-            elif text2[i].islower():
-                a += text1[i]
-            else:
-                a += text1[i][0].upper() + text1[i][1:]
-        i += 1
-
-    a = re.sub(r"(\d+) (yil|YIL|y|Y)", r"\1-\2", a)
-    a = re.sub(r"(\d+) (yanvar|fevral|mart|aprel|may|iyun|iyul|avgust|sentabr|oktabr|noyabr|dekabr|YANVAR|FEVRAL|\
-    MART|APREL|MAY|IYUN|IYUL|AVGUST|SENTABR|OKTABR|NOYABR|DEKABR)", r"\1-\2", a)
-    a = a.replace("«", "“")
-    a = a.replace("»", "”")
-
-    return a
+# def to_latin(text):
+#     """Transliterate cyrillic text to latin using the following rules:
+#     1. ц = s at the beginning of a word.
+#     ц = ts in the middle of a word after a vowel.
+#     ц = s in the middle of a word after consonant (DEFAULT in CYRILLIC_TO_LATIN)
+#         цирк = sirk
+#         цех = sex
+#         федерация = federatsiya
+#         функция = funksiya
+#     2. е = ye at the beginning of a word or after a vowel.
+#     е = e in the middle of a word after a consonant (DEFAULT).
+#     """
+#     beginning_rules = {
+#         'ц': 's',
+#         'е': 'ye',
+#     }
+#     after_vowel_rules = {
+#         'ц': 'ts',
+#         'е': 'ye',
+#     }
+#
+#     text2 = []
+#     first = ''
+#     for i in text:
+#         if i in [' ', "\n", "\t"]:
+#             if first != '':
+#                 text2.append(first)
+#                 first = ''
+#             text2.append(i)
+#         else:
+#             first += i
+#     if first != '':
+#         text2.append(first)
+#
+#     text = text.lower()
+#
+#     text = re.sub(
+#         r'\b(%s)' % '|'.join(beginning_rules.keys()),
+#         lambda x: beginning_rules[x.group(1)],
+#         text,
+#         flags=re.U
+#     )
+#
+#     text = re.sub(
+#         r'(%s)(%s)' % ('|'.join(CYRILLIC_VOWELS),
+#                        '|'.join(after_vowel_rules.keys())),
+#         lambda x: '%s%s' % (x.group(1), after_vowel_rules[x.group(2)]),
+#         text,
+#         flags=re.U
+#     )
+#
+#     text = re.sub(
+#         r'(%s)' % '|'.join(CYRILLIC_TO_LATIN.keys()),
+#         lambda x: CYRILLIC_TO_LATIN[x.group(1)],
+#         text,
+#         flags=re.U
+#     )
+#     text = re.sub(r"\byanada\b", "yana-da", text)
+#     a = ""
+#     text1 = []
+#     first = ''
+#     for i in text:
+#         if i in [' ', "\n", "\t"]:
+#             if first != '':
+#                 text1.append(first)
+#                 first = ''
+#             text1.append(i)
+#         else:
+#             first += i
+#     if first != '':
+#         text1.append(first)
+#
+#     i = 0
+#     while i < len(text2):
+#         if text2[i] == ' ':
+#             a += ' '
+#         elif i + 1 < len(text2) and text2[i] + text2[i + 1] == '\n':
+#             a += '\n'
+#             i += 1
+#         elif i + 1 < len(text2) and text2[i] + text2[i + 1] == '\t':
+#             a += '\t'
+#             i += 1
+#         else:
+#             if text2[i].isupper():
+#                 a += text1[i].upper()
+#             elif text2[i].islower():
+#                 a += text1[i]
+#             else:
+#                 a += text1[i][0].upper() + text1[i][1:]
+#         i += 1
+#
+#     a = re.sub(r"(\d+) (yil|YIL|y|Y)", r"\1-\2", a)
+#     a = re.sub(r"(\d+) (yanvar|fevral|mart|aprel|may|iyun|iyul|avgust|sentabr|oktabr|noyabr|dekabr|YANVAR|FEVRAL|\
+#     MART|APREL|MAY|IYUN|IYUL|AVGUST|SENTABR|OKTABR|NOYABR|DEKABR)", r"\1-\2", a)
+#     a = a.replace("«", "“")
+#     a = a.replace("»", "”")
+#
+#     return a
 
 
 import string
@@ -2532,101 +2533,104 @@ def to_cyrillic(text):
     return a
 
 
-def to_latin(text):
-    """Transliterate cyrillic text to latin using the following rules:
-    1. ц = s at the beginning of a word.
-    ц = ts in the middle of a word after a vowel.
-    ц = s in the middle of a word after consonant (DEFAULT in CYRILLIC_TO_LATIN)
-        цирк = sirk
-        цех = sex
-        федерация = federatsiya
-        функция = funksiya
-    2. е = ye at the beginning of a word or after a vowel.
-    е = e in the middle of a word after a consonant (DEFAULT).
-    """
-    beginning_rules = {
-        'ц': 's',
-        'е': 'ye',
-    }
-    after_vowel_rules = {
-        'ц': 'ts',
-        'е': 'ye',
-    }
+# def to_latin(text):
+#     """Transliterate cyrillic text to latin using the following rules:
+#     1. ц = s at the beginning of a word.
+#     ц = ts in the middle of a word after a vowel.
+#     ц = s in the middle of a word after consonant (DEFAULT in CYRILLIC_TO_LATIN)
+#         цирк = sirk
+#         цех = sex
+#         федерация = federatsiya
+#         функция = funksiya
+#     2. е = ye at the beginning of a word or after a vowel.
+#     е = e in the middle of a word after a consonant (DEFAULT).
+#     """
+#     beginning_rules = {
+#         'ц': 's',
+#         'е': 'ye',
+#     }
+#     after_vowel_rules = {
+#         'ц': 'ts',
+#         'е': 'ye',
+#     }
+#
+#     text2 = []
+#     first = ''
+#     for i in text:
+#         if i in [' ', "\n", "\t"]:
+#             if first != '':
+#                 text2.append(first)
+#                 first = ''
+#             text2.append(i)
+#         else:
+#             first += i
+#     if first != '':
+#         text2.append(first)
+#
+#     text = text.lower()
+#
+#     text = re.sub(
+#         r'\b(%s)' % '|'.join(beginning_rules.keys()),
+#         lambda x: beginning_rules[x.group(1)],
+#         text,
+#         flags=re.U
+#     )
+#
+#     text = re.sub(
+#         r'(%s)(%s)' % ('|'.join(CYRILLIC_VOWELS),
+#                        '|'.join(after_vowel_rules.keys())),
+#         lambda x: '%s%s' % (x.group(1), after_vowel_rules[x.group(2)]),
+#         text,
+#         flags=re.U
+#     )
+#
+#     text = re.sub(
+#         r'(%s)' % '|'.join(CYRILLIC_TO_LATIN.keys()),
+#         lambda x: CYRILLIC_TO_LATIN[x.group(1)],
+#         text,
+#         flags=re.U
+#     )
+#     text = re.sub(r"\byanada\b", "yana-da", text)
+#     a = ""
+#     text1 = []
+#     first = ''
+#     for i in text:
+#         if i in [' ', "\n", "\t"]:
+#             if first != '':
+#                 text1.append(first)
+#                 first = ''
+#             text1.append(i)
+#         else:
+#             first += i
+#     if first != '':
+#         text1.append(first)
+#
+#     i = 0
+#     while i < len(text2):
+#         if text2[i] == ' ':
+#             a += ' '
+#         elif i + 1 < len(text2) and text2[i] + text2[i + 1] == '\n':
+#             a += '\n'
+#             i += 1
+#         elif i + 1 < len(text2) and text2[i] + text2[i + 1] == '\t':
+#             a += '\t'
+#             i += 1
+#         else:
+#             if text2[i].isupper():
+#                 a += text1[i].upper()
+#             elif text2[i].islower():
+#                 a += text1[i]
+#             else:
+#                 a += text1[i][0].upper() + text1[i][1:]
+#         i += 1
+#
+#     a = re.sub(r"(\d+) (yil|YIL|y|Y)", r"\1-\2", a)
+#     a = re.sub(r"(\d+) (yanvar|fevral|mart|aprel|may|iyun|iyul|avgust|sentabr|oktabr|noyabr|dekabr|YANVAR|FEVRAL|\
+#     MART|APREL|MAY|IYUN|IYUL|AVGUST|SENTABR|OKTABR|NOYABR|DEKABR)", r"\1-\2", a)
+#     a = a.replace("«", "“")
+#     a = a.replace("»", "”")
+#
+#     return a
 
-    text2 = []
-    first = ''
-    for i in text:
-        if i in [' ', "\n", "\t"]:
-            if first != '':
-                text2.append(first)
-                first = ''
-            text2.append(i)
-        else:
-            first += i
-    if first != '':
-        text2.append(first)
-
-    text = text.lower()
-
-    text = re.sub(
-        r'\b(%s)' % '|'.join(beginning_rules.keys()),
-        lambda x: beginning_rules[x.group(1)],
-        text,
-        flags=re.U
-    )
-
-    text = re.sub(
-        r'(%s)(%s)' % ('|'.join(CYRILLIC_VOWELS),
-                       '|'.join(after_vowel_rules.keys())),
-        lambda x: '%s%s' % (x.group(1), after_vowel_rules[x.group(2)]),
-        text,
-        flags=re.U
-    )
-
-    text = re.sub(
-        r'(%s)' % '|'.join(CYRILLIC_TO_LATIN.keys()),
-        lambda x: CYRILLIC_TO_LATIN[x.group(1)],
-        text,
-        flags=re.U
-    )
-    text = re.sub(r"\byanada\b", "yana-da", text)
-    a = ""
-    text1 = []
-    first = ''
-    for i in text:
-        if i in [' ', "\n", "\t"]:
-            if first != '':
-                text1.append(first)
-                first = ''
-            text1.append(i)
-        else:
-            first += i
-    if first != '':
-        text1.append(first)
-
-    i = 0
-    while i < len(text2):
-        if text2[i] == ' ':
-            a += ' '
-        elif i + 1 < len(text2) and text2[i] + text2[i + 1] == '\n':
-            a += '\n'
-            i += 1
-        elif i + 1 < len(text2) and text2[i] + text2[i + 1] == '\t':
-            a += '\t'
-            i += 1
-        else:
-            if text2[i].isupper():
-                a += text1[i].upper()
-            elif text2[i].islower():
-                a += text1[i]
-            else:
-                a += text1[i][0].upper() + text1[i][1:]
-        i += 1
-
-    a = re.sub(r"(\d+) (yil|YIL|y|Y)", r"\1-\2", a)
-    a = re.sub(r"(\d+) (yanvar|fevral|mart|aprel|may|iyun|iyul|avgust|sentabr|oktabr|noyabr|dekabr|YANVAR|FEVRAL|\
-    MART|APREL|MAY|IYUN|IYUL|AVGUST|SENTABR|OKTABR|NOYABR|DEKABR)", r"\1-\2", a)
-    a = a.replace("«", "“")
-    a = a.replace("»", "”")
-
-    return a
+if __name__ == '__main__':
+    print(to_latin("ассалом"))

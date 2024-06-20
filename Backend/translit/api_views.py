@@ -33,9 +33,10 @@ class ChangeTextAPIView(GetAddressApiView):
         serializer.is_valid(raise_exception=True)
         a = serializer.validated_data.get('data')
         t = serializer.validated_data.get('type')
-        translate = to_cyrillic if t=='1' else to_latin
+        translate = to_cyrillic if t == '1' else to_latin
         translated = to_latin(a)
-        incorrect_words = [re.sub(r'[\.\,\:$]', r'', translate(x)) for x in re.findall(r'([a-zA-z\'ʻ‘`ʼ’\-]+)', translated) if autocorrector.check(x) == False]
+        incorrect_words = [re.sub(r'[\.\,\:$]', r'', translate(x)) for x in
+                           re.findall(r'([a-zA-z\'ʻ‘`ʼ’\-]+)', translated) if autocorrector.check(x) == False]
         result = translate(a)
         incorrect_words = [x for x in incorrect_words if x.isalpha()]
         content = {'text': result, 'incorrect_words': incorrect_words}
@@ -44,6 +45,7 @@ class ChangeTextAPIView(GetAddressApiView):
 
 class FixWordsViewSet(ViewSet):
     permission_classes = (permissions.AllowAny,)
+
     def create(self, request):
         serializer = FixWordSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -52,9 +54,10 @@ class FixWordsViewSet(ViewSet):
         t = serializer.validated_data.get("type")
         word = to_latin(word) if t == '1' else word
         words = autocorrector.suggestions(word) if autocorrector.check(word) == False else word
-        if t=='1' and isinstance(words, list):
+        if t == '1' and isinstance(words, list):
             words = [to_cyrillic(x) for x in words]
         return HttpResponse(json.dumps({'recommended': words}), content_type='application/json')
+
 
 class DocumentChangeAPIView(GetAddressApiView):
     parser_classes = (MultiPartParser, FileUploadParser)
@@ -82,39 +85,26 @@ class DocumentChangeAPIView(GetAddressApiView):
 class TypeFastAPIView(GetAddressApiView):
     @csrf_exempt
     def post(self, request):
-
         serializer = TypeFastOutSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         type_m = TypeFastModel.objects.filter(id=serializer.data['text_id']).first()
         alpha = serializer.data.get('t')
         model_text = to_cyrillic(str(type_m.text)) if alpha == '1' else str(type_m.text)
-        type_fast_result = type_fast.find_difference_text(model_text, serializer.validated_data['text'])
-        # content = TypeFastOutModel.objects.create(text_id=serializer.validated_data['text_id'],
-        #                                           text=serializer.validated_data['text'],
-        #                                           true_answers=len(type_fast_result["true_answers"]),
-        #                                           alpha = serializer.validated_data['t'])
-        # content.save()
-
-        percent = type_fast_result['percent']
-        true_answers=len(type_fast_result["true_answers"])
-        # top_results = [x.true_answers for x in TypeFastOutModel.objects.filter(alpha=alpha).order_by('-true_answers')[:10]]
-        
-        # leader = True if true_answers in top_results else False
+        type_fast_result = type_fast.find_difference_text(model_text, serializer.validated_data['text'],
+                                                          serializer.validated_data['time'])
+        accuracy = serializer.validated_data['accuracy']
         place = 1
-        topusers = TopUsers.objects.filter(t=alpha).order_by("percent")
+        topusers = TopUsers.objects.filter(t=alpha).order_by('place')
         for x in topusers:
-            # 70 
-            if x.percent>=percent:
-                place = x.place + 1 
-                break
-        leader = True if place <= 20 else False
-        return_content = {'data': type_fast_result['true_answers'], 'place': place, 'leader': leader, 
-                 "percent":type_fast_result['percent'], "chars":type_fast_result['chars']}
+            if x.percent * x.wpm >= accuracy * type_fast_result['wpm']:
+                place = x.place + 1
+                print(x.percent * x.wpm, accuracy * type_fast_result['wpm'])
+        return_content = {'place': place, "wpm": type_fast_result['wpm']}
         return HttpResponse(json.dumps(return_content), content_type='application/json')
 
 
 class TypeFastGetTextAPIView(GetAddressApiView):
-    def post(self,request):
+    def post(self, request):
         serializer = ChooseLanguageSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         ChangeTextAPIView.get_ip(request)
@@ -124,7 +114,7 @@ class TypeFastGetTextAPIView(GetAddressApiView):
         text_m = TypeFastModel.objects.filter(id=x).first()
         t = serializer.data.get('t')
         text_to_send = to_cyrillic(str(text_m.text)) if t == '1' else text_m.text
-        content = {"text_id":text_m.id, "text":text_to_send}
+        content = {"text_id": text_m.id, "text": text_to_send}
         return HttpResponse(json.dumps(content), content_type='application/json')
 
 
@@ -133,16 +123,23 @@ class CreateTextAPIView(generics.ListCreateAPIView):
     serializer_class = TypeFastSerializer
     queryset = TypeFastModel.objects.all()
 
+
 class TopUsersViewSet(ViewSet):
+
+    def get_queryset(self):
+        return TopUsers.objects.all().order_by('place')
+
     def list(self, request):
-        queryset = TopUsers.objects.all()
+        queryset = self.get_queryset()
         serializer = NameofTopSerializer(queryset, many=True)
         return Response(serializer.data)
+
     def create(self, request):
-        serializer = NameofTopSerializer (data=request.data)
+        serializer = NameofTopSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
+
 
 class SessionUserView(APIView):
     permission_classes = (IsAuthenticated, IsAdminUser)

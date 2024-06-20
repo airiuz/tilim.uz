@@ -17,13 +17,26 @@ class TypeFastSerializer(serializers.ModelSerializer):
 class TypeFastOutSerializer(serializers.Serializer):
     text_id = serializers.IntegerField()
     text = serializers.CharField(max_length=500)
+    time = serializers.IntegerField(default=60)
+    accuracy = serializers.IntegerField(default=0, max_value=100, min_value=0)
     t = serializers.CharField()
 
 
 class NameofTopSerializer(serializers.ModelSerializer):
     class Meta:
         model = TopUsers
-        fields = ["name", "place", "t", "true_answers", "percent", "chars"]
+        fields = ["name", "place", "t", "percent", 'wpm']
+
+    def validate(self, attrs):
+        place = 1
+        topusers = TopUsers.objects.filter(t=attrs["t"]).order_by("place")
+        for x in topusers:
+            if x.percent * x.wpm >= attrs['percent'] * attrs['wpm']:
+                place = x.place + 1
+        if place != attrs['place']:
+            raise serializers.ValidationError("Place is not correct")
+        return attrs
+
     def create(self, validated_data):
         place = validated_data.pop('place')
         t = validated_data.pop('t')
@@ -36,15 +49,17 @@ class NameofTopSerializer(serializers.ModelSerializer):
         over_users.delete()
 
         return TopUsers.objects.create(name=validated_data.pop('name'), place=place,
-                                       t=t, true_answers=validated_data.pop('true_answers'),
-                                       percent=validated_data.pop("percent"), chars=validated_data.pop("chars"))
+                                       t=t, percent=validated_data.pop("percent"), wpm=validated_data.pop('wpm'))
+
 
 class MyTextSerializer(serializers.Serializer):
     data = serializers.CharField(required=True, trim_whitespace=False)
     type = serializers.CharField(required=True)
 
+
 class ChooseLanguageSerializer(serializers.Serializer):
     t = serializers.CharField()
+
 
 class FixWordSerializer(serializers.Serializer):
     type = serializers.CharField()
@@ -75,6 +90,7 @@ class MyFileSerializer(serializers.ModelSerializer):
         file = validated_data.pop('in_file')
         t = validated_data.pop('t')
         return MyFile.objects.create(in_file=file, t=t)
+
 
 class MyOutFileSerializer(serializers.ModelSerializer):
     out_file = serializers.FileField()

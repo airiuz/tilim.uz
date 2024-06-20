@@ -1,22 +1,21 @@
-from trie import trie_from_words
+from front.trie import trie_from_words
 import json
 import re
-# from texttools.settings import BASE_DIR
-# from os.path import join as join_path
+from texttools.settings import BASE_DIR
 # PATH = BASE_DIR # Bu yerga Dateset turgan pathni kiriting
 #
 # if PATH=="":
 #     raise FileNotFoundError("Fayl Pathi topilmadi, iltimos PATH ni kiriting!")
 # Kerakli datasetni yuklab olish
-with open(f"Umumiy.json","r",encoding="utf-8") as file:
+with open(f"front/Umumiy.json","r",encoding="utf-8") as file:
     suzlar = json.load(file)
-with open(f"Umumiy_cap.json","r",encoding="utf-8") as file:
+with open(f"front/Umumiy_cap.json","r",encoding="utf-8") as file:
     suzlar_cap = json.load(file)
-with open(f"kirill_lotin.json","r",encoding="utf-8") as file:
+with open(f"front/kirill_lotin.json","r",encoding="utf-8") as file:
     kirill_latin = json.load(file)
-with open(f"chilar.json","r",encoding="utf-8") as file:
+with open(f"front/chilar.json","r",encoding="utf-8") as file:
     chilar = json.load(file)
-with open(f"chilar_cap.json","r",encoding="utf-8") as file:
+with open(f"front/chilar_cap.json","r",encoding="utf-8") as file:
     chilar_cap = json.load(file)
 
 # TRIE RE COMPILE qilish

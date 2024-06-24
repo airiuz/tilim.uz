@@ -52,6 +52,7 @@
   gap: 5px;
   display: flex;
   flex-direction: column;
+  flex: 1;
 }
 
 .list__user__item .user__information .name {
@@ -63,7 +64,8 @@
 
 .list__user__item .user__information .result {
   display: flex;
-  gap: 15px;
+  /* gap: 15px; */
+  justify-content: space-between;
   color: var(--mute-text);
   font-weight: 400;
   font-size: 12px;

@@ -3,13 +3,7 @@ import { Button } from "@/src/common/Button";
 import { BackIcon, GroupIcon, ReIcon } from "@/src/common/Utils/icons";
 import { Card } from "@/src/common/Card";
 import { useTypingStore } from "@/src/store/typing.store";
-import {
-  ChangeEvent,
-  ChangeEventHandler,
-  useCallback,
-  useMemo,
-  useState,
-} from "react";
+import { ChangeEvent, useCallback, useMemo, useState } from "react";
 
 import four from "../../../../assets/images/4.png";
 import three from "../../../../assets/images/3.png";
@@ -18,6 +12,7 @@ import one from "../../../../assets/images/1.png";
 import oneMobile from "../../../../assets/images/1_mobile.png";
 import Image from "next/image";
 import useAxios from "@/src/hooks/axios.hook";
+import { useTypingHook } from "@/src/hooks/typing.hook";
 
 // Toshbaqadan sal tezroq > 50
 // Quyondan qolishmaysiz 50 > x > 25
@@ -25,75 +20,41 @@ import useAxios from "@/src/hooks/axios.hook";
 // “Flash”dan xam tezroq x < 10
 
 export const Result = () => {
-  const {
-    chars,
-    words,
-    accuracy,
-    setPassed,
-    setData,
-    setTime,
-    setShow,
-    language,
-    place,
-  } = useTypingStore();
+  const { chars, words, accuracy, place } = useTypingStore();
+
+  const { handleSend, handleReply, handleBack } = useTypingHook({
+    content: "",
+  });
 
   const [name, setName] = useState("");
 
-  const handleReply = () => {
-    setPassed(false);
-    setData(0, 0, 0);
-    setTime(false);
-  };
-
   const mobile = useMemo(() => {
-    if (typeof window !== "undefined") {
-      return window.innerWidth < 768;
-    }
+    if (typeof window !== "undefined") return window.innerWidth < 768;
     return false;
   }, []);
-
-  const handleBack = () => {
-    setShow(false);
-    setPassed(false);
-    setData(0, 0, 0);
-    setTime(false);
-  };
 
   const handleInput = (event: ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
   };
 
-  const { loading, fetchData } = useAxios();
-
   const placeData = useMemo(() => {
     if (place < 50 && place > 25)
-      return { title: "Quyondan qolishmaysiz", src: three };
+      return { title: "Xavas qilguday tez", src: three };
     if (place < 25 && place > 10)
-      return { title: "Xavas qilguday tez", src: two };
+      return { title: "Quyondan qolishmaysiz", src: two };
     if (place < 10)
       return {
-        title: "“Flash”dan xam tezroq",
+        title: "“Chaqmoq”dan xam tezroq",
         src: mobile ? oneMobile : one,
         form: true,
       };
-    return { title: "Toshbaqadan sal tezroq", src: four };
+    return { title: "Internet tezligmizdan tezroqsiz", src: four };
   }, [place]);
 
-  const handleSubmit = useCallback(
-    async (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      const res = await fetchData("/topusers/", "POST", {
-        place,
-        name,
-        t: String(language),
-        true_answers: words,
-        chars,
-        percent: accuracy,
-      });
-      handleBack();
-    },
-    [name]
-  );
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    handleSend(name);
+  };
 
   return (
     <div className={styles.container}>
@@ -123,10 +84,10 @@ export const Result = () => {
               <span>{accuracy}</span>
               <span>% aniqlik</span>
             </Card>
-            <Button onClick={handleReply} className={styles.mobile__reply}>
+            {/* <Button onClick={handleReply} className={styles.mobile__reply}>
               <span>{ReIcon}</span>
               <span>Qayta urinish</span>
-            </Button>
+            </Button> */}
           </div>
         </div>
         <div className={styles.image}>

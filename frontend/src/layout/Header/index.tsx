@@ -53,13 +53,19 @@ export default function Header() {
 
   useEffect(() => {
     setOpen(false);
+    if (
+      pathname === Links.USERPOLICY ||
+      pathname === Links.SECURITY ||
+      pathname === Links.TERMS
+    )
+      return;
 
-    if (ref && ref.current) {
-      ref.current.style.display = "block";
-      setTimeout(() => {
-        if (ref && ref.current) ref.current.style.display = "none";
-      }, 800);
-    }
+    if (!ref || !ref.current) return;
+
+    ref.current.style.display = "block";
+    setTimeout(() => {
+      if (ref && ref.current) ref.current.style.display = "none";
+    }, 800);
   }, [pathname]);
 
   return (
@@ -132,7 +138,7 @@ export default function Header() {
         </div>
         <MobileMenu show={open} handleClose={handleOpen} />
       </header>
-      <div ref={ref}>
+      <div ref={ref} className="">
         <Loader />
       </div>
     </>

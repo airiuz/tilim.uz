@@ -8,18 +8,11 @@ import { useTypingStore } from "@/src/store/typing.store";
 import { CountDown } from "@/src/common/CountDown";
 import { useEffect, useState } from "react";
 import { useTypingHook } from "@/src/hooks/typing.hook";
+import { DURATION } from "@/src/constants";
 
 export const FirstSection = () => {
-  const {
-    words,
-    chars,
-    accuracy,
-    setPause,
-    setPassed,
-    setTime,
-    text,
-    setReadonly,
-  } = useTypingStore();
+  const { words, chars, accuracy, setPause, setTime, text, setReadonly } =
+    useTypingStore();
 
   const { handlePassed } = useTypingHook({ content: "" });
 
@@ -27,12 +20,12 @@ export const FirstSection = () => {
 
   const handlePause = () => {
     setReadonly(true);
-    setPause(true);
+    setPause("Orqaga qaytish");
     setTime(false);
   };
 
   const handleStop = () => {
-    handlePassed();
+    handlePassed(DURATION);
     setTime(false);
   };
 

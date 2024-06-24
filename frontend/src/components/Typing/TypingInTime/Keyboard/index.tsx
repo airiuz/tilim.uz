@@ -1,13 +1,22 @@
 import "./index.css";
-import { useEffect } from "react";
-import { init } from "./script";
+import { useCallback, useEffect } from "react";
+import { destr, init } from "./script";
 import { useTypingStore } from "@/src/store/typing.store";
 
 export const Keyboard = () => {
-  const { language } = useTypingStore();
+  const { language, setPause } = useTypingStore();
+  const errorHandler = useCallback(
+    (capsLock: boolean, lang: number) => {
+      if (capsLock) setPause("Caps Lockni o'chiring");
+      else if (lang !== language && lang !== undefined)
+        setPause("Klaviature tilini o'zgartiring");
+    },
+    [language]
+  );
   useEffect(() => {
-    init();
-  }, []);
+    init(errorHandler);
+    return destr;
+  }, [language]);
   return (
     <div className="keyboard__wrapper">
       {!language ? (

@@ -56,7 +56,7 @@ export default function Footer() {
         <div>
           <div className={styles.footer__logo}>
             <Logo />
-            <div className={styles.footer__logo__text}>Beta v1.0</div>
+            <div className={styles.footer__logo__text}>Beta v2.0</div>
           </div>
         </div>
         <div>

@@ -1,11 +1,6 @@
-import dynamic from "next/dynamic";
-import { Loader } from "../components/Loader";
 import React from "react";
 import { HelpButton } from "../components/Help";
-
-const Translator = dynamic(() => import("../components/Translator"), {
-  loading: () => <Loader />,
-});
+import Translator from "../components/Translator";
 
 export default async function Home() {
   return (

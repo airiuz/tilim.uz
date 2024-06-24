@@ -3,7 +3,7 @@ import { ContentState, EditorState } from "draft-js";
 import { useCallback, useEffect, useState } from "react";
 import { useTextEditorStore } from "@/src/store/translate.store";
 import { usePathname } from "next/navigation";
-import { ITextEditorLink, Links } from "../constants";
+import { ITextEditorLink, Links, SPLIT_REGEX, TAG_REGEX } from "../constants";
 import { convertTo } from "../common/Textaera/converters";
 import { convertToHTML } from "draft-convert";
 
@@ -21,6 +21,7 @@ export const useTranslateHook = () => {
     incorrectWords,
     setEditorState,
     tooltipPosition,
+    connected,
   } = useTextEditorStore();
 
   let pathname = "";
@@ -85,6 +86,7 @@ export const useTranslateHook = () => {
   }, [pathname, incorrectWords]);
 
   const replaceToCorrectVersion = (word: string) => {
+    if (connected) return;
     const contentState = editorState.getCurrentContent();
 
     const [markdown, links] = convertTo(contentState);
@@ -144,8 +146,6 @@ export const useTranslateHook = () => {
 
       const { linksData } = replaceLinks(markdownContent, links);
 
-      console.log(linksData);
-
       linksData.forEach((link: ITextEditorLink) => {
         htmlContent = htmlContent.replace(link.text, gluingWords(link.text));
       });
@@ -161,21 +161,12 @@ export const useTranslateHook = () => {
     [editorState]
   );
 
-  const replaceAt = (
-    text: string,
-    start: number,
-    end: number,
-    replacement: string
-  ) => {
-    return text.substring(0, start) + replacement + text.substring(end);
-  };
-
   const renderText = (text: string, fn: any, ...args: any[]) => {
     let content = `${text}`;
 
-    const plainText = content.replace(/<[^>]+>/g, "");
+    const plainText = content.replace(TAG_REGEX, "");
 
-    const words = plainText.split(/\s+/);
+    const words = plainText.split(SPLIT_REGEX);
 
     let fromIndex = 0;
 
@@ -186,15 +177,25 @@ export const useTranslateHook = () => {
       const startIndex = content.indexOf(clearWord(word), fromIndex);
       const endIndex =
         startIndex + word.length - (word.length - clearWord(word).length);
-      fromIndex = endIndex;
 
-      content = fn(content, startIndex, endIndex, word, ...args);
+      const result = fn(content, startIndex, endIndex, word, ...args);
+
+      content = result.content;
+
+      fromIndex = startIndex + result.wordLength;
 
       i++;
     }
 
     return content;
   };
+
+  const replaceAt = (
+    text: string,
+    start: number,
+    end: number,
+    replacement: string
+  ) => text.substring(0, start) + replacement + text.substring(end);
 
   const handleChangeColor = (
     content: string,
@@ -203,9 +204,13 @@ export const useTranslateHook = () => {
     word: string,
     incorrectWords: string[]
   ) => {
-    if (incorrectWords.find((w: string) => !!word.includes(w)))
-      return replaceAt(content, startIndex, endIndex, wrongWord(word));
-    return content;
+    if (incorrectWords.find((w: string) => word === w)) {
+      return {
+        content: replaceAt(content, startIndex, endIndex, wrongWord(word)),
+        wordLength: wrongWord(word).length,
+      };
+    }
+    return { content, wordLength: word.length };
   };
 
   const handleReplace = (
@@ -218,13 +223,14 @@ export const useTranslateHook = () => {
     replaceMentWord: string
   ) => {
     if (word === incorrectWord)
-      return replaceAt(content, startIndex, endIndex, replaceMentWord);
-    return content;
+      return {
+        content: replaceAt(content, startIndex, endIndex, replaceMentWord),
+        wordLength: replaceMentWord.length,
+      };
+    return { content, wordLength: word.length };
   };
 
   const gluingWords = (text: string) => text.split(" ").join("");
-
-  // components
 
   const linkRender = (link: ITextEditorLink) =>
     `<a style="color:#007bff;text-decoration:underline" href="${link.link}">${link.text}</a>`;

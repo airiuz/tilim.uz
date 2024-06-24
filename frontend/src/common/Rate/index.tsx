@@ -1,5 +1,5 @@
 import { DislikeIcon, LikeIcon } from "@/src/common/Utils/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./index.module.css";
 import useAxios from "@/src/hooks/axios.hook";
 import { useTextEditorStore } from "@/src/store/translate.store";
@@ -15,9 +15,16 @@ export const Rate = () => {
 
   const { fetchData } = useAxios();
 
+  useEffect(() => {
+    setLike(false);
+    setDislike(false);
+  }, [editorState.getCurrentContent().getPlainText()]);
+
   const handleLike = async (likeArg: boolean, dislikeArg: boolean) => {
     const text = editorState.getCurrentContent().getPlainText();
-    if (text) {
+    if (text.trim()) {
+      setLike(likeArg);
+      setDislike(dislikeArg);
       if (like || dislike) {
         if ((like && likeArg) || (dislikeArg && dislike)) {
           await fetchData(`statistic/${id}`, "DELETE");
@@ -31,12 +38,10 @@ export const Rate = () => {
         return;
       }
       const res = await fetchData("statistic/", "POST", {
-        like,
+        like: likeArg,
         text,
       });
       if (res && res.id) setId(res.id);
-      setLike(likeArg);
-      setDislike(dislikeArg);
     }
   };
 

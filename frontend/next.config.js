@@ -6,6 +6,7 @@ const nextConfig = {
     appDir: true,
     optimizeCss: true,
   },
+  reactStrictMode: false,
   trailingSlash: true,
   rewrites: () => {
     return [

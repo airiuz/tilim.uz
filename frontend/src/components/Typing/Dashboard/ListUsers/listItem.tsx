@@ -9,8 +9,7 @@ const ListItem = ({ user }: { user: IUser }) => {
       <div className={styles.user__information}>
         <div className={styles.name}>{user.name}</div>
         <div className={styles.result}>
-          <span>{user.true_answers} so’z/daq</span>
-          <span>{user.chars} belgi/daq</span>
+          <span>{user.wpm} so’z/daq</span>
           <span>{user.percent}% aniqlik</span>
         </div>
       </div>

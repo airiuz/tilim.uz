@@ -28,6 +28,9 @@ type TextEditorState = {
   setIncorrectWords: (incorrectWords: string[]) => void;
   language: string;
   setLanguage: (language: string) => void;
+
+  connected: boolean;
+  setConnected: (connected: boolean) => void;
 };
 
 export const useTextEditorStore = create<TextEditorState>((set) => ({
@@ -42,4 +45,6 @@ export const useTextEditorStore = create<TextEditorState>((set) => ({
   setIncorrectWords: (incorrectWords) => set({ incorrectWords }),
   language: "0",
   setLanguage: (language) => set({ language }),
+  connected: false,
+  setConnected: (connected: boolean) => set({ connected }),
 }));

@@ -8,31 +8,21 @@ import {
 } from "@/src/common/Button";
 import cup from "../../../../assets/images/img.png";
 import { useEffect, useState } from "react";
-import useAxios from "@/src/hooks/axios.hook";
 import { IUser } from "@/src/constants";
-import Skeleton from "react-loading-skeleton";
+import { useTypingHook } from "@/src/hooks/typing.hook";
+import { useTypingStore } from "@/src/store/typing.store";
 
 export const ListUsers = () => {
   // List of users
 
-  const { loading, fetchData, error } = useAxios();
+  const { getTopUsers } = useTypingHook({ content: "" });
 
-  const [users, setUsers] = useState<IUser[]>([]);
-  const [topUsers, setTopUsers] = useState<IUser[]>([]);
+  const [first, setFirst] = useState(true);
 
+  const { users } = useTypingStore();
   useEffect(() => {
-    (async function () {
-      const users: IUser[] = await fetchData("/topusers/", "GET");
-      if (users) {
-        setUsers(users);
-        setTopUsers(users.filter((user) => Number(user.t) === 0));
-      }
-    })();
+    getTopUsers();
   }, []);
-
-  const handleClick = (first: boolean) => {
-    setTopUsers(users.filter((user) => Number(first) !== Number(user.t)));
-  };
 
   return (
     <div className={styles.list__users__container}>
@@ -46,19 +36,15 @@ export const ListUsers = () => {
           animation={false}
           firstChild={<LotinForTranslator />}
           secondChild={<KirilForTranslator />}
-          onClick={handleClick}
+          onClick={setFirst}
         />
       </div>
       <div className={styles.list__users}>
-        {loading ? (
-          <div className={styles.loading__container}>
-            <Skeleton width={"100%"} height={"40px"} />
-            <Skeleton width={"100%"} height={"40px"} />
-            <Skeleton width={"100%"} height={"40px"} />
-          </div>
-        ) : (
-          topUsers.map((user, i) => <ListItem key={i} user={user as any} />)
-        )}
+        {users
+          .filter((user) => Number(first) !== Number(user.t))
+          .map((user, i) => (
+            <ListItem key={i} user={user as any} />
+          ))}
       </div>
     </div>
   );

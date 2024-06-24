@@ -5,7 +5,7 @@ import { Dashboard } from "@/src/components/Typing/Dashboard/Information";
 import { TranslatorButton } from "@/src/common/Button";
 import { useMemo, useState } from "react";
 
-export const TypingDashboard = () => {
+const TypingDashboard = () => {
   const [first, setFirst] = useState(true);
 
   let desktop = true;
@@ -21,8 +21,8 @@ export const TypingDashboard = () => {
     <div className={styles.dashboard__container}>
       <TranslatorButton
         animation={first && false}
-        firstChild={<>Tez yozish</>}
-        secondChild={<>Reyting</>}
+        firstChild={<span>Tez yozish</span>}
+        secondChild={<span>Reyting</span>}
         width="100%"
         className={styles.switch__button}
         onClick={handleCLick}
@@ -32,3 +32,5 @@ export const TypingDashboard = () => {
     </div>
   );
 };
+
+export default TypingDashboard;

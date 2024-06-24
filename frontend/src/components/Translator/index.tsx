@@ -16,11 +16,7 @@ import {
   TranslatorButton,
 } from "@/src/common/Button";
 import { useTextEditorStore } from "@/src/store/translate.store";
-import {
-  convertFrom,
-  convertTo,
-  getEditorText,
-} from "@/src/common/Textaera/converters";
+import { convertFrom, convertTo } from "@/src/common/Textaera/converters";
 import useAxios from "@/src/hooks/axios.hook";
 import { TextToSpeech } from "@/src/common/TextToSpeech";
 import { SpeechToText } from "@/src/common/SpeechToText";
@@ -80,6 +76,7 @@ const Translator = () => {
         const incorrectWords = result.incorrect_words.map((word: string) =>
           clearWord(word)
         );
+
         setIncorrectWords(incorrectWords);
         const newCurrentContent = convertFrom(result.text, links);
         findWords(
@@ -156,10 +153,7 @@ const Translator = () => {
           <div ref={footer} className={styles.translator__footer}>
             <div className={styles.translator__footer__icons__container}>
               <SpeechToText className={styles.active} />
-              <TextToSpeech
-                text={getEditorText(editorState.getCurrentContent()).trim()}
-                className={styles.active}
-              />
+              <TextToSpeech className={styles.active} />
               <Copy />
             </div>
             <div className={styles.footer__icons__container}>

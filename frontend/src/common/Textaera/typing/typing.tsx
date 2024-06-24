@@ -27,7 +27,7 @@ export const TypingDiv: React.FC<ITypingDiv> = ({ content, setStarted }) => {
 
   const [count, setCount] = useState(0);
 
-  const { setTime, pause, setTypedText, readonly, setReadonly } =
+  const { setTime, pause, setTypedText, readonly, setReadonly, duration } =
     useTypingStore();
 
   useEffect(() => {
@@ -39,8 +39,10 @@ export const TypingDiv: React.FC<ITypingDiv> = ({ content, setStarted }) => {
     (newState: EditorState) => {
       let text = newState.getCurrentContent().getPlainText();
 
-      if (text.length > content.length) text = text.slice(0, content.length);
-
+      if (text.length === content.length) {
+        handlePassed(duration);
+        return;
+      }
       const prevText = editorState.getCurrentContent().getPlainText();
 
       if (text.length < prevText.length) {
@@ -84,10 +86,6 @@ export const TypingDiv: React.FC<ITypingDiv> = ({ content, setStarted }) => {
     }
   }, [editorState]);
 
-  useEffect(() => {
-    if (count === content.length) handlePassed();
-  }, [count]);
-
   const handleClick = () => setReadonly(false);
 
   const handleBLur = () => setReadonly(true);
@@ -98,7 +96,7 @@ export const TypingDiv: React.FC<ITypingDiv> = ({ content, setStarted }) => {
         className="typingEditor"
         editorState={editorState}
         setEditorState={handleChange}
-        readOnly={readonly}
+        readOnly={readonly || pause}
         onBlur={handleBLur}
         style={{
           left: `calc(60.2% - ${step}px)`,

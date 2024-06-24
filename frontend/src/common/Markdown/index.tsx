@@ -18,7 +18,7 @@ import { localStorageShowKey } from "@/src/constants";
 function Markdown() {
   const [show, setShow] = useState<boolean>(false);
 
-  const { editorState, setEditorState } = useTextEditorStore();
+  const { editorState, setEditorState, connected } = useTextEditorStore();
 
   useEffect(() => {
     const prevShow: string | null = localStorage.getItem(localStorageShowKey);
@@ -26,6 +26,7 @@ function Markdown() {
   }, []);
 
   const handleBoldClick = (key: string, block: boolean = false) => {
+    if (connected) return;
     const newEditorState = block
       ? RichUtils.toggleBlockType(editorState, key)
       : RichUtils.toggleInlineStyle(editorState, key);
@@ -41,11 +42,15 @@ function Markdown() {
   };
 
   const undo = () => {
+    if (connected) return;
+
     const newEditorState = EditorState.undo(editorState);
     setEditorState(EditorState.moveFocusToEnd(newEditorState));
   };
 
   const redo = () => {
+    if (connected) return;
+
     const newEditorState = EditorState.redo(editorState);
     setEditorState(EditorState.moveFocusToEnd(newEditorState));
   };

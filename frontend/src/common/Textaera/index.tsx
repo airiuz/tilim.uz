@@ -74,6 +74,9 @@ export default function TextEditor({
 
       <RichTextEditor
         editorState={editorState}
+        handlePastedText={() => {
+          return !Boolean(clear);
+        }}
         onEditorStateChange={handleEditorChange}
         editorStyle={{ minHeight, maxHeight, ...style }}
         editorClassName={`${styles.editor} ${className}`}

@@ -24,20 +24,46 @@ export function pressKey(char) {
   }, 200);
 }
 
-export function init() {
-  document.body.addEventListener("keydown", function (e) {
-    var key = getKey(e);
-    if (!key) {
-      return console.warn("No key for", e.keyCode);
-    }
+function keydown(e, errorHandler) {
+  errorHandler(checkCapsLock(e), detectKeyboardLanguage(e));
+  var key = getKey(e);
 
-    key.setAttribute("data-pressed", "on");
-  });
+  if (!key) return console.warn("No key for", e.keyCode);
 
-  document.body.addEventListener("keyup", function (e) {
-    var key = getKey(e);
-    key && key.removeAttribute("data-pressed");
-  });
+  key.setAttribute("data-pressed", "on");
+}
+
+let fn = null;
+
+function keyup(e) {
+  var key = getKey(e);
+  key && key.removeAttribute("data-pressed");
+}
+
+function checkCapsLock(event) {
+  return event.getModifierState("CapsLock");
+}
+
+function detectKeyboardLanguage(event) {
+  const key = event.key;
+  const code = event.code;
+
+  if (code.startsWith("Key"))
+    if (/^[a-zA-Z]$/.test(key)) return 0;
+    else if (/^[а-яА-ЯЁё]$/.test(key)) return 1;
+}
+
+export function init(errorHandler) {
+  fn = (e) => keydown(e, errorHandler);
+  document.body.addEventListener("keydown", fn);
+
+  document.body.addEventListener("keyup", keyup);
+}
+
+export function destr() {
+  document.body.removeEventListener("keydown", fn);
+
+  document.body.removeEventListener("keyup", keyup);
 }
 
 // function size () {

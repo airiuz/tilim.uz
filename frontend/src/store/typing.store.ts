@@ -1,5 +1,5 @@
-import axios from "axios";
 import { create } from "zustand";
+import { IUser } from "../constants";
 
 interface IText {
   text_id: number;
@@ -9,7 +9,7 @@ interface IText {
 type TypingState = {
   show: boolean;
   passed: boolean;
-  pause: boolean;
+  pause: string | null;
   chars: number;
   words: number;
   accuracy: number;
@@ -20,6 +20,10 @@ type TypingState = {
   typedText: string;
   place: number;
   readonly: boolean;
+  duration: number;
+  users: IUser[];
+  setUsers: (users: IUser[]) => void;
+  setDuration: (duration: number) => void;
   setReadonly: (readonly: boolean) => void;
   setPlace: (place: number) => void;
   setTypedText: (text: string) => void;
@@ -28,7 +32,7 @@ type TypingState = {
   setLanguage: (language: number) => void;
   setTime: (time: boolean) => void;
   setData: (chars: number, words: number, accuracy: number) => void;
-  setPause: (pause: boolean) => void;
+  setPause: (pause: string | null) => void;
   setPassed: (show: boolean) => void;
   setShow: (show: boolean) => void;
 };
@@ -36,7 +40,7 @@ type TypingState = {
 export const useTypingStore = create<TypingState>((set) => ({
   show: false,
   passed: false,
-  pause: false,
+  pause: null,
   chars: 0,
   words: 0,
   accuracy: 0,
@@ -70,4 +74,10 @@ export const useTypingStore = create<TypingState>((set) => ({
   setReadonly: (readonly) => {
     return set({ readonly });
   },
+
+  duration: 60,
+  setDuration: (duration) => set({ duration }),
+
+  users: [],
+  setUsers: (users: IUser[]) => set({ users }),
 }));

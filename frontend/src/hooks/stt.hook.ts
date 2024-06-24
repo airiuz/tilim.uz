@@ -16,7 +16,7 @@ export const useSttHook = () => {
 
   const { capturing, setCapturing, addText, text, setLoading } = useSttStore();
 
-  const { setEditorState } = useTextEditorStore();
+  const { setEditorState, connected } = useTextEditorStore();
 
   useEffect(() => {
     if (text.length) {
@@ -94,9 +94,10 @@ export const useSttHook = () => {
   }, [audioChunks, audioChunksWithHeader]);
 
   const switchRecordMicrophone = useCallback(async () => {
+    if (connected) return;
     if (capturing) await stopRecording();
     else await startRecording();
-  }, [capturing]);
+  }, [capturing, connected]);
 
   const fetchData = useCallback(async (body: any) => {
     try {

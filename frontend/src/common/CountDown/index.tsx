@@ -2,12 +2,11 @@ import { useTypingStore } from "@/src/store/typing.store";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import styles from "./index.module.css";
 import { useThemeStore } from "@/src/store/theme.store";
-import { THEME } from "@/src/constants";
+import { DURATION, THEME } from "@/src/constants";
 import { useTypingHook } from "@/src/hooks/typing.hook";
 
 export const CountDown = () => {
-  const { time } = useTypingStore();
-  const { setPassed } = useTypingStore();
+  const { time, pause, setDuration } = useTypingStore();
   const { theme } = useThemeStore();
 
   const { handlePassed } = useTypingHook({ content: "" });
@@ -24,15 +23,16 @@ export const CountDown = () => {
       </svg>
 
       <CountdownCircleTimer
-        isPlaying={time}
-        duration={60}
+        isPlaying={time && !pause}
+        duration={DURATION}
         strokeWidth={7}
         trailColor={theme === THEME.DARK ? "#1d2736" : "#fff"}
         isSmoothColorTransition
         size={84}
+        onUpdate={(remainTime) => setDuration(DURATION - remainTime)}
         colors={"url(#my-unique-id)"}
         onComplete={() => {
-          handlePassed();
+          handlePassed(DURATION);
         }}
       >
         {({ remainingTime }) => (

@@ -1,6 +1,7 @@
 "use client";
 import styles from "./index.module.css";
 import { ArrowIcon } from "@/src/common/Utils/icons";
+import { useTextEditorStore } from "@/src/store/translate.store";
 import { ReactNode, useState } from "react";
 
 interface ITranslatorButton {
@@ -30,7 +31,10 @@ export const TranslatorButton = ({
     second: Boolean(secondBtnActive),
   });
 
+  const { setConnected } = useTextEditorStore();
+
   const handleClick = (first: boolean) => {
+    setConnected(false);
     setActiveButton((prev) => ({
       first,
       second: !first,

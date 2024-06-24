@@ -25,9 +25,9 @@ export const AboutComponent = () => {
           <Card className={styles.contact}>
             <h3>Biz bilan bog’lanish</h3>
             <div className={styles.contacts}>
-              <a href="tel:+998335591818">
+              <a href="tel:+998998289729">
                 <span>{PhoneIcon}</span>
-                <span>+998 (33) 559-18-18</span>
+                <span>+998 (99) 828-97-29</span>
               </a>
               <a href="mailto:Info@airi.uz">
                 <span>{MailIcon}</span>
@@ -43,7 +43,7 @@ export const AboutComponent = () => {
         </div>
       </div>
 
-      <div className={styles.participants}>
+      {/* <div className={styles.participants}>
         <h2>Loyiha ishtirokchilari</h2>
 
         <div className={styles.participants__container}>
@@ -87,7 +87,7 @@ export const AboutComponent = () => {
             </div>
           </Card>
         </div>
-      </div>
+      </div> */}
     </section>
   );
 };

@@ -35,12 +35,11 @@ export type FlexDirection =
   | undefined;
 
 export interface IUser {
-  chars: number;
   name: string;
   percent: number;
   place: number;
   t: string;
-  true_answers: number;
+  wpm: number;
 }
 
 export type WebSocketMessage =
@@ -49,3 +48,8 @@ export type WebSocketMessage =
   | SharedArrayBuffer
   | Blob
   | ArrayBufferView;
+
+export const DURATION = 60;
+export const MAX_SYMOBLS_TTS = 100;
+export const SPLIT_REGEX = /[\s,\.!?;:\/]+/g;
+export const TAG_REGEX = /<[^>]+>/g;

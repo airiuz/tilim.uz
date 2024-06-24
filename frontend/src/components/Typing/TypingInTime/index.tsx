@@ -6,7 +6,7 @@ import { useTypingStore } from "@/src/store/typing.store";
 import { Pause } from "@/src/common/Pause";
 import Skeleton from "react-loading-skeleton";
 
-export const TypingTime = () => {
+const TypingTime = () => {
   const { passed, pause, loading } = useTypingStore();
 
   if (passed) return <Result />;
@@ -25,3 +25,5 @@ export const TypingTime = () => {
     </div>
   );
 };
+
+export default TypingTime;

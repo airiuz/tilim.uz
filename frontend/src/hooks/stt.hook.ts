@@ -101,7 +101,9 @@ export const useSttHook = () => {
 
   const fetchData = useCallback(async (body: any) => {
     try {
-      const data = await axios.post("https://oyqiz.airi.uz/wavdata", body);
+      const data = await axios.post("/wavdata", body, {
+        baseURL: "",
+      });
       return data.data.text;
     } catch (error) {
       return " ";

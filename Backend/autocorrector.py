@@ -1,4 +1,7 @@
+import re
+
 import hunspell
+import re
 from texttools.settings import BASE_DIR
 from os.path import join as join_path
 
@@ -10,9 +13,12 @@ spellcheckercyr = hunspell.HunSpell(join_path(BASE_DIR, 'uz-hunspell/uz-cyr.dic'
 
 
 def check(suz, cyr=False):
+    suz = suz.strip()
+    suz = re.sub('[ʻ‘`ʼ’]', "'", suz)
     if not cyr:
         return spellchecker.spell(suz)
     return spellcheckercyr.spell(suz)
+
 
 
 def suggestions(suz):

@@ -1,6 +1,6 @@
 import { convertToHTML } from "draft-convert";
 import { ContentState } from "draft-js";
-
+import DOMPurify from "dompurify";
 export const delay = new Promise<boolean>((resolve, reject) => {
   setTimeout(() => resolve(true), 1000);
 });
@@ -26,7 +26,5 @@ export const converToHtmlWithStyles = (contentState: ContentState) => {
     },
   })(contentState);
 
-  return html;
-
-  return html.substring(3, html.length - 4);
+  return DOMPurify.sanitize(html);
 };

@@ -44,11 +44,16 @@ export const useTypingHook = ({ content }: { content: string }) => {
   const handleAccuracy = useCallback(
     (text: string) => {
       const words =
-        text.length !== 0 ? content.slice(0, text.length).split(" ").length : 0;
+        text.length !== 0
+          ? content.slice(0, text.length).split(" ").length - 1
+          : 0;
       const chars = text.length;
-      const accuracy = Math.floor(
-        ((text.length - errors.length) * 100) / (text.length ? text.length : 1)
-      );
+      const accuracy = words
+        ? Math.floor(
+            ((text.length - errors.length) * 100) /
+              (text.length ? text.length : 1)
+          )
+        : 0;
       setData(chars, words, accuracy);
     },
     [content, errors]

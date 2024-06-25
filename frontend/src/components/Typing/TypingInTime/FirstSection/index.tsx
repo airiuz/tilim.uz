@@ -11,8 +11,17 @@ import { useTypingHook } from "@/src/hooks/typing.hook";
 import { DURATION } from "@/src/constants";
 
 export const FirstSection = () => {
-  const { words, chars, accuracy, setPause, setTime, text, setReadonly } =
-    useTypingStore();
+  const {
+    words,
+    chars,
+    accuracy,
+    setPause,
+    setTime,
+    setShow,
+    time,
+    text,
+    setReadonly,
+  } = useTypingStore();
 
   const { handlePassed } = useTypingHook({ content: "" });
 
@@ -25,6 +34,8 @@ export const FirstSection = () => {
   };
 
   const handleStop = () => {
+    if (!time) return setShow(false);
+
     handlePassed(DURATION);
     setTime(false);
   };
@@ -35,7 +46,7 @@ export const FirstSection = () => {
         <div className={styles.buttons__container}>
           <Button
             className={styles.stop__button}
-            disabled={!started}
+            // disabled={!started}
             onClick={handleStop}
           >
             <span>{StopTextingIcon}</span>

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useTextEditorStore } from "@/src/store/translate.store";
 import styles from "./index.module.css";
 import { CheckedIcon } from "@/src/common/Utils/icons";
@@ -6,11 +6,26 @@ import { useTranslateHook } from "@/src/hooks/translate.hook";
 import { createPortal } from "react-dom";
 import useAxios from "@/src/hooks/axios.hook";
 import Skeleton from "react-loading-skeleton";
+import { useThemeStore } from "@/src/store/theme.store";
+import { THEME } from "@/src/constants";
 
 export const CorrectWordsTooltip = () => {
   const { tooltipPosition, selectedWord, language } = useTextEditorStore();
 
+  const { theme } = useThemeStore();
+
   const { replaceToCorrectVersion } = useTranslateHook();
+
+  const skeletonColor = useMemo(
+    () =>
+      theme === THEME.DARK
+        ? {
+            baseColor: "#333",
+            highlightColor: "#444",
+          }
+        : { baseColor: "", highlightColor: "" },
+    [theme]
+  );
 
   const { loading, fetchData } = useAxios();
 
@@ -50,7 +65,12 @@ export const CorrectWordsTooltip = () => {
         }}
       >
         {loading ? (
-          <Skeleton height={"100%"} width={"100%"} />
+          <Skeleton
+            baseColor={skeletonColor.baseColor}
+            highlightColor={skeletonColor.highlightColor}
+            height={"100%"}
+            width={"100%"}
+          />
         ) : (
           words.map((word, i) => (
             <div

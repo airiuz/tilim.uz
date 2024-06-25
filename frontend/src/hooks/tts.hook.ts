@@ -234,7 +234,6 @@ export const useTTSHook = () => {
           ).filter((ch) => checkChunkForEmtiness(ch.substring));
           subStrings.forEach((subStr) => chunks.push(subStr));
         } else {
-          console.log(substring);
           chunks.push({
             substring,
             start: lastIndex,

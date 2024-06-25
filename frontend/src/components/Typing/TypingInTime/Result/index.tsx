@@ -40,9 +40,9 @@ export const Result = () => {
   const placeData = useMemo(() => {
     if (place < 50 && place > 25)
       return { title: "Xavas qilguday tez", src: three };
-    if (place < 25 && place > 10)
+    if (place <= 25 && place > 10)
       return { title: "Quyondan qolishmaysiz", src: two };
-    if (place < 10)
+    if (place <= 10)
       return {
         title: "“Chaqmoq”dan xam tezroq",
         src: mobile ? oneMobile : one,
@@ -105,7 +105,11 @@ export const Result = () => {
               onChange={handleInput}
             />
             <div className={styles.form__buttons__container}>
-              <Button onClick={handleReply} className={styles.reIcon}>
+              <Button
+                onClick={handleReply}
+                type="button"
+                className={styles.reIcon}
+              >
                 {ReIcon}
               </Button>
               <Button className={styles.save__button} type="submit">

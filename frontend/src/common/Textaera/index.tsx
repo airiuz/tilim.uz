@@ -1,10 +1,13 @@
 import dynamic from "next/dynamic";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import styles from "./index.module.css";
 import { Exit } from "@/src/common/Exit";
-import { ContentState, EditorState } from "draft-js";
+import { EditorState } from "draft-js";
 import { useSttStore } from "@/src/store/stt.store";
+import { OrderedSet } from "immutable";
+import { useTextToSpeech } from "@/src/hooks/textToSpeech.hook";
+import { useTextEditorStore } from "@/src/store/translate.store";
 
 const RichTextEditor = dynamic(
   () => import("react-draft-wysiwyg").then((mod) => mod.Editor),
@@ -38,25 +41,22 @@ export default function TextEditor({
   }, []);
 
   const { setText } = useSttStore();
+  const { connected } = useTextEditorStore();
 
-  const handleEditorChange = (newState: EditorState) => {
-    const selectionState = newState.getSelection();
+  const handleEditorChange = useCallback(
+    (newState: EditorState) => {
+      const text = newState.getCurrentContent().getPlainText();
+      const prevText = editorState.getCurrentContent().getPlainText();
 
-    // if (!selectionState.isCollapsed()) return;
+      if (text.length > 4999 || connected) return;
 
-    const text = newState.getCurrentContent().getPlainText();
-    const maxLength = 5000;
+      if (prevText !== text)
+        newState = EditorState.setInlineStyleOverride(newState, OrderedSet());
 
-    if (text.length <= maxLength) {
       setEditorState(newState);
-    } else {
-      const truncatedText = text.slice(0, maxLength);
-      const newContentState = ContentState.createFromText(truncatedText);
-      const newEditorState = EditorState.createWithContent(newContentState);
-      setEditorState(newEditorState);
-    }
-    setEditorState(newState);
-  };
+    },
+    [editorState, connected]
+  );
 
   const handleClear = () => {
     const emptyState = EditorState.createEmpty();
@@ -74,9 +74,7 @@ export default function TextEditor({
 
       <RichTextEditor
         editorState={editorState}
-        handlePastedText={() => {
-          return !Boolean(clear);
-        }}
+        handlePastedText={() => !Boolean(clear)}
         onEditorStateChange={handleEditorChange}
         editorStyle={{ minHeight, maxHeight, ...style }}
         editorClassName={`${styles.editor} ${className}`}

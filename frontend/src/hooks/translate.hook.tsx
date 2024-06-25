@@ -3,7 +3,16 @@ import { ContentState, EditorState } from "draft-js";
 import { useCallback, useEffect, useState } from "react";
 import { useTextEditorStore } from "@/src/store/translate.store";
 import { usePathname } from "next/navigation";
-import { ITextEditorLink, Links, SPLIT_REGEX, TAG_REGEX } from "../constants";
+import {
+  BOLD_WORD_TAG,
+  ITextEditorLink,
+  Links,
+  SPLIT_REGEX,
+  TAG_REGEX,
+  WRONG_CLOSE_TAG,
+  WRONG_OPEN_TAG,
+  WRONG_WORD_TAG,
+} from "../constants";
 import { convertTo } from "../common/Textaera/converters";
 import { convertToHTML } from "draft-convert";
 
@@ -156,10 +165,24 @@ export const useTranslateHook = () => {
         content = content.replace(gluingWords(link.text), linkRender(link));
       });
 
+      content = fixNestedTags(content);
+
       return replaceWords(content);
     },
     [editorState]
   );
+
+  const fixNestedTags = useCallback((htmlString: string) => {
+    let updatedHtml = htmlString.replaceAll(WRONG_WORD_TAG, (match: string) =>
+      match.replaceAll(/<\/?(strong|u|em)>/g, "")
+    );
+
+    updatedHtml = updatedHtml.replaceAll(BOLD_WORD_TAG, (match: string) =>
+      match.replaceAll(/<\/?(strong|u|em)>/g, "")
+    );
+
+    return updatedHtml;
+  }, []);
 
   const renderText = (text: string, fn: any, ...args: any[]) => {
     let content = `${text}`;
@@ -236,7 +259,7 @@ export const useTranslateHook = () => {
     `<a style="color:#007bff;text-decoration:underline" href="${link.link}">${link.text}</a>`;
 
   const wrongWord = (text: string) =>
-    `<span style="color:red">${clearWord(text)}</span>`;
+    `${WRONG_OPEN_TAG}${clearWord(text)}${WRONG_CLOSE_TAG}`;
 
   const clearWord = (word: string) =>
     word

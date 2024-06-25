@@ -9,7 +9,7 @@ export const Keyboard = () => {
     (capsLock: boolean, lang: number) => {
       if (capsLock) setPause("Caps Lockni o'chiring");
       else if (lang !== language && lang !== undefined)
-        setPause("Klaviature tilini o'zgartiring");
+        setPause("Klaviatura tilini o'zgartiring");
     },
     [language]
   );

@@ -27,13 +27,21 @@ export const TypingDiv: React.FC<ITypingDiv> = ({ content, setStarted }) => {
 
   const [count, setCount] = useState(0);
 
-  const { setTime, pause, setTypedText, readonly, setReadonly, duration } =
-    useTypingStore();
+  const {
+    setTime,
+    pause,
+    setTypedText,
+    readonly,
+    show,
+    setReadonly,
+    duration,
+  } = useTypingStore();
 
   useEffect(() => {
-    if (!pause || readonly)
+    if ((!pause || readonly) && show) {
       setEditorState(EditorState.moveFocusToEnd(editorState));
-  }, [pause, readonly]);
+    }
+  }, [pause, readonly, show]);
 
   const handleChange = useCallback(
     (newState: EditorState) => {

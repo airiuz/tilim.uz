@@ -43,6 +43,7 @@
     "zustand": "^4.3.6"
   },
   "devDependencies": {
+    "@types/dompurify": "^3.0.5",
     "@types/draft-convert": "^2.1.4",
     "@types/html-to-draftjs": "^1.4.0",
     "@types/react-draft-wysiwyg": "^1.13.4",

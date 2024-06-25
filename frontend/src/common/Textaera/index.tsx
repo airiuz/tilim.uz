@@ -63,14 +63,14 @@ export default function TextEditor({
     setEditorState(emptyState);
     setText([]);
   };
-
   return (
     <div className={styles.container}>
-      {clear && (
-        <div className={styles.clear} onClick={handleClear}>
-          <Exit />
-        </div>
-      )}
+      {clear &&
+        Boolean(editorState.getCurrentContent().getPlainText().length) && (
+          <div className={styles.clear} onClick={handleClear}>
+            <Exit />
+          </div>
+        )}
 
       <RichTextEditor
         editorState={editorState}

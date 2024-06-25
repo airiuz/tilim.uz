@@ -65,7 +65,6 @@ export const useTTSHook = () => {
       let activeChunk = openTag + currentChunk + closeTag;
 
       if (currentChunk.startsWith(closeParagraph + openParagraph)) {
-        console.log(1);
         activeChunk =
           closeParagraph +
           openParagraph +
@@ -78,8 +77,6 @@ export const useTTSHook = () => {
       }
 
       if (currentChunk.startsWith(openParagraph)) {
-        console.log(1);
-
         activeChunk =
           openParagraph +
           openTag +
@@ -87,18 +84,12 @@ export const useTTSHook = () => {
           closeTag;
       }
       if (currentChunk.endsWith(closeParagraph)) {
-        console.log(1);
-
         activeChunk =
           openTag + html.slice(start, end - closeParagraph.length) + closeTag;
         closeParagraph;
       }
-
-      console.log(currentChunk);
-      console.log(activeChunk);
       const htmlString = html.slice(0, start) + activeChunk + html.slice(end);
 
-      // console.log(htmlString);
       const contentBlock = htmlToDraft(htmlString);
       const contentState = ContentState.createFromBlockArray(
         contentBlock.contentBlocks

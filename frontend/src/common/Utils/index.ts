@@ -1,6 +1,6 @@
+import DOMPurify from "dompurify";
 import { convertToHTML } from "draft-convert";
 import { ContentState } from "draft-js";
-import DOMPurify from "dompurify";
 export const delay = new Promise<boolean>((resolve, reject) => {
   setTimeout(() => resolve(true), 1000);
 });

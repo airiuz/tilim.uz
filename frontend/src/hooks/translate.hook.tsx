@@ -165,6 +165,8 @@ export const useTranslateHook = () => {
         content = content.replace(gluingWords(link.text), linkRender(link));
       });
 
+      // console.log(content);
+      // return;
       content = fixNestedTags(content);
 
       return replaceWords(content);

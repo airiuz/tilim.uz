@@ -95,6 +95,7 @@
   height: 45px;
   padding-left: 12px;
   outline: 0;
+  color: var(--text);
 }
 
 .form input::placeholder {

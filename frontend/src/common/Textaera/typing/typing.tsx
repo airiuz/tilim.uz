@@ -29,7 +29,9 @@ export const TypingDiv: React.FC<ITypingDiv> = ({ content, setStarted }) => {
 
   const {
     setTime,
+    typedText,
     pause,
+    setData,
     setTypedText,
     readonly,
     show,
@@ -43,6 +45,16 @@ export const TypingDiv: React.FC<ITypingDiv> = ({ content, setStarted }) => {
     }
   }, [pause, readonly, show]);
 
+  useEffect(() => {
+    setData(0, 0, 0);
+    setTypedText("");
+    return () => {
+      errIdxs.current = [];
+    };
+  }, []);
+
+  const errIdxs = useRef<number[]>([]);
+
   const handleChange = useCallback(
     (newState: EditorState) => {
       let text = newState.getCurrentContent().getPlainText();
@@ -53,21 +65,33 @@ export const TypingDiv: React.FC<ITypingDiv> = ({ content, setStarted }) => {
       }
       const prevText = editorState.getCurrentContent().getPlainText();
 
+      if (text.length - prevText.length > 1) {
+        text = text.slice(0, text.length - 2);
+        return;
+      }
       if (text.length < prevText.length) {
-        const state = handleReplace(prevText.split(""));
+        const state = handleReplace(prevText.split(""), errIdxs.current);
         setEditorState(EditorState.moveFocusToEnd(state));
         return;
       }
 
-      handleAccuracy(text);
+      if (content[text.length - 1] !== text[text.length - 1]) {
+        errIdxs.current.push(text.length - 1);
+      }
 
-      const state = handleReplace(text.split(""));
+      const userTypedText = typedText + text[text.length - 1];
+
+      handleAccuracy(userTypedText, errIdxs.current.length);
+
+      const state = handleReplace(text.split(""), errIdxs.current);
+
+      console.log(errIdxs.current);
 
       setEditorState(EditorState.moveFocusToEnd(state));
 
-      setTypedText(newState.getCurrentContent().getPlainText());
+      setTypedText(userTypedText);
     },
-    [editorState, pause, count]
+    [editorState, pause, count, typedText]
   );
 
   useEffect(() => {
@@ -89,8 +113,8 @@ export const TypingDiv: React.FC<ITypingDiv> = ({ content, setStarted }) => {
       setCount(text.length);
     }
     if (text.length === 1) {
-      setStarted(true);
-      setTime(true);
+      // setStarted(true);
+      // setTime(true);
     }
   }, [editorState]);
 

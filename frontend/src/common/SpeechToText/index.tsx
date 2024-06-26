@@ -42,7 +42,8 @@ export const SpeechToText = ({ className = "" }: { className?: string }) => {
 
   return (
     <div
-      onClick={switchRecordMicrophone}
+      title="Speech to text funksiyasi hozirda o'zgartirilmoqda"
+      // onClick={switchRecordMicrophone}
       className={`${capturing && className} `}
     >
       <span>{MicrophoneIcon}</span>

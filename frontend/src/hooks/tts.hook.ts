@@ -6,6 +6,8 @@ import { TAG_REGEX, THEME } from "../constants";
 import { ContentState, EditorState } from "draft-js";
 import { useThemeStore } from "../store/theme.store";
 import { converToHtmlWithStyles } from "../common/Utils";
+import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 let htmlToDraft: any = null;
 if (typeof window === "object") {
   htmlToDraft = require("html-to-draftjs").default;
@@ -19,6 +21,14 @@ export const useTTSHook = () => {
 
   const editorStateRef = useRef<EditorState | null>(null);
   const audio = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    return () => {
+      setConnected(false);
+      audio.current?.pause();
+      editorStateRef.current && handleDecorateText(editorStateRef.current);
+    };
+  }, []);
 
   useEffect(() => {
     if (!window) return;
@@ -76,18 +86,23 @@ export const useTTSHook = () => {
           closeTag;
       }
 
-      if (currentChunk.startsWith(openParagraph)) {
-        activeChunk =
-          openParagraph +
-          openTag +
-          html.slice(start + openParagraph.length, end) +
-          closeTag;
+      activeChunk =
+        se(openParagraph).start +
+        openTag +
+        html.slice(
+          start + se(openParagraph).start.length,
+          end - se(closeParagraph).end.length
+        ) +
+        closeTag +
+        se(closeParagraph).end;
+
+      function se(tag: string) {
+        return {
+          start: currentChunk.startsWith(tag) ? tag : "",
+          end: currentChunk.endsWith(tag) ? tag : "",
+        };
       }
-      if (currentChunk.endsWith(closeParagraph)) {
-        activeChunk =
-          openTag + html.slice(start, end - closeParagraph.length) + closeTag;
-        closeParagraph;
-      }
+
       const htmlString = html.slice(0, start) + activeChunk + html.slice(end);
 
       const contentBlock = htmlToDraft(htmlString);
@@ -180,10 +195,9 @@ export const useTTSHook = () => {
           }
         }
 
-        lastIndex = endIndex + 1; // Move past the comma
+        lastIndex = endIndex + 1;
       }
 
-      // Add the last segment if there's any text left after the last comma
       if (lastIndex < text.length) {
         let substring = text.substring(lastIndex);
 
@@ -210,7 +224,7 @@ export const useTTSHook = () => {
     []
   );
 
-  const generateChunks = useCallback((text: string) => {
+  const generateChunks = useCallback((text: string, startIndex: number) => {
     let chunks = [];
     let regex = /[.!?]/g;
     let match;
@@ -230,14 +244,14 @@ export const useTTSHook = () => {
           let subStrings = splitByCommas(
             substring,
             MAX_SYMBOLS_TTS,
-            lastIndex
+            lastIndex + startIndex
           ).filter((ch) => checkChunkForEmtiness(ch.substring));
           subStrings.forEach((subStr) => chunks.push(subStr));
         } else {
           chunks.push({
             substring,
-            start: lastIndex,
-            end: endIndex,
+            start: lastIndex + startIndex,
+            end: endIndex + startIndex,
           });
         }
       }
@@ -251,19 +265,42 @@ export const useTTSHook = () => {
           let subStrings = splitByCommas(
             substring,
             MAX_SYMBOLS_TTS,
-            lastIndex
+            lastIndex + startIndex
           ).filter((ch) => checkChunkForEmtiness(ch.substring));
           subStrings.forEach((subStr) => chunks.push(subStr));
         } else {
           chunks.push({
             substring,
-            start: lastIndex,
-            end: text.length,
+            start: lastIndex + startIndex,
+            end: text.length + startIndex,
           });
         }
       }
     }
 
+    return chunks;
+  }, []);
+
+  const splitHtml = useCallback((htmlString: string) => {
+    const chunks: ReturnType<typeof generateChunks> = [];
+    let start = 0;
+    const paragraphRegex = /(<p>.*?<\/p>)/gs;
+    const listItemRegex = /(<li>.*?<\/li>)/gs;
+    const paragraphs = htmlString.split(paragraphRegex).filter(Boolean);
+    paragraphs.forEach((item) => {
+      const listItems = item.split(listItemRegex).filter(Boolean);
+      if (listItems.length) {
+        listItems.forEach((listItem) => {
+          const htmlPlaceholders = memoizationOfTags(listItem);
+          chunks.push(...generateChunks(htmlPlaceholders, start));
+          start += listItem.length;
+        });
+      } else {
+        const htmlPlaceholders = memoizationOfTags(item);
+        chunks.push(...generateChunks(htmlPlaceholders, start));
+        start += item.length;
+      }
+    });
     return chunks;
   }, []);
 
@@ -278,9 +315,12 @@ export const useTTSHook = () => {
 
     const html = converToHtmlWithStyles(editorState.getCurrentContent());
 
-    const htmlPlaceholders = memoizationOfTags(html);
+    const chunks = splitHtml(html);
 
-    const chunks = generateChunks(htmlPlaceholders);
+    // console.log(chunks);
+    // return;
+
+    // return;
 
     if (!window) return;
     if (!connected && chunks.length) {

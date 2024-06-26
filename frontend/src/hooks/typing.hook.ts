@@ -1,6 +1,6 @@
 "use client";
 import { useTypingStore } from "@/src/store/typing.store";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ContentState, EditorState } from "draft-js";
 import useAxios from "./axios.hook";
 import { IUser } from "../constants";
@@ -11,8 +11,6 @@ if (typeof window === "object") {
 }
 
 export const useTypingHook = ({ content }: { content: string }) => {
-  const [errors, setErrors] = useState<number[]>([]);
-
   const { fetchData } = useAxios();
 
   const {
@@ -42,7 +40,10 @@ export const useTypingHook = ({ content }: { content: string }) => {
   );
 
   const handleAccuracy = useCallback(
-    (text: string) => {
+    (text: string, errCount: number) => {
+      // console.log(text);
+      // console.log(content.slice(0, text.length));
+
       const words =
         text.length !== 0
           ? content.slice(0, text.length).split(" ").length - 1
@@ -50,17 +51,17 @@ export const useTypingHook = ({ content }: { content: string }) => {
       const chars = text.length;
       const accuracy = words
         ? Math.floor(
-            ((text.length - errors.length) * 100) /
-              (text.length ? text.length : 1)
+            ((text.length - errCount) * 100) / (text.length ? text.length : 1)
           )
         : 0;
+
       setData(chars, words, accuracy);
     },
-    [content, errors]
+    [content, typedText]
   );
 
   const handleReplace = useCallback(
-    (text: string[]) => {
+    (text: string[], errs: number[]) => {
       for (let i = 0; i < text.length; i++) {
         if (text[i] !== content[i]) {
           if (
@@ -72,16 +73,14 @@ export const useTypingHook = ({ content }: { content: string }) => {
         }
       }
 
-      errors.forEach((index) => {
+      errs.forEach((index) => {
         if (text[index]) {
           text[index] = replace(index);
         }
       });
 
-      if (text[text.length - 1] !== content[text.length - 1]) {
+      if (text[text.length - 1] !== content[text.length - 1])
         text[text.length - 1] = replace(text.length - 1);
-        setErrors((prev) => Array.from(new Set([...prev, text.length - 1])));
-      }
 
       const htmlString =
         text[text.length - 1] === " "
@@ -95,7 +94,7 @@ export const useTypingHook = ({ content }: { content: string }) => {
 
       return EditorState.createWithContent(contentState);
     },
-    [content, errors, replace]
+    [content, replace]
   );
 
   const handlePassed = useCallback(

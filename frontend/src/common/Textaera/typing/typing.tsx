@@ -1,6 +1,6 @@
 import styles from "../index.module.css";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { EditorState } from "draft-js";
+import { ContentState, EditorState } from "draft-js";
 import TextEditor from "..";
 import "./index.css";
 import { useTypingStore } from "@/src/store/typing.store";
@@ -22,6 +22,10 @@ export const TypingDiv: React.FC<ITypingDiv> = ({ content, setStarted }) => {
   const [prevEditorState, setPrevEditorState] = useState(
     EditorState.createEmpty()
   );
+
+  useEffect(() => {
+    window.onblur = function () {};
+  }, []);
 
   const [step, setStep] = useState(0);
 
@@ -55,6 +59,24 @@ export const TypingDiv: React.FC<ITypingDiv> = ({ content, setStarted }) => {
 
   const errIdxs = useRef<number[]>([]);
 
+  const [errIdx, setErrIdx] = useState(-1);
+
+  const time = useRef<null | NodeJS.Timeout>(null);
+
+  const changeColor = useCallback(
+    (char: string, index: number) => {
+      if (char === " ")
+        return {
+          backgroundColor: index === errIdx ? "red" : "",
+        };
+
+      return {
+        color: index === errIdx ? "red" : "",
+      };
+    },
+    [errIdx]
+  );
+
   const handleChange = useCallback(
     (newState: EditorState) => {
       let text = newState.getCurrentContent().getPlainText();
@@ -66,28 +88,45 @@ export const TypingDiv: React.FC<ITypingDiv> = ({ content, setStarted }) => {
       const prevText = editorState.getCurrentContent().getPlainText();
 
       if (text.length - prevText.length > 1) {
-        text = text.slice(0, text.length - 2);
-        return;
+        text = prevText + " ";
       }
+
       if (text.length < prevText.length) {
-        const state = handleReplace(prevText.split(""), errIdxs.current);
-        setEditorState(EditorState.moveFocusToEnd(state));
+        // const state = handleReplace(prevText.split(""), []);
+        setEditorState(
+          EditorState.moveFocusToEnd(
+            EditorState.createWithContent(ContentState.createFromText(text))
+          )
+        );
         return;
       }
 
       if (content[text.length - 1] !== text[text.length - 1]) {
-        errIdxs.current.push(text.length - 1);
+        if (text.length - 1) {
+          time.current && clearTimeout(time.current);
+          setErrIdx(text.length - 1);
+          time.current = setTimeout(() => setErrIdx(-1), 500);
+          errIdxs.current = Array.from(
+            new Set([...errIdxs.current, text.length - 1])
+          );
+        }
+        text = prevText;
       }
-
-      const userTypedText = typedText + text[text.length - 1];
+      const userTypedText =
+        (typedText + (text[text.length - 1] || "") || "").slice(
+          0,
+          text.length
+        ) || "";
 
       handleAccuracy(userTypedText, errIdxs.current.length);
 
-      const state = handleReplace(text.split(""), errIdxs.current);
+      // const state = handleReplace(text.split(""), []);
 
-      console.log(errIdxs.current);
-
-      setEditorState(EditorState.moveFocusToEnd(state));
+      setEditorState(
+        EditorState.moveFocusToEnd(
+          EditorState.createWithContent(ContentState.createFromText(text))
+        )
+      );
 
       setTypedText(userTypedText);
     },
@@ -142,7 +181,14 @@ export const TypingDiv: React.FC<ITypingDiv> = ({ content, setStarted }) => {
       >
         {/* {content} */}
         {content.split("").map((char, i) => (
-          <span key={i} style={{ opacity: i < count ? 0 : 1 }}>
+          <span
+            key={i}
+            className="character"
+            style={{
+              opacity: i < count ? 0 : 1,
+              ...changeColor(char, i),
+            }}
+          >
             {char}
           </span>
         ))}

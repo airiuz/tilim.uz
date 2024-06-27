@@ -37,3 +37,9 @@
   height: 100%;
   padding: 12px;
 }
+
+.character {
+  transition: all 0.2s linear;
+  color: inherit;
+  background-color: inherit;
+}

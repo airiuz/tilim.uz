@@ -44,10 +44,13 @@ export const useTypingHook = ({ content }: { content: string }) => {
       // console.log(text);
       // console.log(content.slice(0, text.length));
 
-      const words =
-        text.length !== 0
-          ? content.slice(0, text.length).split(" ").length - 1
-          : 0;
+      // const words =
+      //   text.length !== 0
+      //     ? content.slice(0, text.length).split(" ").length - 1
+      //     : 0;
+
+      const words = text.length / 5;
+
       const chars = text.length;
       const accuracy = words
         ? Math.floor(

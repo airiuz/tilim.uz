@@ -57,3 +57,4 @@ export const WRONG_WORD_TAG = /<span style="color:red">([\s\S]*?)<\/span>/g;
 export const BOLD_WORD_TAG = /<strong>([\s\S]*?)<\/strong>/g;
 export const WRONG_OPEN_TAG = '<span style="color:red">';
 export const WRONG_CLOSE_TAG = "</span>";
+export const EXCEPTION_SYMOBLS = "`'ʻ";

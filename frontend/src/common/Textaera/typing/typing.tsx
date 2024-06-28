@@ -5,6 +5,7 @@ import TextEditor from "..";
 import "./index.css";
 import { useTypingStore } from "@/src/store/typing.store";
 import { useTypingHook } from "@/src/hooks/typing.hook";
+import { EXCEPTION_SYMOBLS } from "@/src/constants";
 
 interface ITypingDiv {
   content: string;
@@ -95,13 +96,18 @@ export const TypingDiv: React.FC<ITypingDiv> = ({ content, setStarted }) => {
         // const state = handleReplace(prevText.split(""), []);
         setEditorState(
           EditorState.moveFocusToEnd(
-            EditorState.createWithContent(ContentState.createFromText(text))
+            EditorState.createWithContent(ContentState.createFromText(prevText))
           )
         );
         return;
       }
-
-      if (content[text.length - 1] !== text[text.length - 1]) {
+      if (
+        content[text.length - 1] !== text[text.length - 1] &&
+        !(
+          EXCEPTION_SYMOBLS.includes(content[text.length - 1]) &&
+          EXCEPTION_SYMOBLS.includes(text[text.length - 1])
+        )
+      ) {
         if (text.length - 1) {
           time.current && clearTimeout(time.current);
           setErrIdx(text.length - 1);
@@ -152,8 +158,8 @@ export const TypingDiv: React.FC<ITypingDiv> = ({ content, setStarted }) => {
       setCount(text.length);
     }
     if (text.length === 1) {
-      // setStarted(true);
-      // setTime(true);
+      setStarted(true);
+      setTime(true);
     }
   }, [editorState]);
 

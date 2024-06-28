@@ -29,7 +29,7 @@ export const FirstSection = () => {
   const [started, setStarted] = useState(false);
 
   useEffect(() => {
-    window.onblur = handlePause;
+    // window.onblur = handlePause;
   }, [typedText]);
 
   const handlePause = () => {

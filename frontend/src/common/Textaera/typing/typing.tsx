@@ -63,13 +63,14 @@ export const TypingDiv: React.FC<ITypingDiv> = ({ content, setStarted }) => {
 
   const changeColor = useCallback(
     (char: string, index: number) => {
-      if (char === " ")
-        return {
-          backgroundColor: index === errIdx ? "red" : "",
-        };
+      // if (char === " ")
+      //   return {
+      //     backgroundColor: index === errIdx ? "red" : "",
+      //   };
 
       return {
-        color: index === errIdx ? "red" : "",
+        backgroundColor: index === errIdx ? "red" : "",
+        color: index === errIdx ? "white" : "",
       };
     },
     [errIdx]

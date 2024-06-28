@@ -16,6 +16,8 @@
   --light-oppiste: #000;
   --light-blue: #3474df;
   --light-text: #677a94;
+  --light-correct-text-color: #294819;
+
   --light-link-icon: #677a94;
   --light-mute-text: #828696;
   --light-social-icon: #70757c;
@@ -38,6 +40,7 @@
   --dark-oppiste: #fff;
   --dark-blue: #70b0ff;
   --dark-text: #a3b6d0;
+  --dark-correct-text-color: #b2dd9d;
   --dark-link-icon: #677a94;
   --dark-mute-text: #67717f;
   --dark-social-icon: #a3b6d0;
@@ -88,6 +91,7 @@
   --opposite: var(--dark-oppiste);
   --blue: var(--dark-blue);
   --text: var(--dark-text);
+  --correct-text-color: var(--dark-correct-text-color);
   --link-icon: var(--dark-link-icon);
   --mute-text: var(--dark-mute-text);
   --social-icon: var(--dark-social-icon);

@@ -27,7 +27,7 @@
   left: 49%;
   width: max-content;
   right: 12px;
-  color: var(--mute-text);
+  /* color: var(--mute-text); */
   opacity: 0.5;
   word-spacing: 3.3px;
 }
@@ -42,5 +42,5 @@
   transition: all 0.2s linear;
   color: inherit;
   background-color: inherit;
-  color: var(--text);
+  color: var(--count);
 }

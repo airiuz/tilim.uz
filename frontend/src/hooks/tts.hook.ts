@@ -168,7 +168,7 @@ export const useTTSHook = () => {
   const splitByCommas = useCallback(
     (text: string, maxSymbols: number, prevIndex: number) => {
       let chunks = [];
-      let subRegex = /[,]/g;
+      let subRegex = /[,](?=\s)/g;
       let match;
       let lastIndex = 0;
 
@@ -226,7 +226,9 @@ export const useTTSHook = () => {
 
   const generateChunks = useCallback((text: string, startIndex: number) => {
     let chunks = [];
-    let regex = /[.!?]/g;
+    let regex = /[.!?](?=\s)/g;
+    // let regex = /[.!?]/g;
+
     let match;
     let lastIndex = 0;
 

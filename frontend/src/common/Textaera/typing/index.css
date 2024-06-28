@@ -42,4 +42,5 @@
   transition: all 0.2s linear;
   color: inherit;
   background-color: inherit;
+  color: var(--text);
 }

@@ -20,6 +20,7 @@ export const FirstSection = () => {
     setShow,
     time,
     text,
+    typedText,
     setReadonly,
   } = useTypingStore();
 
@@ -27,7 +28,12 @@ export const FirstSection = () => {
 
   const [started, setStarted] = useState(false);
 
+  useEffect(() => {
+    window.onblur = handlePause;
+  }, [typedText]);
+
   const handlePause = () => {
+    if (typedText === "") return;
     setReadonly(true);
     setPause("Orqaga qaytish");
     setTime(false);

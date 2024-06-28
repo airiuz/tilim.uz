@@ -36,8 +36,8 @@ export default function TextEditor({
   ...rest
 }: ITextEditor) {
   useEffect(() => {
-    if (typeof window !== "undefined") {
-    }
+    if (typeof window === "undefined") return;
+    // setEditorState(EditorState.moveFocusToEnd(editorState));
   }, []);
 
   const { setText } = useSttStore();

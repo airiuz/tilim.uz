@@ -17,21 +17,6 @@ export const TypingDiv: React.FC<ITypingDiv> = ({ content, setStarted }) => {
     content,
   });
 
-  const ref = useRef<HTMLDivElement | null>(null);
-
-  const [editorState, setEditorState] = useState(EditorState.createEmpty());
-  const [prevEditorState, setPrevEditorState] = useState(
-    EditorState.createEmpty()
-  );
-
-  useEffect(() => {
-    window.onblur = function () {};
-  }, []);
-
-  const [step, setStep] = useState(0);
-
-  const [count, setCount] = useState(0);
-
   const {
     setTime,
     typedText,
@@ -39,20 +24,32 @@ export const TypingDiv: React.FC<ITypingDiv> = ({ content, setStarted }) => {
     setData,
     setTypedText,
     readonly,
-    show,
+    setPause,
     setReadonly,
     duration,
   } = useTypingStore();
 
+  const ref = useRef<HTMLDivElement | null>(null);
+
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  const [prevEditorState, setPrevEditorState] = useState(
+    EditorState.createEmpty()
+  );
+
+  const [step, setStep] = useState(0);
+
+  const [count, setCount] = useState(0);
+
   useEffect(() => {
-    if ((!pause || readonly) && show) {
+    if (!pause || readonly) {
       setEditorState(EditorState.moveFocusToEnd(editorState));
     }
-  }, [pause, readonly, show]);
+  }, [pause, readonly]);
 
   useEffect(() => {
     setData(0, 0, 0);
     setTypedText("");
+    setPause(null);
     return () => {
       errIdxs.current = [];
     };
@@ -102,12 +99,12 @@ export const TypingDiv: React.FC<ITypingDiv> = ({ content, setStarted }) => {
         return;
       }
       if (
-        content[text.length - 1] !== text[text.length - 1] &&
-        !(
-          EXCEPTION_SYMOBLS.includes(content[text.length - 1]) &&
-          EXCEPTION_SYMOBLS.includes(text[text.length - 1])
-        )
-      ) {
+        EXCEPTION_SYMOBLS.includes(content[text.length - 1]) &&
+        EXCEPTION_SYMOBLS.includes(text[text.length - 1])
+      )
+        text = prevText + content[text.length - 1];
+
+      if (content[text.length - 1] !== text[text.length - 1]) {
         if (text.length - 1) {
           time.current && clearTimeout(time.current);
           setErrIdx(text.length - 1);
@@ -165,7 +162,9 @@ export const TypingDiv: React.FC<ITypingDiv> = ({ content, setStarted }) => {
 
   const handleClick = () => setReadonly(false);
 
-  const handleBLur = () => setReadonly(true);
+  const handleBLur = () => {
+    // setReadonly(true);
+  };
 
   return (
     <div className="wrapper" onClick={handleClick}>

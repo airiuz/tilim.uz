@@ -177,6 +177,7 @@ export const TypingDiv: React.FC<ITypingDiv> = ({ content, setStarted }) => {
         onBlur={handleBLur}
         style={{
           left: `calc(60.2% - ${step}px)`,
+          // color: "var(--correct-text-color)",
           width: ref && ref.current ? ref.current.offsetWidth : "300%",
         }}
       />

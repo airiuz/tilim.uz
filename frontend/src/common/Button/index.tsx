@@ -2,7 +2,7 @@
 import styles from "./index.module.css";
 import { ArrowIcon } from "@/src/common/Utils/icons";
 import { useTextEditorStore } from "@/src/store/translate.store";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 
 interface ITranslatorButton {
   animation: boolean;
@@ -39,10 +39,7 @@ export const TranslatorButton = ({
       first,
       second: !first,
     }));
-
-    if (onClick) {
-      onClick(first);
-    }
+    if (onClick) onClick(first);
   };
 
   return (

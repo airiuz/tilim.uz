@@ -49,6 +49,7 @@ export const Dashboard = () => {
         secondBtnActive={Boolean(language)}
         firstChild={<LotinForTranslator />}
         secondChild={<KirilForTranslator />}
+        key={language}
         width="331px"
         onClick={handleClick}
       />

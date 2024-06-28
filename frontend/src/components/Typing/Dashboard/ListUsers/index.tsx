@@ -17,9 +17,10 @@ export const ListUsers = () => {
 
   const { getTopUsers } = useTypingHook({ content: "" });
 
-  const [first, setFirst] = useState(true);
-
-  const { users } = useTypingStore();
+  const { users, language, setLanguage } = useTypingStore();
+  const handleClick = (first: boolean) => {
+    setLanguage(Number(!first));
+  };
   useEffect(() => {
     getTopUsers();
   }, []);
@@ -33,15 +34,17 @@ export const ListUsers = () => {
       <div className={styles.button}>
         <TranslatorButton
           width="331px"
-          animation={false}
+          animation={Boolean(language)}
           firstChild={<LotinForTranslator />}
+          secondBtnActive={Boolean(language)}
+          key={language}
           secondChild={<KirilForTranslator />}
-          onClick={setFirst}
+          onClick={handleClick}
         />
       </div>
       <div className={styles.list__users}>
         {users
-          .filter((user) => Number(first) !== Number(user.t))
+          .filter((user) => language === Number(user.t))
           .map((user, i) => (
             <ListItem key={i} user={user as any} />
           ))}

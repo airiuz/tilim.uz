@@ -22,6 +22,8 @@ type TypingState = {
   readonly: boolean;
   duration: number;
   users: IUser[];
+  first: boolean;
+  setFirst: (first: boolean) => void;
   setUsers: (users: IUser[]) => void;
   setDuration: (duration: number) => void;
   setReadonly: (readonly: boolean) => void;
@@ -80,4 +82,7 @@ export const useTypingStore = create<TypingState>((set) => ({
 
   users: [],
   setUsers: (users: IUser[]) => set({ users }),
+
+  first: true,
+  setFirst: (first: boolean) => set({ first }),
 }));

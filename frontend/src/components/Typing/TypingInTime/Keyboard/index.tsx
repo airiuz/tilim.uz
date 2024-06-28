@@ -299,11 +299,11 @@ export const Keyboard = () => {
             </div>
             <div className="key--double" data-key="189">
               <div>_</div>
-              <div>-</div>
+              <div>ф</div>
             </div>
             <div className="key--double" data-key="187">
               <div>+</div>
-              <div>=</div>
+              <div>ҳ</div>
             </div>
             <div className="key--bottom-right key--word key--w4" data-key="8">
               <span>delete</span>
@@ -338,7 +338,7 @@ export const Keyboard = () => {
               ш
             </div>
             <div className="key--letter" data-char="O">
-              щ
+              ў
             </div>
             <div className="key--letter" data-char="P">
               з
@@ -364,7 +364,7 @@ export const Keyboard = () => {
               ф
             </div>
             <div className="key--letter" data-char="S">
-              ы
+              қ
             </div>
             <div className="key--letter" data-char="D">
               в

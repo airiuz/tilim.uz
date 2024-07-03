@@ -41,7 +41,7 @@ export const Result = () => {
     if (place < 50 && place > 25)
       return { title: "Xavas qilguday tez", src: three };
     if (place <= 25 && place > 10)
-      return { title: "Quyondan qolishmaysiz", src: two };
+      return { title: "Quyondan qolishmaysiz", src: two, form: true };
     if (place <= 10)
       return {
         title: "“Chaqmoq”dan xam tezroq",

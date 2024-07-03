@@ -38,11 +38,11 @@ export const Result = () => {
   };
 
   const placeData = useMemo(() => {
-    if (place < 50 && place > 25)
+    if (place < 20 && place > 10)
       return { title: "Xavas qilguday tez", src: three };
-    if (place <= 25 && place > 10)
+    if (place <= 10 && place > 3)
       return { title: "Quyondan qolishmaysiz", src: two, form: true };
-    if (place <= 10)
+    if (place <= 3)
       return {
         title: "“Chaqmoq”dan xam tezroq",
         src: mobile ? oneMobile : one,

@@ -20,7 +20,7 @@
 .tooltip {
   border-radius: 12px !important;
   color: var(--text) !important;
-  transform: translateX(-47.5%) !important;
+  transform: translateX(-12%) !important;
 }
 
 .tooltip::after {

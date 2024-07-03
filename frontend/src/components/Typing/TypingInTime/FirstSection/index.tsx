@@ -40,10 +40,10 @@ export const FirstSection = () => {
   };
 
   const handleStop = () => {
-    if (!time) return setShow(false);
+    return setShow(false);
 
-    handlePassed(DURATION);
-    setTime(false);
+    // handlePassed(DURATION);
+    // setTime(false);
   };
 
   return (

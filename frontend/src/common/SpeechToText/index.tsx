@@ -18,6 +18,7 @@ export interface IData {
 
 export const SpeechToText = ({ className = "" }: { className?: string }) => {
   const { capturing } = useSttStore();
+  const [open, setOpen] = useState(false);
 
   const { switchRecordMicrophone } = useSttHook();
 
@@ -45,10 +46,12 @@ export const SpeechToText = ({ className = "" }: { className?: string }) => {
       title="Speech to text funksiyasi hozirda o'zgartirilmoqda"
       // onClick={switchRecordMicrophone}
       className={`${capturing && className} `}
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
     >
-      <span>{MicrophoneIcon}</span>
+      {/* <span>{MicrophoneIcon}</span> */}
       {/* <audio className="customaudio" controls></audio> */}
-      {/* <Tooltip
+      <Tooltip
         open={open}
         className={styles.tooltip}
         content={
@@ -65,10 +68,10 @@ export const SpeechToText = ({ className = "" }: { className?: string }) => {
         <span data-tooltip-id="my-tooltip" data-tooltip-place={"bottom"}>
           {MicrophoneIcon}
         </span>
-        <span className={styles.text}>
-          {open && <span>Mikrafonga ruxsat berishingiz kutilmoqda....</span>}
-        </span>
-      </Tooltip> */}
+        {/* <span className={styles.text}>
+          {true && <span>Mikrafonga ruxsat berishingiz kutilmoqda....</span>}
+        </span> */}
+      </Tooltip>
     </div>
   );
 };

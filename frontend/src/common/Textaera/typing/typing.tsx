@@ -13,10 +13,7 @@ interface ITypingDiv {
 }
 
 export const TypingDiv: React.FC<ITypingDiv> = ({ content, setStarted }) => {
-  const { handleReplace, handleAccuracy, handlePassed } = useTypingHook({
-    content,
-  });
-
+  const { handleAccuracy, handlePassed } = useTypingHook({ content });
   const {
     setTime,
     typedText,
@@ -155,7 +152,7 @@ export const TypingDiv: React.FC<ITypingDiv> = ({ content, setStarted }) => {
       setStep(text.length * w);
       setCount(text.length);
     }
-    if (text.length === 1) {
+    if (Boolean(text.trim())) {
       setStarted(true);
       setTime(true);
     }

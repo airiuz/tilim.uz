@@ -52,12 +52,9 @@ export const useTypingHook = ({ content }: { content: string }) => {
       const words = text.length / 5;
 
       const chars = text.length;
-      const accuracy = words
-        ? Math.floor(
-            ((text.length - errCount) * 100) / (text.length ? text.length : 1)
-          )
-        : 0;
-
+      const accuracy = Math.floor(
+        (text.length * 100) / (text.length + errCount || 1)
+      );
       setData(chars, words, accuracy);
     },
     [content, typedText]

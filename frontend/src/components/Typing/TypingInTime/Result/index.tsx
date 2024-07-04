@@ -38,8 +38,8 @@ export const Result = () => {
   };
 
   const placeData = useMemo(() => {
-    if (place < 20 && place > 10)
-      return { title: "Xavas qilguday tez", src: three };
+    if (place < 21 && place > 10)
+      return { title: "Xavas qilguday tez", src: three, form: true };
     if (place <= 10 && place > 3)
       return { title: "Quyondan qolishmaysiz", src: two, form: true };
     if (place <= 3)

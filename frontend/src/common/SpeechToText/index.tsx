@@ -58,8 +58,9 @@ export const SpeechToText = ({ className = "" }: { className?: string }) => {
           <div className={styles.tooltip__content}>
             <span>{toolTipIcon}</span>
             <span>
-              Mikrafonga ruxsat berish uchun chap tomondagi <br /> “Разрещить”
-              tugamasini bosing
+              {/* Mikrafonga ruxsat berish uchun chap tomondagi <br /> “Разрещить”
+              tugamasini bosing */}
+              Speech to text funksiyasi vaqtincha qayta ishlab chiqilmoqda
             </span>
           </div>
         }

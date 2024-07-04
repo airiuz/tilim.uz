@@ -35,11 +35,6 @@ export default function TextEditor({
   style,
   ...rest
 }: ITextEditor) {
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    // setEditorState(EditorState.moveFocusToEnd(editorState));
-  }, []);
-
   const { setText } = useSttStore();
   const { connected } = useTextEditorStore();
 
@@ -50,9 +45,9 @@ export default function TextEditor({
 
       if (text.length > 4999 || connected) return;
 
-      if (prevText !== text)
+      if (prevText !== text) {
         newState = EditorState.setInlineStyleOverride(newState, OrderedSet());
-
+      }
       setEditorState(newState);
     },
     [editorState, connected]

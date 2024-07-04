@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import { useTextEditorStore } from "../store/translate.store";
 import { delay } from "../util/audio-worklet";
-import { TAG_REGEX, THEME } from "../constants";
+import { MAX_SYMBOLS_TTS, TAG_REGEX, THEME } from "../constants";
 import { ContentState, EditorState } from "draft-js";
 import { useThemeStore } from "../store/theme.store";
 import { converToHtmlWithStyles } from "../common/Utils";
@@ -104,6 +104,8 @@ export const useTTSHook = () => {
       }
 
       const htmlString = html.slice(0, start) + activeChunk + html.slice(end);
+
+      console.log(activeChunk);
 
       const contentBlock = htmlToDraft(htmlString);
       const contentState = ContentState.createFromBlockArray(
@@ -231,8 +233,6 @@ export const useTTSHook = () => {
 
     let match;
     let lastIndex = 0;
-
-    const MAX_SYMBOLS_TTS = 100;
 
     function checkChunkForEmtiness(word: string) {
       return word.replaceAll("_", "").trim() !== "";
@@ -370,7 +370,9 @@ export const useTTSHook = () => {
       const handleFetch = async () => {
         let i = 0;
         while (i < chunks.length && started) {
-          let text = chunks[i].substring.replaceAll("_", "");
+          let text = chunks[i].substring
+            .replaceAll("_", "")
+            .replaceAll("&nbsp;", " ");
           const data = await fetchData({ text });
           if (!data) {
             setStarted(false);

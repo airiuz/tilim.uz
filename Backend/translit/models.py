@@ -27,7 +27,7 @@ class MyOutFile(models.Model):
 
 
 class TypeFastModel(models.Model):
-    text = models.CharField(max_length=500)
+    text = models.TextField(default="")
 
     def __str__(self):
         return self.text[:60]
@@ -35,7 +35,7 @@ class TypeFastModel(models.Model):
 
 class TypeFastOutModel(models.Model):
     text_id = models.IntegerField()
-    text = models.CharField(max_length=500)
+    text = models.TextField(default="")
     true_answers = models.IntegerField()
     alpha = models.CharField(max_length=10, blank=True)
 

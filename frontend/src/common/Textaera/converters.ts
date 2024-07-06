@@ -41,7 +41,8 @@ export function convertTo(currentContent: ContentState) {
   const newCurrentContent = convertFromRaw(rawContent);
   let markdown = stateToMarkdown(newCurrentContent);
 
-  const regex = /\[([^\]]+)\]\(([^)]+)\)/g;
+  const regex = /\[([^[\]]*(?:\[[^[\]]*\][^[\]]*)*)\]\(([^)]+)\)/g;
+  // const regex = /\[([^\]]+)\]\(([^)]+)\)/g;
 
   // markdown.replaceAll(/\[([^\]]+)\]\(([^)]+)\)/g, (link: string) => {
   //   console.log(link);
@@ -52,6 +53,8 @@ export function convertTo(currentContent: ContentState) {
   let match;
 
   while ((match = regex.exec(markdown)) !== null) {
+    console.log(match);
+
     matches.push(match);
   }
 

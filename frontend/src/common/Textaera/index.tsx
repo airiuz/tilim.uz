@@ -48,6 +48,7 @@ export default function TextEditor({
       if (prevText !== text) {
         newState = EditorState.setInlineStyleOverride(newState, OrderedSet());
       }
+
       setEditorState(newState);
     },
     [editorState, connected]

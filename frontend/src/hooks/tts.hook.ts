@@ -105,8 +105,6 @@ export const useTTSHook = () => {
 
       const htmlString = html.slice(0, start) + activeChunk + html.slice(end);
 
-      console.log(activeChunk);
-
       const contentBlock = htmlToDraft(htmlString);
       const contentState = ContentState.createFromBlockArray(
         contentBlock.contentBlocks
@@ -226,6 +224,29 @@ export const useTTSHook = () => {
     []
   );
 
+  const splitHtml = useCallback((htmlString: string) => {
+    const chunks: ReturnType<typeof generateChunks> = [];
+    let start = 0;
+    const paragraphRegex = /(<p>.*?<\/p>)/gs;
+    const listItemRegex = /(<li>.*?<\/li>)/gs;
+    const paragraphs = htmlString.split(paragraphRegex).filter(Boolean);
+    paragraphs.forEach((item) => {
+      const listItems = item.split(listItemRegex).filter(Boolean);
+      if (listItems.length) {
+        listItems.forEach((listItem) => {
+          const htmlPlaceholders = memoizationOfTags(listItem);
+          chunks.push(...generateChunks(htmlPlaceholders, start));
+          start += listItem.length;
+        });
+      } else {
+        const htmlPlaceholders = memoizationOfTags(item);
+        chunks.push(...generateChunks(htmlPlaceholders, start));
+        start += item.length;
+      }
+    });
+    return chunks;
+  }, []);
+
   const generateChunks = useCallback((text: string, startIndex: number) => {
     let chunks = [];
     let regex = /[.!?](?=\s)/g;
@@ -283,29 +304,6 @@ export const useTTSHook = () => {
     return chunks;
   }, []);
 
-  const splitHtml = useCallback((htmlString: string) => {
-    const chunks: ReturnType<typeof generateChunks> = [];
-    let start = 0;
-    const paragraphRegex = /(<p>.*?<\/p>)/gs;
-    const listItemRegex = /(<li>.*?<\/li>)/gs;
-    const paragraphs = htmlString.split(paragraphRegex).filter(Boolean);
-    paragraphs.forEach((item) => {
-      const listItems = item.split(listItemRegex).filter(Boolean);
-      if (listItems.length) {
-        listItems.forEach((listItem) => {
-          const htmlPlaceholders = memoizationOfTags(listItem);
-          chunks.push(...generateChunks(htmlPlaceholders, start));
-          start += listItem.length;
-        });
-      } else {
-        const htmlPlaceholders = memoizationOfTags(item);
-        chunks.push(...generateChunks(htmlPlaceholders, start));
-        start += item.length;
-      }
-    });
-    return chunks;
-  }, []);
-
   const handleClick = useCallback(async () => {
     const audios: string[] = [];
     let started = false;
@@ -317,12 +315,9 @@ export const useTTSHook = () => {
 
     const html = converToHtmlWithStyles(editorState.getCurrentContent());
 
+    const text = editorState.getCurrentContent().getPlainText();
+
     const chunks = splitHtml(html);
-
-    // console.log(chunks);
-    // return;
-
-    // return;
 
     if (!window) return;
     if (!connected && chunks.length) {
@@ -333,8 +328,8 @@ export const useTTSHook = () => {
 
       const handleAudioEnd = async () => {
         if (!started) return false;
-
-        if (count < chunks.length) {
+        console.log(audios);
+        if (count < audios.length) {
           await pauseIfPlaying(!Boolean(audios[count]));
           handleAudio(audios[count]);
         } else {
@@ -353,69 +348,112 @@ export const useTTSHook = () => {
       };
 
       const handleAudio = async (data: string) => {
-        if (!started) return;
+        // if (!started) return;
 
         audio.current = new Audio(data);
         audio.current.play();
-        editorStateRef.current &&
-          handleDecorateText(
-            editorStateRef.current,
-            chunks[count].start,
-            chunks[count].end
-          );
+        // editorStateRef.current &&
+        //   handleDecorateText(
+        //     editorStateRef.current,
+        //     chunks[count].start,
+        //     chunks[count].end
+        //   );
         count++;
         audio.current.addEventListener("ended", handleAudioEnd);
       };
 
-      const handleFetch = async () => {
-        let i = 0;
-        while (i < chunks.length && started) {
-          let text = chunks[i].substring
-            .replaceAll("_", "")
-            .replaceAll("&nbsp;", " ");
-          const data = await fetchData({ text });
-          if (!data) {
-            setStarted(false);
-            error = true;
-            editorStateRef.current &&
-              handleDecorateText(editorStateRef.current);
-            break;
-          }
-          audios.push(data);
-          if (i === 0) handleAudio(data);
-          i++;
-        }
-      };
+      // const handleFetch = async () => {
+      //   let i = 0;
+      //   const data = await fetchData({ text });
+      //   if (!data) {
+      //     setStarted(false);
+      //     error = true;
+      //     editorStateRef.current && handleDecorateText(editorStateRef.current);
+      //   }
+      //   // while (i < chunks.length && started) {
+      //   //   let text = chunks[i].substring
+      //   //     .replaceAll("_", "")
+      //   //     .replaceAll("&nbsp;", " ");
+      //   //   const data = await fetchData({ text });
+      //   //   if (!data) {
+      //   //     setStarted(false);
+      //   //     error = true;
+      //   //     editorStateRef.current &&
+      //   //       handleDecorateText(editorStateRef.current);
+      //   //     break;
+      //   //   }
+      //   //   audios.push(data);
+      //   //   if (i === 0) handleAudio(data);
+      //   //   i++;
+      //   // }
+      // };
 
       setStarted(true);
 
-      await handleFetch();
+      for await (let chunk of streamingFetch({ text })) {
+        console.log(chunk);
+        const data = URL.createObjectURL(chunk.data);
+        !audios.length && handleAudio(data);
+        audios.push(data);
+      }
     } else {
       setStarted(false);
-      // audio.current?.pause();
-      // audio.current = null;
-      // editorStateRef.current && handleDecorateText(editorStateRef.current);
     }
   }, [connected, editorState, handleDecorateText, memoizationOfTags]);
 
-  const fetchData = useCallback(async (body: { text: string }) => {
-    try {
-      const result = await fetch("https://oyqiz.airi.uz/api/v1/tts/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      });
+  const fetchData = useCallback(
+    async (body: { text: string }, onChunk: (chunk: Blob) => void) => {
+      try {
+        const result = await fetch("https://oyqiz.airi.uz/api/v1/tts/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        });
 
-      if (!result.ok) return false;
+        if (!result.ok) return false;
 
-      const response = await result.blob();
-      return URL.createObjectURL(response);
-    } catch (error) {
-      return false;
+        const reader = result.body?.getReader();
+
+        if (!reader) return false;
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          const blob = new Blob([value], { type: "audio/wav" }); // Adjust MIME type as needed
+          onChunk(blob);
+        }
+      } catch (error) {
+        return false;
+      }
+    },
+    []
+  );
+
+  async function* streamingFetch(body: { text: string }) {
+    const response = await fetch("https://oyqiz.airi.uz/api/v1/tts/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+    const reader = response.body?.getReader();
+    while (true && reader) {
+      const { done, value } = await reader.read();
+      const headerSize = 8;
+      const header = value?.slice(0, headerSize);
+      const chunkData = value;
+      const headerText = new TextDecoder().decode(header);
+      if (done) break;
+      if (chunkData)
+        yield {
+          header: headerText,
+          data: new Blob([chunkData], { type: "audio/wav" }),
+        };
     }
-  }, []);
+  }
 
   return { handleClick, connected };
 };

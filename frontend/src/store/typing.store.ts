@@ -48,7 +48,7 @@ export const useTypingStore = create<TypingState>((set) => ({
   accuracy: 0,
   time: false,
   language: 0,
-  loading: true,
+  loading: false,
   setLoading: (loading) => set({ loading }),
   setLanguage: (language) => set({ language }),
   setTime: (time) => set({ time }),

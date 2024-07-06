@@ -18,6 +18,7 @@ export const useTypingHook = ({ content }: { content: string }) => {
     language,
     text,
     typedText,
+    setLoading,
     setPassed,
     setPlace,
     setReadonly,
@@ -99,20 +100,22 @@ export const useTypingHook = ({ content }: { content: string }) => {
 
   const handlePassed = useCallback(
     async (duration: number) => {
-      if (text) {
-        const response = await fetchData("typefast/", "POST", {
-          text_id: text.text_id,
-          text: typedText,
-          t: language,
-          time: duration,
-          accuracy,
-        });
-        if (response) {
-          setPassed(true);
-          setData(chars, response.wpm, accuracy);
-          setPlace(response.place);
-          setReadonly(false);
-        }
+      if (!text) return;
+      setLoading(true);
+      const response = await fetchData("typefast/", "POST", {
+        text_id: text.text_id,
+        text: typedText,
+        t: language,
+        time: duration,
+        accuracy,
+      });
+      setLoading(false);
+
+      if (response) {
+        setPassed(true);
+        setData(chars, response.wpm, accuracy);
+        setPlace(response.place);
+        setReadonly(false);
       }
     },
     [text, typedText, language, accuracy]

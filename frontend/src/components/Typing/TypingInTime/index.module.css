@@ -1,25 +1,21 @@
-
 .container {
-    width: 1140px;
-    display: flex;
-    flex-direction: column;
-    gap:20px;
-    margin:0 auto 35px;
-    height: -webkit-fill-available
+  width: 1140px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin: 0 auto 35px;
+  height: -webkit-fill-available;
+  padding-top: 34px;
 }
 
 @media only screen and (max-width: 1160px) {
-    .container {
-        width: 100%;
-    }
+  .container {
+    width: 100%;
+  }
 }
-
 
 @media only screen and (min-width: 2000px) {
-    .container {
-        width: 1500px;
-    }
+  .container {
+    width: 1500px;
+  }
 }
-
-
-

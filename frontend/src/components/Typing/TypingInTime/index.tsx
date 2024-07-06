@@ -5,23 +5,19 @@ import { Result } from "@/src/components/Typing/TypingInTime/Result";
 import { useTypingStore } from "@/src/store/typing.store";
 import { Pause } from "@/src/common/Pause";
 import Skeleton from "react-loading-skeleton";
+import { Loader } from "../../Loader";
 
 const TypingTime = () => {
-  const { passed, pause, loading } = useTypingStore();
+  const { passed, pause } = useTypingStore();
 
   if (passed) return <Result />;
 
   return (
     <div className={styles.container}>
       {pause && <Pause />}
-      {loading ? (
-        <Skeleton height={"100%"} width={"100%"} />
-      ) : (
-        <>
-          <FirstSection />
-          <Keyboard />
-        </>
-      )}
+
+      <FirstSection />
+      <Keyboard />
     </div>
   );
 };

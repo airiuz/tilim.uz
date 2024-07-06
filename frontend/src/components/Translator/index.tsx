@@ -34,6 +34,7 @@ import Tooltip from "@/src/common/Tooltip";
 import "react-loading-skeleton/dist/skeleton.css";
 import styles from "./index.module.css";
 import { useSttStore } from "@/src/store/stt.store";
+import ErrorBoundary from "../ErrorHandler";
 
 // const TextEditor = React.lazy(() => import("@/src/common/Textaera"));
 
@@ -106,87 +107,89 @@ const Translator = () => {
   );
 
   return (
-    <section className={styles.section}>
-      <Suspense
-        fallback={
-          <div className={styles.skeleton__wrapper}>
-            <Skeleton height={"100%"} width={"100%"} />
-          </div>
-        }
-      >
-        <div className={styles.translator__container}>
-          <div className={styles.translator__header}>
-            <Markdown />
-            <TranslatorButton
-              animation
-              firstChild={
-                <>
-                  <LotinForTranslator />
-                  <ArrowForTranslator />
-                  <KirilForTranslator />
-                </>
-              }
-              secondChild={
-                <>
-                  <KirilForTranslator />
-                  <ArrowForTranslator />
-                  <LotinForTranslator />
-                </>
-              }
-              width="401px"
-              onClick={handleSubmit}
-            />
-          </div>
-          <div
-            className={styles.translator__textarea__container}
-            onKeyUp={handleScroll}
-          >
-            <TextEditor
-              editorState={editorState}
-              setEditorState={setEditorState}
-              clear
-              minHeight={minHeight}
-              className={`${styles.translator__body} ${styles.initialStyles}`}
-              placeholder={placeholder}
-            />
-          </div>
-          <div ref={footer} className={styles.translator__footer}>
-            <div className={styles.translator__footer__icons__container}>
-              <SpeechToText className={styles.active} />
-              <TextToSpeech className={styles.active} />
-              <Copy />
+    <ErrorBoundary>
+      <section className={styles.section}>
+        <Suspense
+          fallback={
+            <div className={styles.skeleton__wrapper}>
+              <Skeleton height={"100%"} width={"100%"} />
             </div>
-            <div className={styles.footer__icons__container}>
-              <Rate />
-
-              <Tooltip
-                open={count >= 5000}
-                className={styles.tooltip}
-                content={
-                  <div className={styles.tooltip__content}>
-                    <span>{toolTipIcon}</span>
-                    <span>
-                      Diqqat! siz belgilangan limitdan ortiqcha so’z <br />
-                      kiritdingiz!
-                    </span>
-                  </div>
+          }
+        >
+          <div className={styles.translator__container}>
+            <div className={styles.translator__header}>
+              <Markdown />
+              <TranslatorButton
+                animation
+                firstChild={
+                  <>
+                    <LotinForTranslator />
+                    <ArrowForTranslator />
+                    <KirilForTranslator />
+                  </>
                 }
-                position="bottom"
-              >
-                <span
-                  data-tooltip-id="my-tooltip-limit"
-                  className={`${count >= 5000 && styles.red}`}
+                secondChild={
+                  <>
+                    <KirilForTranslator />
+                    <ArrowForTranslator />
+                    <LotinForTranslator />
+                  </>
+                }
+                width="401px"
+                onClick={handleSubmit}
+              />
+            </div>
+            <div
+              className={styles.translator__textarea__container}
+              onKeyUp={handleScroll}
+            >
+              <TextEditor
+                editorState={editorState}
+                setEditorState={setEditorState}
+                clear
+                minHeight={minHeight}
+                className={`${styles.translator__body} ${styles.initialStyles}`}
+                placeholder={placeholder}
+              />
+            </div>
+            <div ref={footer} className={styles.translator__footer}>
+              <div className={styles.translator__footer__icons__container}>
+                <SpeechToText className={styles.active} />
+                <TextToSpeech className={styles.active} />
+                <Copy />
+              </div>
+              <div className={styles.footer__icons__container}>
+                <Rate />
+
+                <Tooltip
+                  open={count >= 5000}
+                  className={styles.tooltip}
+                  content={
+                    <div className={styles.tooltip__content}>
+                      <span>{toolTipIcon}</span>
+                      <span>
+                        Diqqat! siz belgilangan limitdan ortiqcha so’z <br />
+                        kiritdingiz!
+                      </span>
+                    </div>
+                  }
+                  position="bottom"
                 >
-                  {count}
-                  /5000
-                </span>
-              </Tooltip>
+                  <span
+                    data-tooltip-id="my-tooltip-limit"
+                    className={`${count >= 5000 && styles.red}`}
+                  >
+                    {count}
+                    /5000
+                  </span>
+                </Tooltip>
+              </div>
             </div>
           </div>
-        </div>
-      </Suspense>
-      <CorrectWordsTooltip />
-    </section>
+        </Suspense>
+        <CorrectWordsTooltip />
+      </section>
+    </ErrorBoundary>
   );
 };
 

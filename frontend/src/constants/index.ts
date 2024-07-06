@@ -50,7 +50,7 @@ export type WebSocketMessage =
   | ArrayBufferView;
 
 export const DURATION = 60;
-export const MAX_SYMBOLS_TTS = 200;
+export const MAX_SYMBOLS_TTS = 500;
 export const SPLIT_REGEX = /[\s,\.!?;:\/]+/g;
 export const TAG_REGEX = /<[^>]+>/g;
 export const WRONG_WORD_TAG = /<span style="color:red">([\s\S]*?)<\/span>/g;

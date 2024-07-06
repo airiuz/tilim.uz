@@ -21,11 +21,13 @@ const TypingDashboard = dynamic(
 );
 
 const Typing = () => {
-  const { show, setShow } = useTypingStore();
+  const { show, setShow, loading } = useTypingStore();
 
   useEffect(() => {
     return () => setShow(false);
   }, []);
+
+  if (loading) return <Loader />;
 
   return (
     <section className={styles.section}>

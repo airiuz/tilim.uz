@@ -13,7 +13,7 @@ import useAxios from "@/src/hooks/axios.hook";
 import { useCallback, useEffect } from "react";
 
 export const Dashboard = () => {
-  const { setShow, setLanguage, setLoading, language, setText } =
+  const { setShow, setLanguage, setLoading, language, setText, loading } =
     useTypingStore();
 
   const { fetchData } = useAxios();
@@ -21,6 +21,10 @@ export const Dashboard = () => {
   const handleClick = (first: boolean) => {
     setLanguage(Number(!first));
   };
+
+  useEffect(() => {
+    setLoading(false);
+  }, []);
 
   const handleStart = useCallback(async () => {
     setLoading(true);
@@ -54,7 +58,9 @@ export const Dashboard = () => {
         onClick={handleClick}
       />
       <div className={styles.start} onClick={handleStart}>
-        <Button className={""}>Boshlash {RocketIcon}</Button>
+        <Button disabled={loading} className={""}>
+          Boshlash {RocketIcon}
+        </Button>
       </div>
       <div className={styles.image__container}>
         <Image src={KeyboardImage} alt={"keyboard"} width={387} height={183} />

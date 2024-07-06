@@ -1,6 +1,7 @@
 import React from "react";
 import { HelpButton } from "../components/Help";
 import Translator from "../components/Translator";
+import ErrorBoundary from "../components/ErrorHandler";
 
 export default async function Home() {
   return (

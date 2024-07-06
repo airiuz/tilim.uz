@@ -11,13 +11,7 @@ import two from "../../../../assets/images/2.png";
 import one from "../../../../assets/images/1.png";
 import oneMobile from "../../../../assets/images/1_mobile.png";
 import Image from "next/image";
-import useAxios from "@/src/hooks/axios.hook";
 import { useTypingHook } from "@/src/hooks/typing.hook";
-
-// Toshbaqadan sal tezroq > 50
-// Quyondan qolishmaysiz 50 > x > 25
-// Xavas qilguday tez 25 > x > 10
-// “Flash”dan xam tezroq x < 10
 
 export const Result = () => {
   const { chars, words, accuracy, place } = useTypingStore();
@@ -53,6 +47,7 @@ export const Result = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!Boolean(name.trim())) return;
     handleSend(name);
   };
 
@@ -66,7 +61,11 @@ export const Result = () => {
         <div className={styles.title}>{placeData.title}</div>
         <div className={styles.result}>
           <span>{GroupIcon}</span>
-          <span>{place}- o’rindasiz </span>
+          {place > 20 ? (
+            "Leadorboardga kira olmadingiz"
+          ) : (
+            <span>{place}- o’rindasiz </span>
+          )}
         </div>
         <div className={styles.card__wrapper}>
           <div className={styles.cart_wrapper__1}>

@@ -31,6 +31,9 @@ type TextEditorState = {
 
   connected: boolean;
   setConnected: (connected: boolean) => void;
+
+  indexes: number[];
+  setIndexes: (indexes: number[]) => void;
 };
 
 export const useTextEditorStore = create<TextEditorState>((set) => ({
@@ -47,4 +50,6 @@ export const useTextEditorStore = create<TextEditorState>((set) => ({
   setLanguage: (language) => set({ language }),
   connected: false,
   setConnected: (connected: boolean) => set({ connected }),
+  indexes: [],
+  setIndexes: (indexes: number[]) => set({ indexes }),
 }));

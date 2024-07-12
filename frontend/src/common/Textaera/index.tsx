@@ -8,6 +8,7 @@ import { useSttStore } from "@/src/store/stt.store";
 import { OrderedSet } from "immutable";
 import { useTextToSpeech } from "@/src/hooks/textToSpeech.hook";
 import { useTextEditorStore } from "@/src/store/translate.store";
+import { converToHtmlWithStyles, delay, wrapEachNodeSpan } from "../Utils";
 
 const RichTextEditor = dynamic(
   () => import("react-draft-wysiwyg").then((mod) => mod.Editor),
@@ -36,7 +37,7 @@ export default function TextEditor({
   ...rest
 }: ITextEditor) {
   const { setText } = useSttStore();
-  const { connected } = useTextEditorStore();
+  const { connected, indexes } = useTextEditorStore();
 
   const handleEditorChange = useCallback(
     (newState: EditorState) => {
@@ -59,6 +60,7 @@ export default function TextEditor({
     setEditorState(emptyState);
     setText([]);
   };
+
   return (
     <div className={styles.container}>
       {clear &&
@@ -67,17 +69,30 @@ export default function TextEditor({
             <Exit />
           </div>
         )}
+      {!Boolean(indexes.length) && (
+        <RichTextEditor
+          editorState={editorState}
+          handlePastedText={() => !Boolean(clear)}
+          onEditorStateChange={handleEditorChange}
+          editorStyle={{ minHeight, maxHeight, ...style }}
+          editorClassName={`${styles.editor} ${className}`}
+          toolbarClassName={styles.editor__toolbar}
+          toolbarHidden
+          {...rest}
+        />
+      )}
 
-      <RichTextEditor
-        editorState={editorState}
-        handlePastedText={() => !Boolean(clear)}
-        onEditorStateChange={handleEditorChange}
-        editorStyle={{ minHeight, maxHeight, ...style }}
-        editorClassName={`${styles.editor} ${className}`}
-        toolbarClassName={styles.editor__toolbar}
-        toolbarHidden
-        {...rest}
-      />
+      {Boolean(clear && indexes.length) && (
+        <div className={styles.wrapper__tts}>
+          <div
+            dangerouslySetInnerHTML={{
+              __html: wrapEachNodeSpan(
+                converToHtmlWithStyles(editorState.getCurrentContent())
+              ),
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 }

@@ -12,6 +12,7 @@
   --light-background-translator-button-active: #fff;
   --light-border: #e6ebf2;
   --light-pause-button: #eff4fa;
+  --light-tts: #ccc;
 
   --light-oppiste: #000;
   --light-blue: #3474df;
@@ -36,6 +37,7 @@
   --dark-background-translator-button-active: #3474df;
   --dark-border: #353f4d;
   --dark-pause-button: #2c3f56;
+  --dark-tts: #000;
 
   --dark-oppiste: #fff;
   --dark-blue: #70b0ff;
@@ -51,6 +53,7 @@
   --dark-about-title: #fff;
 
   /* default variables */
+  --background-tts-active-chunk: var(--light-tts);
   --background-middle: var(--light-background-middle);
   --background-layout: var(--light-background-layout);
   --background-icon: var(--light-background-icon);
@@ -76,6 +79,7 @@
 }
 
 [data-theme="dark"] {
+  --background-tts-active-chunk: var(--dark-tts);
   --background-middle: var(--dark-background-middle);
   --background-layout: var(--dark-background-layout);
   --background-icon: var(--dark-background-icon);
@@ -188,6 +192,11 @@ section.container {
 span[style="color: red;"] span {
   /* CSS rules */
   color: red !important;
+}
+
+span.background {
+  background-color: var(--background-tts-active-chunk) !important;
+  color: var(--opposite) !important;
 }
 
 @media only screen and (max-width: 1160px) {

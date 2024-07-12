@@ -32,3 +32,34 @@
   border: none;
   outline: none;
 }
+
+.wrapper__tts {
+  color: var(--text);
+  padding: 0 24px;
+  font-size: 20px;
+  font-weight: 400;
+  margin-right: 25px;
+  position: absolute;
+  top: 0;
+  z-index: 1000;
+}
+
+div.wrapper__tts p,
+div.wrapper__tts ul {
+  margin-top: 20px;
+}
+
+div.wrapper__tts strong {
+  color: var(--text);
+}
+
+div.wrapper__tts span {
+  transition: background-color 0.7s ease;
+  background-color: inherit;
+}
+
+div.wrapper__tts ul li {
+  margin-top: 20px;
+
+  margin-left: 30px;
+}

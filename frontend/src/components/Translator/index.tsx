@@ -16,7 +16,11 @@ import {
   TranslatorButton,
 } from "@/src/common/Button";
 import { useTextEditorStore } from "@/src/store/translate.store";
-import { convertFrom, convertTo } from "@/src/common/Textaera/converters";
+import {
+  convertFrom,
+  convertTo,
+  fromMarkdownToHtml,
+} from "@/src/common/Textaera/converters";
 import useAxios from "@/src/hooks/axios.hook";
 import { TextToSpeech } from "@/src/common/TextToSpeech";
 import { SpeechToText } from "@/src/common/SpeechToText";
@@ -26,7 +30,6 @@ import Skeleton from "react-loading-skeleton";
 import { EditorState } from "draft-js";
 import { useTranslateHook } from "@/src/hooks/translate.hook";
 import { CorrectWordsTooltip } from "@/src/common/CorrectWordsTooltip";
-import { convertToHTML } from "draft-convert";
 
 import TextEditor from "@/src/common/Textaera";
 import Tooltip from "@/src/common/Tooltip";
@@ -35,8 +38,6 @@ import "react-loading-skeleton/dist/skeleton.css";
 import styles from "./index.module.css";
 import { useSttStore } from "@/src/store/stt.store";
 import ErrorBoundary from "../ErrorHandler";
-
-// const TextEditor = React.lazy(() => import("@/src/common/Textaera"));
 
 const Translator = () => {
   const [minHeight, setMinHeight] = useState(219);
@@ -64,10 +65,10 @@ const Translator = () => {
 
   const handleSubmit = useCallback(
     async (first: boolean) => {
-      const [html, links] = convertTo(editorState.getCurrentContent());
+      const [markdown, links] = convertTo(editorState.getCurrentContent());
 
       const result = await fetchData("change/", "POST", {
-        data: html.slice(0, html.length - 1),
+        data: markdown,
         type: String(Number(first)),
       });
 
@@ -79,13 +80,9 @@ const Translator = () => {
         );
 
         setIncorrectWords(incorrectWords);
-        const newCurrentContent = convertFrom(result.text, links);
-        findWords(
-          convertToHTML(newCurrentContent),
-          result.text,
-          links,
-          incorrectWords
-        );
+        const html = await fromMarkdownToHtml(result.text, links);
+
+        findWords(html, incorrectWords);
       }
     },
     [editorState]

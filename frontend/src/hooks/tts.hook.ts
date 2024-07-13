@@ -2,16 +2,11 @@
 import { useCallback, useEffect, useRef } from "react";
 import { useTextEditorStore } from "../store/translate.store";
 import { delay } from "../util/audio-worklet";
-import { TAG_REGEX } from "../constants";
 import getBlobDuration from "get-blob-duration";
 import { concatenateUint8Arrays, sliceEachWavData } from "../common/Utils";
-let htmlToDraft: any = null;
-if (typeof window === "object") {
-  htmlToDraft = require("html-to-draftjs").default;
-}
 
 export const useTTSHook = () => {
-  const { editorState, setEditorState, connected, setConnected, setIndexes } =
+  const { editorState, connected, setConnected, setIndexes } =
     useTextEditorStore();
 
   const audio = useRef<HTMLAudioElement | null>(null);
@@ -48,42 +43,93 @@ export const useTTSHook = () => {
     }
   }, [connected]);
 
-  const memoizationOfTags = useCallback(
-    (html: string) =>
-      html.replace(TAG_REGEX, (match, i) => {
-        return Array.from({ length: match.length })
-          .map((_) => "_")
-          .join("");
-      }),
-    []
-  );
+  const calculationSpeed = useCallback((text: string, duration: number) => {
+    // space, ",',`, ...-> x
+    // .,?!;: -> 1.5x
+    // a-zA-Z -> 2x
+    // - -> 3x
+    // digits -> 4x
+    const speedOfEachChar = [];
+
+    const punctuationRegex = /[.,?!;:]/g;
+    const hyphenRegex = /-/g;
+    const letterRegex = /[a-zA-Z]/g;
+    const digitRegex = /\d/g;
+
+    const otherSpeed = 1;
+    const punctuationSpeed = 1.5;
+    const letterSpeed = 2;
+    const hypenSpeed = 3;
+    const digitSpeed = 4;
+
+    const punctuationCount = (text.match(punctuationRegex) || []).length;
+    const hyphenCount = (text.match(hyphenRegex) || []).length;
+    const letterCount = (text.match(letterRegex) || []).length;
+    const digitCount = (text.match(digitRegex) || []).length;
+    const otherCount =
+      text.length - punctuationCount - hyphenCount - letterCount - digitCount;
+
+    const unitSpeed =
+      duration /
+      (otherSpeed + punctuationSpeed + letterSpeed + hypenSpeed + digitSpeed);
+
+    for (let char of text) {
+      if (punctuationRegex.test(char)) {
+        speedOfEachChar.push((punctuationSpeed * unitSpeed) / punctuationCount);
+      } else if (letterRegex.test(char)) {
+        speedOfEachChar.push((letterSpeed * unitSpeed) / letterCount);
+      } else if (hyphenRegex.test(char)) {
+        speedOfEachChar.push((hypenSpeed * unitSpeed) / hyphenCount);
+      } else if (digitRegex.test(char)) {
+        speedOfEachChar.push((digitSpeed * unitSpeed) / digitCount);
+      } else {
+        speedOfEachChar.push((otherSpeed * unitSpeed) / otherCount);
+      }
+    }
+
+    const sum = speedOfEachChar.reduce((accumulator, currentValue) => {
+      return accumulator + currentValue;
+    }, 0);
+
+    console.log(text);
+
+    console.log(sum, duration);
+
+    return speedOfEachChar;
+  }, []);
 
   const handleDecorateText = useCallback(
     async (indexes: number[], count: number, duration: number) => {
-      console.log(indexes);
       const spanNodes = Array.from(document.querySelectorAll(".index__shower"));
+      const start = !count ? 0 : indexes[count - 1];
+      const end = count !== indexes.length ? indexes[count] : spanNodes.length;
+
+      const text = editorState.getCurrentContent().getPlainText();
 
       const waitingTime =
-        (duration * 1000) /
-        (count ? indexes[count] - indexes[count - 1] : indexes[count]);
+        duration /
+        (count
+          ? count === indexes.length
+            ? spanNodes.length - indexes[count - 1]
+            : indexes[count] - indexes[count - 1]
+          : indexes[count]);
 
-      console.log(count);
+      // const speed = calculationSpeed(text.slice(start, end), duration);
 
-      for (
-        let i = !count ? 0 : indexes[count - 1];
-        i < (count === indexes.length ? indexes[count] : spanNodes.length);
-        i++
-      ) {
+      for (let i = start; i < end; i++) {
         const span = spanNodes[i];
         if (!span) {
           handleResetDecoration();
           return;
         }
         span.classList.add("background");
-        await delay(waitingTime);
+        (
+          span as any
+        ).style.animation = `backgroundMove ${waitingTime}s linear `;
+        await delay(waitingTime * 1000);
       }
     },
-    []
+    [editorState]
   );
 
   const handleResetDecoration = useCallback(() => {
@@ -93,6 +139,16 @@ export const useTTSHook = () => {
     }
     setIndexes([]);
   }, []);
+
+  // const memoizationOfTags = useCallback(
+  //   (html: string) =>
+  //     html.replace(TAG_REGEX, (match, i) => {
+  //       return Array.from({ length: match.length })
+  //         .map((_) => "_")
+  //         .join("");
+  //     }),
+  //   []
+  // );
 
   // const handleDecorateText = useCallback(
   //   (state: EditorState, start: number = 0, end: number = 0) => {
@@ -385,7 +441,7 @@ export const useTTSHook = () => {
         const duration = await getBlobDuration(blob);
         const data = URL.createObjectURL(blob);
         audio.current = new Audio(data);
-        audio.current.play();
+        await audio.current.play();
         handleDecorateText(indexes, count, duration);
         count++;
         audio.current.addEventListener("ended", handleAudioEnd);
@@ -398,6 +454,7 @@ export const useTTSHook = () => {
       let array: Uint8Array = new Uint8Array();
 
       for await (let chunk of streamingFetch({ text, indexes: true })) {
+        if (!started) return;
         audios.push(chunk);
         array = concatenateUint8Arrays(audios);
         const result = sliceEachWavData(array, index, false);
@@ -421,7 +478,7 @@ export const useTTSHook = () => {
       setStarted(false);
       handleResetDecoration();
     }
-  }, [connected, editorState, memoizationOfTags]);
+  }, [connected, editorState]);
 
   async function* streamingFetch(body: { text: string; indexes: boolean }) {
     // const url = "http://localhost:5001/stream/api/tts";

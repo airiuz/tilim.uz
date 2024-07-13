@@ -6,7 +6,6 @@ import { Exit } from "@/src/common/Exit";
 import { EditorState } from "draft-js";
 import { useSttStore } from "@/src/store/stt.store";
 import { OrderedSet } from "immutable";
-import { useTextToSpeech } from "@/src/hooks/textToSpeech.hook";
 import { useTextEditorStore } from "@/src/store/translate.store";
 import { converToHtmlWithStyles, delay, wrapEachNodeSpan } from "../Utils";
 

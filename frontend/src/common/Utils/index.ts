@@ -31,12 +31,14 @@ export const converToHtmlWithStyles = (contentState: ContentState) => {
 };
 
 export function wrapEachNodeSpan(htmlString: string) {
+  let counter = 0;
   function wrap(node: Node) {
     let index = 0;
     let result = "";
     for (const char of node.nodeValue!) {
-      result += `<span class="index__shower" id="span_${index}">${char}</span>`;
+      result += `<span class="index__shower" id="span_${counter}">${char}</span>`;
       index++;
+      counter++;
     }
     return result;
   }

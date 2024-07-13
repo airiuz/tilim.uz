@@ -37,7 +37,7 @@
   --dark-background-translator-button-active: #3474df;
   --dark-border: #353f4d;
   --dark-pause-button: #2c3f56;
-  --dark-tts: #000;
+  --dark-tts: #474747;
 
   --dark-oppiste: #fff;
   --dark-blue: #70b0ff;
@@ -195,8 +195,22 @@ span[style="color: red;"] span {
 }
 
 span.background {
-  background-color: var(--background-tts-active-chunk) !important;
+  background: linear-gradient(
+    to left,
+    transparent 50%,
+    var(--background-tts-active-chunk) 50%
+  );
+  background-size: 200% 100%;
+  /* animation: backgroundMove 2s linear infinite; */
   color: var(--opposite) !important;
+}
+@keyframes backgroundMove {
+  from {
+    background-position: 100% 0%;
+  }
+  to {
+    background-position: 0% 0%;
+  }
 }
 
 @media only screen and (max-width: 1160px) {

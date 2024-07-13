@@ -13,7 +13,7 @@ import {
   WRONG_OPEN_TAG,
   WRONG_WORD_TAG,
 } from "../constants";
-import { convertTo } from "../common/Textaera/converters";
+import { convertTo, fromMarkdownToHtml } from "../common/Textaera/converters";
 import { convertToHTML } from "draft-convert";
 
 let htmlToDraft: any = null;
@@ -89,24 +89,18 @@ export const useTranslateHook = () => {
       } else window.removeEventListener("click", eventListener);
       return () => {
         if (typeof window !== "undefined")
-          return window.removeEventListener("click", eventListener);
+          window.removeEventListener("click", eventListener);
       };
     }
   }, [pathname, incorrectWords]);
 
-  const replaceToCorrectVersion = (word: string) => {
+  const replaceToCorrectVersion = async (word: string) => {
     if (connected) return;
     const contentState = editorState.getCurrentContent();
 
     const [markdown, links] = convertTo(contentState);
-
-    findWords(
-      convertToHTML(contentState),
-      markdown,
-      links,
-      incorrectWords,
-      word
-    );
+    const html = await fromMarkdownToHtml(markdown, links);
+    findWords(html, incorrectWords, word);
 
     setTooltipPosition({ ...tooltipPosition, opacity: 0, zIndex: "-1" });
   };
@@ -124,9 +118,10 @@ export const useTranslateHook = () => {
     const regex = /\s*\[(.*?)\]\(\s*(\d+)\s*\)\s*/g;
 
     text.replace(regex, (match: string, text: string, index: string) => {
+      console.log(match, text, index);
       const linkItem: ITextEditorLink = {
         link: links[index] as string,
-        text: clearWord(text),
+        text: text,
       };
       linksData.push(linkItem);
       return linkRender(linkItem);
@@ -138,8 +133,6 @@ export const useTranslateHook = () => {
   const findWords = useCallback(
     (
       htmlContent: string,
-      markdownContent: string,
-      links: string[],
       incorrectWords: string[],
       replaceMentWord?: string
     ) => {
@@ -153,21 +146,24 @@ export const useTranslateHook = () => {
         );
       }
 
-      const { linksData } = replaceLinks(markdownContent, links);
+      // const { linksData } = replaceLinks(markdownContent, links);
 
-      linksData.forEach((link: ITextEditorLink) => {
-        htmlContent = htmlContent.replace(link.text, gluingWords(link.text));
-      });
+      // console.log(linksData);
+
+      // linksData.forEach((link: ITextEditorLink) => {
+      //   htmlContent = htmlContent.replace(link.text, gluingWords(link.text));
+      // });
+
+      // console.log(linksData);
 
       let content = renderText(htmlContent, handleChangeColor, incorrectWords);
 
-      linksData.forEach((link) => {
-        content = content.replace(gluingWords(link.text), linkRender(link));
-      });
+      // linksData.forEach((link) => {
+      //   content = content.replace(gluingWords(link.text), linkRender(link));
+      // });
 
-      // console.log(content);
       // return;
-      content = fixNestedTags(content);
+      // content = fixNestedTags(content);
 
       return replaceWords(content);
     },
@@ -289,7 +285,6 @@ export const useTranslateHook = () => {
     findWords,
     replaceWords,
     replaceToCorrectVersion,
-    replaceLinks,
     clearWord,
   };
 };

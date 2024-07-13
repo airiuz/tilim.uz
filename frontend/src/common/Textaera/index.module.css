@@ -41,7 +41,7 @@
   margin-right: 25px;
   position: absolute;
   top: 0;
-  z-index: 1000;
+  z-index: 100;
 }
 
 div.wrapper__tts p,

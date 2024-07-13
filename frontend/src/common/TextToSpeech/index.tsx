@@ -24,5 +24,3 @@ export const TextToSpeech = ({ className }: ITextToSpeech) => {
     </div>
   );
 };
-
-//matnni kiriting, yana kiriting. ikkinchi gap.

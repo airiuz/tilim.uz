@@ -102,19 +102,22 @@ export const useTypingHook = ({ content }: { content: string }) => {
     async (duration: number) => {
       if (!text) return;
       setLoading(true);
-      const response = await fetchData("typefast/", "POST", {
-        text_id: text.text_id,
-        text: typedText,
-        t: language,
-        time: duration,
-        accuracy,
-      });
+      const response = await fetchData(
+        "http://10.10.0.78:8080/api/ratings/checkRating",
+        "POST",
+        {
+          text: typedText,
+          t: +Number(!language),
+          time: duration,
+          accuracy,
+        }
+      );
       setLoading(false);
 
       if (response) {
         setPassed(true);
-        setData(chars, response.wpm, accuracy);
-        setPlace(response.place);
+        setData(chars, response.data.wpm, accuracy);
+        setPlace(response.data.place);
         setReadonly(false);
       }
     },
@@ -122,19 +125,32 @@ export const useTypingHook = ({ content }: { content: string }) => {
   );
 
   const getTopUsers = useCallback(async () => {
-    const users: IUser[] = await fetchData("/topusers/", "GET");
+    const response = await fetchData(
+      "http://10.10.0.78:8080/api/ratings/top20",
+      "GET",
+      null,
+      {}
+    );
+    const users: IUser[] = response.data.kratings.concat(
+      response.data.lratings
+    );
+    // console.log(users);
     if (users) setUsers(users);
   }, []);
 
   const handleSend = useCallback(
     async (name: string) => {
-      const res = await fetchData("/topusers/", "POST", {
-        place,
-        name,
-        t: String(language),
-        wpm: words,
-        percent: accuracy,
-      });
+      const res = await fetchData(
+        "http://10.10.0.78:8080/api/ratings/saveRating",
+        "POST",
+        {
+          fullName: name,
+          type: String(Number(!language)),
+          wpm: words,
+          accuracy,
+          rating: accuracy * words,
+        }
+      );
       await getTopUsers();
       handleBack();
     },

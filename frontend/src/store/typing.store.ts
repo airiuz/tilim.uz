@@ -2,8 +2,9 @@ import { create } from "zustand";
 import { IUser } from "../constants";
 
 interface IText {
-  text_id: number;
+  id: number;
   text: string;
+  type: string;
 }
 
 type TypingState = {

@@ -44,9 +44,10 @@ export const ListUsers = () => {
       </div>
       <div className={styles.list__users}>
         {users
-          .filter((user) => language === Number(user.t))
+          .filter((user) => language === Number(!Number(user.type)))
           .map((user, i) => {
-            if (i < 21) return <ListItem key={i} user={user as any} />;
+            if (i < 21)
+              return <ListItem key={i} user={user as any} place={i} />;
           })}
       </div>
     </div>

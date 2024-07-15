@@ -11,6 +11,7 @@ import Image from "next/image";
 import { useTypingStore } from "@/src/store/typing.store";
 import useAxios from "@/src/hooks/axios.hook";
 import { useCallback, useEffect } from "react";
+import axios from "axios";
 
 export const Dashboard = () => {
   const { setShow, setLanguage, setLoading, language, setText, loading } =
@@ -28,12 +29,17 @@ export const Dashboard = () => {
 
   const handleStart = useCallback(async () => {
     setLoading(true);
-    const result = await fetchData("gettext/", "POST", {
-      t: String(language),
-    });
+
+    const result = await fetchData(
+      `http://10.10.0.78:8080/api/texts/randomText?type=${Number(!language)}`,
+      "GET",
+      null,
+      {}
+    );
+
     setLoading(false);
     setShow(true);
-    if (result) setText(result);
+    if (result) setText(result.data);
   }, [language]);
 
   return (

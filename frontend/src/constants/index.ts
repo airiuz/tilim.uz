@@ -35,11 +35,11 @@ export type FlexDirection =
   | undefined;
 
 export interface IUser {
-  name: string;
-  percent: number;
-  place: number;
-  t: string;
+  fullName: string;
+  accuracy: number;
+  type: string;
   wpm: number;
+  rating: number;
 }
 
 export type WebSocketMessage =

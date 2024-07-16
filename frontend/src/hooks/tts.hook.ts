@@ -65,18 +65,20 @@ export const useTTSHook = () => {
       );
       const amountOfSpaces = indexData.lengths.length - 1;
 
-      const charRatio = 50;
+      const charRatio = 2;
       const spaceRatio = 1;
 
       let words = text.split(" ").filter((word) => Boolean(word.trim()));
-
       if (words.length !== indexData.lengths.length) {
         for (let index = 0; index < words.length; index++) {
-          console.log(words[index].match(/\d+/g), index);
+          // console.log(words[index].match(/\d+/g), index);
           if (words[index].match(/^\d+$/g)) {
             let helper = words[index];
-            for (let i = index + 1; i < words.length; i++) {
-              if (words[index].match(/^\d+$/g)) {
+            let i = index + 1;
+
+            while (i < words.length) {
+              if (words[i].match(/^\d+$/g)) {
+                console.log(words[i], i);
                 words[index] += words[i];
                 helper += " " + words[i];
                 words = [...words.slice(0, i), ...words.slice(i + 1)];
@@ -85,6 +87,7 @@ export const useTTSHook = () => {
                 words[index] = helper;
                 break;
               }
+              i++;
             }
           }
         }
@@ -489,7 +492,6 @@ export const useTTSHook = () => {
             const result = sliceEachWavData(array, index, false);
             index = result.idx;
             if (result.indexes) {
-              console.log(result.indexes);
               setIndexes(result.indexes);
               indexes = result.indexes;
             }

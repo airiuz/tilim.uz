@@ -42,6 +42,11 @@ export interface IUser {
   rating: number;
 }
 
+export interface IIndexData {
+  lengths: number[];
+  pos: number;
+}
+
 export type WebSocketMessage =
   | string
   | ArrayBuffer

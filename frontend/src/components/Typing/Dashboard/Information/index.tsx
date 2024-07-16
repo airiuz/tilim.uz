@@ -31,10 +31,11 @@ export const Dashboard = () => {
     setLoading(true);
 
     const result = await fetchData(
-      `http://10.10.0.78:8080/api/texts/randomText?type=${Number(!language)}`,
-      "GET",
+      `/randomText?type=${Number(!language)}`,
+      "POST",
       null,
-      {}
+      {},
+      "/fastTyping"
     );
 
     setLoading(false);

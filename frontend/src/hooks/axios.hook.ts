@@ -1,8 +1,6 @@
 import { useState } from "react";
 import axios, { AxiosRequestConfig } from "axios";
 
-axios.defaults.baseURL = "/api/";
-
 const useAxios = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -11,9 +9,12 @@ const useAxios = () => {
     url: string,
     method: AxiosRequestConfig["method"],
     body: object | null = null,
-    headers: AxiosRequestConfig["headers"] = {}
+    headers: AxiosRequestConfig["headers"] = {},
+    api: string = "/api/"
   ) => {
     try {
+      axios.defaults.baseURL = api;
+
       setLoading(true);
       const config: AxiosRequestConfig = { method, url, headers };
       if (body) {

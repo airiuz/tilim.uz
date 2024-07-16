@@ -103,14 +103,16 @@ export const useTypingHook = ({ content }: { content: string }) => {
       if (!text) return;
       setLoading(true);
       const response = await fetchData(
-        "http://10.10.0.78:8080/api/ratings/checkRating",
+        "/checkRating",
         "POST",
         {
           text: typedText,
           t: +Number(!language),
           time: duration,
           accuracy,
-        }
+        },
+        {},
+        "/fastTyping"
       );
       setLoading(false);
 
@@ -125,23 +127,21 @@ export const useTypingHook = ({ content }: { content: string }) => {
   );
 
   const getTopUsers = useCallback(async () => {
-    const response = await fetchData(
-      "http://10.10.0.78:8080/api/ratings/top20",
-      "GET",
-      null,
-      {}
-    );
+    const response = await fetchData("/users", "GET", null, {}, "/fastTyping");
+
+    if (!response) return;
+
     const users: IUser[] = response.data.kratings.concat(
       response.data.lratings
     );
     // console.log(users);
-    if (users) setUsers(users);
+    setUsers(users);
   }, []);
 
   const handleSend = useCallback(
     async (name: string) => {
       const res = await fetchData(
-        "http://10.10.0.78:8080/api/ratings/saveRating",
+        "/saveRating",
         "POST",
         {
           fullName: name,
@@ -149,7 +149,9 @@ export const useTypingHook = ({ content }: { content: string }) => {
           wpm: words,
           accuracy,
           rating: accuracy * words,
-        }
+        },
+        {},
+        "/fastTyping"
       );
       await getTopUsers();
       handleBack();

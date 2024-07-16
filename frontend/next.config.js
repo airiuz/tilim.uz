@@ -18,6 +18,23 @@ const nextConfig = {
         source: "/wavdata",
         destination: "https://oyqiz.airi.uz/wavdata",
       },
+      {
+        source: "/fastTyping/users",
+        destination: "http://10.10.0.78:8080/api/ratings/top20",
+      },
+      {
+        source: "/fastTyping/randomText",
+        destination: "http://10.10.0.78:8080/api/texts/randomText",
+        has: [{ type: "query", key: "type" }],
+      },
+      {
+        source: "/fastTyping/checkRating",
+        destination: "http://10.10.0.78:8080/api/ratings/checkRating",
+      },
+      {
+        source: "/fastTyping/saveRating",
+        destination: "http://10.10.0.78:8080/api/ratings/saveRating",
+      },
 
       {
         source: "/api/:path*/",

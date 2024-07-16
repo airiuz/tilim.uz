@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { EditorState } from "draft-js";
+import { IIndexData } from "../constants";
 
 export interface ITooltipPosition {
   top: number;
@@ -32,8 +33,8 @@ type TextEditorState = {
   connected: boolean;
   setConnected: (connected: boolean) => void;
 
-  indexes: number[];
-  setIndexes: (indexes: number[]) => void;
+  indexes: IIndexData[];
+  setIndexes: (indexes: IIndexData[]) => void;
 };
 
 export const useTextEditorStore = create<TextEditorState>((set) => ({
@@ -51,5 +52,5 @@ export const useTextEditorStore = create<TextEditorState>((set) => ({
   connected: false,
   setConnected: (connected: boolean) => set({ connected }),
   indexes: [],
-  setIndexes: (indexes: number[]) => set({ indexes }),
+  setIndexes: (indexes: IIndexData[]) => set({ indexes }),
 }));

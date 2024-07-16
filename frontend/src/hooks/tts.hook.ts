@@ -10,6 +10,7 @@ import { useTextEditorStore } from "../store/translate.store";
 import { delay } from "../util/audio-worklet";
 import getBlobDuration from "get-blob-duration";
 import { concatenateUint8Arrays, sliceEachWavData } from "../common/Utils";
+import { IIndexData } from "../constants";
 
 export const useTTSHook = () => {
   const { editorState, connected, setConnected, setIndexes } =
@@ -55,62 +56,65 @@ export const useTTSHook = () => {
     }
   }, [connected]);
 
-  const calculationSpeed = useCallback((text: string, duration: number) => {
-    // space, ",',`, ...-> x
-    // .,?!;: -> 1.5x
-    // a-zA-Z -> 2x
-    // - -> 3x
-    // digits -> 4x
-    const speedOfEachChar = [];
+  const calculationSpeed = useCallback(
+    (text: string, indexData: IIndexData, duration: number) => {
+      const animationChars: number[] = [];
+      const amountOfChars = indexData.lengths.reduce(
+        (sum, element) => (sum += element),
+        0
+      );
+      const amountOfSpaces = indexData.lengths.length - 1;
 
-    const punctuationRegex = /[.,?!;:]/g;
-    const hyphenRegex = /-/g;
-    const letterRegex = /[a-zA-Z]/g;
-    const digitRegex = /\d/g;
+      const charRatio = 50;
+      const spaceRatio = 1;
 
-    const otherSpeed = 1;
-    const punctuationSpeed = 1.5;
-    const letterSpeed = 2;
-    const hypenSpeed = 3;
-    const digitSpeed = 4;
+      let words = text.split(" ").filter((word) => Boolean(word.trim()));
 
-    const punctuationCount = (text.match(punctuationRegex) || []).length;
-    const hyphenCount = (text.match(hyphenRegex) || []).length;
-    const letterCount = (text.match(letterRegex) || []).length;
-    const digitCount = (text.match(digitRegex) || []).length;
-    const otherCount =
-      text.length - punctuationCount - hyphenCount - letterCount - digitCount;
-
-    const unitSpeed =
-      duration /
-      (otherSpeed + punctuationSpeed + letterSpeed + hypenSpeed + digitSpeed);
-
-    for (let char of text) {
-      if (punctuationRegex.test(char)) {
-        speedOfEachChar.push((punctuationSpeed * unitSpeed) / punctuationCount);
-      } else if (letterRegex.test(char)) {
-        speedOfEachChar.push((letterSpeed * unitSpeed) / letterCount);
-      } else if (hyphenRegex.test(char)) {
-        speedOfEachChar.push((hypenSpeed * unitSpeed) / hyphenCount);
-      } else if (digitRegex.test(char)) {
-        speedOfEachChar.push((digitSpeed * unitSpeed) / digitCount);
-      } else {
-        speedOfEachChar.push((otherSpeed * unitSpeed) / otherCount);
+      if (words.length !== indexData.lengths.length) {
+        for (let index = 0; index < words.length; index++) {
+          console.log(words[index].match(/\d+/g), index);
+          if (words[index].match(/^\d+$/g)) {
+            let helper = words[index];
+            for (let i = index + 1; i < words.length; i++) {
+              if (words[index].match(/^\d+$/g)) {
+                words[index] += words[i];
+                helper += " " + words[i];
+                words = [...words.slice(0, i), ...words.slice(i + 1)];
+                i = i - 1;
+              } else {
+                words[index] = helper;
+                break;
+              }
+            }
+          }
+        }
       }
-    }
 
-    const sum = speedOfEachChar.reduce((accumulator, currentValue) => {
-      return accumulator + currentValue;
-    }, 0);
+      const unitWaitTime =
+        duration / (charRatio * amountOfChars + spaceRatio * amountOfSpaces);
 
-    return speedOfEachChar;
-  }, []);
+      for (let index = 0; index < words.length; index++) {
+        for (const char of words[index]) {
+          animationChars.push(
+            (unitWaitTime * indexData.lengths[index] * charRatio) /
+              words[index].length
+          );
+        }
+        if (index !== words.length - 1)
+          animationChars.push(spaceRatio * unitWaitTime);
+      }
+
+      return animationChars;
+    },
+    []
+  );
 
   const handleDecorateText = useCallback(
-    async (indexes: number[], count: number, duration: number) => {
+    async (indexes: IIndexData[], count: number, duration: number) => {
       const spanNodes = Array.from(document.querySelectorAll(".index__shower"));
-      const start = !count ? 0 : indexes[count - 1];
-      const end = count !== indexes.length ? indexes[count] : spanNodes.length;
+      const start = !count ? 0 : indexes[count - 1].pos;
+      const end =
+        count !== indexes.length ? indexes[count].pos : spanNodes.length;
 
       const text = editorState.getCurrentContent().getPlainText();
 
@@ -118,15 +122,20 @@ export const useTTSHook = () => {
         duration /
         (count
           ? count === indexes.length
-            ? spanNodes.length - indexes[count - 1]
-            : indexes[count] - indexes[count - 1]
-          : indexes[count]);
+            ? spanNodes.length - indexes[count - 1].pos
+            : indexes[count].pos - indexes[count - 1].pos
+          : indexes[count].pos);
 
-      const speed = calculationSpeed(text.slice(start, end), duration);
+      const animationChars = calculationSpeed(
+        text.slice(start, end),
+        indexes[count],
+        duration
+      );
 
       for (let i = start; i < end; i++) {
         const span = spanNodes[i];
-        // waitingTime = speed[i];
+
+        waitingTime = animationChars[i - start];
 
         if (!span) {
           handleResetDecoration();
@@ -410,7 +419,7 @@ export const useTTSHook = () => {
 
       let audios: Uint8Array[] = [];
       const audioData: Uint8Array[][] = [];
-      let indexes: number[] = [];
+      let indexes: IIndexData[] = [];
       let started = false;
 
       function setStarted(value: boolean) {
@@ -426,71 +435,80 @@ export const useTTSHook = () => {
       setDisabled(true);
 
       if (!connected) {
-        let count = 0;
-        let error = false;
+        try {
+          let count = 0;
+          let error = false;
 
-        const handleAudioEnd = async () => {
-          if (!started) return false;
-          if (count < audioData.length) {
-            await pauseIfPlaying(!Boolean(audioData[count]));
-            handleAudio(audioData[count]);
-          } else {
-            setStarted(false);
-          }
-        };
-
-        const pauseIfPlaying = async (condition: boolean): Promise<boolean> => {
-          if (!started || error) return false;
-          if (condition) {
-            await delay(100);
-            return pauseIfPlaying(!Boolean(audios[count]));
-          }
-          return false;
-        };
-
-        const handleAudio = async (chunks: Uint8Array[]) => {
-          if (!started) return;
-          const blob = new Blob(chunks, { type: "audio/wav" });
-          const duration = await getBlobDuration(blob);
-          const data = URL.createObjectURL(blob);
-          audio.current = new Audio(data);
-
-          await audio.current.play();
-          setConnected(true);
-
-          handleDecorateText(indexes, count, duration);
-          count++;
-          audio.current.addEventListener("ended", handleAudioEnd);
-        };
-
-        setStarted(true);
-
-        let index = 0;
-
-        let array: Uint8Array = new Uint8Array();
-
-        for await (let chunk of streamingFetch({ text, indexes: true })) {
-          if (!started) return;
-
-          audios.push(chunk);
-          array = concatenateUint8Arrays(audios);
-          const result = sliceEachWavData(array, index, false);
-          index = result.idx;
-          if (result.indexes) {
-            setIndexes(result.indexes);
-            indexes = result.indexes;
-          }
-          if (result.wavData) {
-            if (!audioData.length) {
-              await handleAudio([result.wavData]);
+          const handleAudioEnd = async () => {
+            if (!started) return false;
+            if (count < audioData.length) {
+              await pauseIfPlaying(!Boolean(audioData[count]));
+              handleAudio(audioData[count]);
+            } else {
+              setStarted(false);
             }
-            audioData.push([result.wavData]);
-          }
-        }
+          };
 
-        const lastChunk = new Uint8Array(array.buffer.slice(index));
-        lastChunk && audioData.push([lastChunk]);
-        if (!count) await handleAudio(audioData[0]);
+          const pauseIfPlaying = async (
+            condition: boolean
+          ): Promise<boolean> => {
+            if (!started || error) return false;
+            if (condition) {
+              await delay(100);
+              return pauseIfPlaying(!Boolean(audios[count]));
+            }
+            return false;
+          };
+
+          const handleAudio = async (chunks: Uint8Array[]) => {
+            if (!started) return;
+            const blob = new Blob(chunks, { type: "audio/wav" });
+            const duration = await getBlobDuration(blob);
+            const data = URL.createObjectURL(blob);
+            audio.current = new Audio(data);
+
+            await audio.current.play();
+            setConnected(true);
+
+            handleDecorateText(indexes, count, duration);
+            count++;
+            audio.current.addEventListener("ended", handleAudioEnd);
+          };
+
+          setStarted(true);
+
+          let index = 0;
+
+          let array: Uint8Array = new Uint8Array();
+
+          for await (let chunk of streamingFetch({ text, indexes: true })) {
+            if (!started) return;
+
+            audios.push(chunk);
+            array = concatenateUint8Arrays(audios);
+            const result = sliceEachWavData(array, index, false);
+            index = result.idx;
+            if (result.indexes) {
+              console.log(result.indexes);
+              setIndexes(result.indexes);
+              indexes = result.indexes;
+            }
+            if (result.wavData) {
+              if (!audioData.length) {
+                await handleAudio([result.wavData]);
+              }
+              audioData.push([result.wavData]);
+            }
+          }
+
+          const lastChunk = new Uint8Array(array.buffer.slice(index));
+          lastChunk && audioData.push([lastChunk]);
+          if (!count) await handleAudio(audioData[0]);
+        } catch (e) {
+          console.log(e);
+          setDisabled(false);
+          setStarted(false);
+        }
       } else {
         setStarted(false);
         handleResetDecoration();

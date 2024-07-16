@@ -1,3 +1,4 @@
+import { IIndexData } from "@/src/constants";
 import DOMPurify from "dompurify";
 import { convertToHTML } from "draft-convert";
 import { ContentState } from "draft-js";
@@ -156,7 +157,7 @@ export function sliceEachWavData(
   const riffMarker = "RIFF";
   let idx = index;
   let wavData: null | Uint8Array = null;
-  let indexes: null | number[] = null;
+  let indexes: null | IIndexData[] = null;
 
   for (let i = index; i <= array.length - 4; i++) {
     if (

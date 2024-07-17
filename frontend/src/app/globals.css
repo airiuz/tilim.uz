@@ -194,6 +194,10 @@ span[style="color: red;"] span {
   color: red !important;
 }
 
+span.index__shower {
+  width: fit-content;
+}
+
 span.background {
   background: linear-gradient(
     to left,

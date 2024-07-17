@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useMemo } from "react";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import styles from "./index.module.css";
 import { Exit } from "@/src/common/Exit";
@@ -7,7 +7,7 @@ import { EditorState } from "draft-js";
 import { useSttStore } from "@/src/store/stt.store";
 import { OrderedSet } from "immutable";
 import { useTextEditorStore } from "@/src/store/translate.store";
-import { converToHtmlWithStyles, delay, wrapEachNodeSpan } from "../Utils";
+import { converToHtmlWithStyles, wrapEachNodeSpan } from "../Utils";
 
 const RichTextEditor = dynamic(
   () => import("react-draft-wysiwyg").then((mod) => mod.Editor),
@@ -60,6 +60,14 @@ export default function TextEditor({
     setText([]);
   };
 
+  // console.log(converToHtmlWithStyles(editorState.getCurrentContent()));
+
+  const __html = useMemo(
+    () =>
+      wrapEachNodeSpan(converToHtmlWithStyles(editorState.getCurrentContent())),
+    [editorState.getCurrentContent()]
+  );
+
   return (
     <div className={styles.container}>
       {clear &&
@@ -81,13 +89,12 @@ export default function TextEditor({
         />
       )}
 
-      {Boolean(clear && indexes.length) && (
+      {/* {2 && ( */}
+      {1 && (
         <div className={styles.wrapper__tts}>
           <div
             dangerouslySetInnerHTML={{
-              __html: wrapEachNodeSpan(
-                converToHtmlWithStyles(editorState.getCurrentContent())
-              ),
+              __html,
             }}
           />
         </div>

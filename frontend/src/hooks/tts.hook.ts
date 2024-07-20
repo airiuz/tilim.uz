@@ -11,12 +11,17 @@ import { delay } from "../util/audio-worklet";
 import getBlobDuration from "get-blob-duration";
 import { concatenateUint8Arrays, sliceEachWavData } from "../common/Utils";
 import { ICache, IIndexData } from "../constants";
+import useAxios from "./axios.hook";
 
 export const useTTSHook = () => {
   const { editorState, connected, setConnected, setIndexes } =
     useTextEditorStore();
 
+  const { fetchData } = useAxios();
+
   const cachedData = useRef<ICache>({});
+
+  const requestId = useRef("");
 
   const audio = useRef<HTMLAudioElement | null>(null);
   const audios = useRef<Uint8Array[]>([]);
@@ -78,18 +83,38 @@ export const useTTSHook = () => {
   const cacheData = useCallback((key: string, completeChunk: Uint8Array[]) => {
     if (!started.current || indexes.current.length === 0) return;
 
+    key = key.trim();
+
+    const chachedTexts = Object.keys(cachedData.current);
+    const candidates = chachedTexts.filter((item) =>
+      key.startsWith(item + " ")
+    );
+    let candidate = "";
+    if (candidates.length) {
+      const biggestTextLength = Math.max(...candidates.map((t) => t.length));
+      candidate = candidates.find((t) => t.length === biggestTextLength)!;
+    }
+    const shortVersionOfThisText = cachedData.current[candidate];
     const index = audioData.current.length;
     let chunks = [completeChunk];
+    let pos = indexes.current[index].pos;
+    let indexesTemp = indexes.current;
+
     const prevChunkValue = cachedData.current[key];
-    const pos = indexes.current[index].pos;
     if (prevChunkValue) {
       if (prevChunkValue.pos > pos) return;
       chunks = [...prevChunkValue.chunks, completeChunk];
+    } else if (shortVersionOfThisText) {
+      // if (index >= shortVersionOfThisText.indexes.length) {
+      //   pos = pos + candidate.length;
+      // }
+      chunks = [...shortVersionOfThisText.chunks, completeChunk];
     }
 
-    console.log(pos);
+    console.log(indexesTemp);
+
     cachedData.current[key] = {
-      indexes: indexes.current,
+      indexes: indexesTemp,
       pos,
       chunks,
     };
@@ -97,10 +122,22 @@ export const useTTSHook = () => {
   }, []);
 
   const getFromCacheIfExists = useCallback((key: string) => {
-    const cachedAudio = cachedData.current[key];
-    if (!cachedAudio) return;
+    key = key.trim();
 
-    console.log(cachedAudio.pos, "get");
+    let cachedAudio = cachedData.current[key];
+    let concatenationIndexes = false;
+    if (!cachedAudio) {
+      const chachedTexts = Object.keys(cachedData.current);
+      const candidates = chachedTexts.filter((item) =>
+        key.startsWith(item + " ")
+      );
+      if (!candidates.length) return;
+      const biggestTextLength = Math.max(...candidates.map((t) => t.length));
+      const candidate = candidates.find((t) => t.length === biggestTextLength);
+
+      cachedAudio = cachedData.current[candidate!];
+      concatenationIndexes = true;
+    }
 
     const text = key.slice(cachedAudio.pos);
 
@@ -108,9 +145,12 @@ export const useTTSHook = () => {
       audioData.current.push(chunk);
     }
 
+    setIndexes(cachedAudio.indexes);
+    indexes.current = cachedAudio.indexes;
+
     handleAudio(audioData.current[0]);
 
-    return { text, cachedAudio };
+    return { text, cachedAudio, concatenationIndexes };
   }, []);
 
   const calculationAnimationTime = useCallback(
@@ -243,13 +283,11 @@ export const useTTSHook = () => {
       if (text.length > 100 && !text.includes(" ")) return;
 
       if (!Boolean(text.trim())) return;
-      setDisabled(true);
+      // setDisabled(true);
 
       if (!started.current) {
         try {
           setStarted(true);
-
-          console.log(text);
 
           const cache = getFromCacheIfExists(text);
           let textForRequest = text;
@@ -257,39 +295,54 @@ export const useTTSHook = () => {
           if (cache) {
             if (
               cache.cachedAudio.chunks.length ===
-              cache.cachedAudio.indexes.length
+                cache.cachedAudio.indexes.length &&
+              !cache.concatenationIndexes
             )
               return;
             textForRequest = cache.text;
-            setIndexes(cache.cachedAudio.indexes);
-            indexes.current = cache.cachedAudio.indexes;
           }
+
+          await getFirstChunk(text);
+          return;
 
           let index = 0;
 
           let array: Uint8Array = new Uint8Array();
 
+          const requestFOrIndexes =
+            indexes.current.length === 0 || cache?.concatenationIndexes;
+
           console.log("open");
 
           for await (let chunk of streamingFetch({
             text: textForRequest,
-            indexes: indexes.current.length === 0,
+            indexes: Boolean(requestFOrIndexes),
           })) {
             if (!started) return;
             audios.current.push(chunk);
             array = concatenateUint8Arrays(audios.current);
             const result: any = sliceEachWavData(array, index, false);
             index = result.idx;
-            if (result.indexes && indexes.current.length === 0) {
+            if (result.indexes && requestFOrIndexes) {
               setIndexes(result.indexes);
-              indexes.current = result.indexes;
+              if (cache?.concatenationIndexes) {
+                const lastPos =
+                  indexes.current[audioData.current.length - 1].pos + 1;
+                indexes.current = indexes.current
+                  .slice(0, audioData.current.length)
+                  .concat(
+                    result.indexes.map((item: IIndexData) => ({
+                      ...item,
+                      pos: lastPos + item.pos,
+                    }))
+                  );
+              } else indexes.current = result.indexes;
             }
             if (result.wavData) {
               const completeChunk = [result.wavData];
               if (!audioData.current.length) {
                 await handleAudio(completeChunk);
               }
-              console.log(4);
               cacheData(text, completeChunk);
             }
           }
@@ -311,6 +364,26 @@ export const useTTSHook = () => {
     },
     [connected, editorState]
   );
+
+  const getFirstChunk = useCallback(async (text: string) => {
+    const data = await fetchData(
+      "http://localhost:5001/stream/api/tts-short",
+      "POST",
+      { text }
+    );
+
+    if (!data) throw new Error();
+
+    requestId.current = data.requestId;
+    indexes.current.push(data.data);
+    const blob = new Blob([data.audioBuffer], { type: "audio/wav" });
+    const url = window.URL.createObjectURL(blob);
+    // cacheData(text, )
+    audio.current = new Audio(url);
+    audio.current.play();
+
+    console.log(data);
+  }, []);
 
   async function* streamingFetch(body: { text: string; indexes: boolean }) {
     const url = "http://localhost:5001/stream/api/tts";

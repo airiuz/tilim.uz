@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import styles from "./index.module.css";
 import { Exit } from "@/src/common/Exit";
@@ -64,7 +64,9 @@ export default function TextEditor({
 
   const __html = useMemo(
     () =>
-      wrapEachNodeSpan(converToHtmlWithStyles(editorState.getCurrentContent())),
+      wrapEachNodeSpan(
+        converToHtmlWithStyles(editorState.getCurrentContent(), true)
+      ),
     [editorState.getCurrentContent()]
   );
 
@@ -89,8 +91,7 @@ export default function TextEditor({
         />
       )}
 
-      {/* {2 && ( */}
-      {1 && (
+      {Boolean(clear && indexes.length) && (
         <div className={styles.wrapper__tts}>
           <div
             dangerouslySetInnerHTML={{

@@ -10,30 +10,28 @@ import { useTextEditorStore } from "../store/translate.store";
 import { delay } from "../util/audio-worklet";
 import getBlobDuration from "get-blob-duration";
 import { concatenateUint8Arrays, sliceEachWavData } from "../common/Utils";
-import { IIndexData } from "../constants";
+import { ICache, IIndexData } from "../constants";
 
 export const useTTSHook = () => {
   const { editorState, connected, setConnected, setIndexes } =
     useTextEditorStore();
 
+  const cachedData = useRef<ICache>({});
+
   const audio = useRef<HTMLAudioElement | null>(null);
+  const audios = useRef<Uint8Array[]>([]);
+  const audioData = useRef<Uint8Array[][]>([]);
+  const indexes = useRef<IIndexData[]>([]);
+  const started = useRef(false);
+  const count = useRef(0);
+  const error = useRef(false);
 
   const reader = useRef<
     ReadableStreamDefaultReader<Uint8Array> | undefined | null
   >(null);
 
   useEffect(() => {
-    audio.current?.addEventListener("play", () => {
-      console.log(3);
-    });
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      setConnected(false);
-      audio.current?.pause();
-      handleResetDecoration();
-    };
+    return reset;
   }, []);
 
   useEffect(() => {
@@ -42,87 +40,82 @@ export const useTTSHook = () => {
       editorState.getCurrentContent().getPlainText().trim() === "" &&
       audio &&
       audio.current
-    ) {
-      setConnected(false);
-      audio.current.pause();
-    }
+    )
+      reset();
   }, [editorState]);
 
   useEffect(() => {
-    if (!connected) {
-      audio.current?.pause();
-      audio.current = null;
-      handleResetDecoration();
-    }
+    if (!connected) reset();
   }, [connected]);
 
-  // const calculationSpeed = useCallback(
-  //   (text: string, indexData: IIndexData, duration: number) => {
-  //     const animationChars: number[] = [];
-  //     const amountOfChars = indexData.lengths.reduce(
-  //       (sum, element) => (sum += element),
-  //       0
-  //     );
-  //     const amountOfSpaces = indexData.lengths.length - 1;
+  const reset = useCallback(() => {
+    error.current = false;
+    count.current = 0;
+    started.current = false;
+    indexes.current = [];
+    audioData.current = [];
+    audios.current = [];
+    reader.current?.cancel();
+    reader.current = null;
+    audio.current?.pause();
+    audio.current = null;
+    setIndexes([]);
+    handleResetDecoration();
+  }, []);
 
-  //     const charRatio = 2;
-  //     const spaceRatio = 1;
+  const setStarted = useCallback((value: boolean) => {
+    started.current = value;
+    if (!value) {
+      setConnected(false);
+      reader.current?.cancel();
+      if (audio.current) {
+        audio.current.pause();
+      }
+      reset();
+    }
+  }, []);
 
-  //     let words = text.split(" ").filter((word) => Boolean(word.trim()));
-  //     if (words.length !== indexData.lengths.length) {
-  //       for (let index = 0; index < words.length; index++) {
-  //         if (words[index].match(/^\d+$/g)) {
-  //           let helper = words[index];
-  //           let i = index + 1;
+  const cacheData = useCallback((key: string, completeChunk: Uint8Array[]) => {
+    if (!started.current || indexes.current.length === 0) return;
 
-  //           while (i < words.length) {
-  //             if (words[i].match(/^\d+$/g)) {
-  //               words[index] += words[i];
-  //               helper += " " + words[i];
-  //               words = [...words.slice(0, i), ...words.slice(i + 1)];
-  //               i = i - 1;
-  //             } else {
-  //               words[index] = helper;
-  //               break;
-  //             }
-  //             i++;
-  //           }
-  //         }
-  //       }
-  //     }
+    const index = audioData.current.length;
+    let chunks = [completeChunk];
+    const prevChunkValue = cachedData.current[key];
+    const pos = indexes.current[index].pos;
+    if (prevChunkValue) {
+      if (prevChunkValue.pos > pos) return;
+      chunks = [...prevChunkValue.chunks, completeChunk];
+    }
 
-  //     // console.log(indexData);
+    console.log(pos);
+    cachedData.current[key] = {
+      indexes: indexes.current,
+      pos,
+      chunks,
+    };
+    audioData.current.push(completeChunk);
+  }, []);
 
-  //     // console.log(words);
+  const getFromCacheIfExists = useCallback((key: string) => {
+    const cachedAudio = cachedData.current[key];
+    if (!cachedAudio) return;
 
-  //     const unitWaitTime =
-  //       duration / (charRatio * amountOfChars + spaceRatio * amountOfSpaces);
+    console.log(cachedAudio.pos, "get");
 
-  //     for (let index = 0; index < words.length; index++) {
-  //       for (const char of words[index]) {
-  //         animationChars.push(
-  //           (unitWaitTime * indexData.lengths[index] * charRatio) /
-  //             words[index].length
-  //         );
-  //       }
-  //       if (index !== words.length - 1)
-  //         animationChars.push(spaceRatio * unitWaitTime);
-  //     }
+    const text = key.slice(cachedAudio.pos);
 
-  //     return animationChars;
-  //   },
-  //   []
-  // );
+    for (const chunk of cachedAudio.chunks) {
+      audioData.current.push(chunk);
+    }
+
+    handleAudio(audioData.current[0]);
+
+    return { text, cachedAudio };
+  }, []);
 
   const calculationAnimationTime = useCallback(
     (indexData: IIndexData, duration: number) => {
-      interface IAnimationTime {
-        char: number;
-        space?: number;
-      }
-      const animationChars: IAnimationTime[] = [];
-
-      const charRatio = 2;
+      const charRatio = 100;
       const spaceRatio = 1;
       const amountOfChars = indexData.lengths.reduce(
         (sum, element) => (sum += element),
@@ -132,24 +125,6 @@ export const useTTSHook = () => {
 
       const unitWaitTime =
         duration / (charRatio * amountOfChars + spaceRatio * amountOfSpaces);
-
-      for (let index = 0; index < indexData.lengths.length; index++) {
-        const data: IAnimationTime = {
-          char: unitWaitTime * indexData.lengths[index] * charRatio,
-        };
-        if (index !== indexData.lengths.length - 1) data.space = unitWaitTime;
-        animationChars.push(data);
-      }
-
-      let sum = 0;
-
-      for (const chunk of animationChars) {
-        sum = sum + chunk.char + (chunk.space || 0);
-      }
-
-      console.log(sum, duration);
-
-      // return animationChars;
 
       return { unitWaitTime, charRatio };
     },
@@ -165,31 +140,29 @@ export const useTTSHook = () => {
         duration
       );
 
-      const prevChunkLength = count ? indexes[count - 1].lengths.length : 0;
+      const prevChunksLength = indexes
+        .filter((_, i) => i < count)
+        .reduce((sum, value) => sum + value.lengths.length, 0);
 
       for (
         let index = 0;
         index < activeChunkIndexData.lengths.length;
         index++
       ) {
-        const spans = Array.from(
-          document.querySelectorAll(`span.char_${index + prevChunkLength}`)
+        const spans: any[] = Array.from(
+          document.querySelectorAll(`span.char_${index + prevChunksLength}`)
         );
         const contentLength = spans.reduce(
           (sum, value) => (sum += value.textContent?.length || 0),
           0
         );
-        const space = document.querySelector(
-          `span.space_${index + prevChunkLength}`
+        const spaces: any[] = Array.from(
+          document.querySelectorAll(`span.space_${index + prevChunksLength}`)
         );
-
-        if (!space) {
-          console.log(index, "space", prevChunkLength);
-        }
-
-        if (spans.length === 0) {
-          console.log(index, "spans", prevChunkLength);
-        }
+        const contentLengthOfSpaces = spans.reduce(
+          (sum, value) => (sum += value.textContent?.length || 0),
+          0
+        );
 
         const charAnimationTime =
           unitWaitTime * activeChunkIndexData.lengths[index] * charRatio;
@@ -199,18 +172,20 @@ export const useTTSHook = () => {
             ((span.textContent?.length || 0) / (contentLength || 1)) *
             charAnimationTime;
           span.classList.add("background");
-          (
-            span as any
-          ).style.animation = `backgroundMove ${waitingTime}s linear`;
+          span.style.animation = `backgroundMove ${waitingTime}s linear`;
           await delay(1000 * waitingTime);
         }
 
         if (index !== activeChunkIndexData.lengths.length - 1) {
-          space?.classList.add("background");
-          (
-            space as any
-          ).style.animation = `backgroundMove ${unitWaitTime}s linear`;
-          await delay(1000 * unitWaitTime);
+          for (const space of spaces) {
+            const waitingTime =
+              (unitWaitTime * (space.textContent?.length || 0)) /
+              (contentLengthOfSpaces || 1);
+
+            space.classList.add("background");
+            space.style.animation = `backgroundMove ${waitingTime}s linear`;
+            await delay(1000 * waitingTime);
+          }
         }
       }
     },
@@ -222,102 +197,109 @@ export const useTTSHook = () => {
     for (const node of spanNodes) {
       node.classList.remove("background");
     }
-    setIndexes([]);
+  }, []);
+
+  const pauseIfPlaying = useCallback(
+    async (condition: boolean): Promise<boolean> => {
+      if (!started.current || error.current) return false;
+      if (condition) {
+        await delay(100);
+        return pauseIfPlaying(!Boolean(audios.current[count.current]));
+      }
+      return false;
+    },
+    []
+  );
+
+  const handleAudioEnd = useCallback(async () => {
+    if (!started.current) return false;
+    if (count.current < audioData.current.length) {
+      await pauseIfPlaying(!Boolean(audioData.current[count.current]));
+      handleAudio(audioData.current[count.current]);
+    } else setStarted(false);
+  }, []);
+
+  const handleAudio = useCallback(async (chunks: Uint8Array[]) => {
+    if (!started.current) return;
+    const blob = new Blob(chunks, { type: "audio/wav" });
+    const data = URL.createObjectURL(blob);
+    const duration = await getBlobDuration(blob);
+    audio.current = new Audio(data);
+
+    await audio.current.play();
+    setConnected(true);
+
+    handleDecorateText(indexes.current, count.current, duration);
+    count.current++;
+    audio.current.addEventListener("ended", handleAudioEnd);
   }, []);
 
   const handleClick = useCallback(
     async (setDisabled: Dispatch<SetStateAction<boolean>>) => {
       if (!window) return;
 
-      let audios: Uint8Array[] = [];
-      const audioData: Uint8Array[][] = [];
-      let indexes: IIndexData[] = [];
-      let started = false;
-
-      function setStarted(value: boolean) {
-        started = value;
-        !value && setConnected(value);
-        if (!value) reader.current?.cancel();
-        if (audio.current) audio.current.pause();
-      }
-
       const text = editorState.getCurrentContent().getPlainText();
+
+      if (text.length > 100 && !text.includes(" ")) return;
 
       if (!Boolean(text.trim())) return;
       setDisabled(true);
 
-      if (!connected) {
+      if (!started.current) {
         try {
-          let count = 0;
-          let error = false;
-
-          const handleAudioEnd = async () => {
-            if (!started) return false;
-            if (count < audioData.length) {
-              await pauseIfPlaying(!Boolean(audioData[count]));
-              handleAudio(audioData[count]);
-            } else {
-              setStarted(false);
-            }
-          };
-
-          const pauseIfPlaying = async (
-            condition: boolean
-          ): Promise<boolean> => {
-            if (!started || error) return false;
-            if (condition) {
-              await delay(100);
-              return pauseIfPlaying(!Boolean(audios[count]));
-            }
-            return false;
-          };
-
-          const handleAudio = async (chunks: Uint8Array[]) => {
-            if (!started) return;
-            const blob = new Blob(chunks, { type: "audio/wav" });
-            const duration = await getBlobDuration(blob);
-            const data = URL.createObjectURL(blob);
-            audio.current = new Audio(data);
-
-            await audio.current.play();
-            setConnected(true);
-
-            handleDecorateText(indexes, count, duration);
-            count++;
-            audio.current.addEventListener("ended", handleAudioEnd);
-          };
-
           setStarted(true);
+
+          console.log(text);
+
+          const cache = getFromCacheIfExists(text);
+          let textForRequest = text;
+
+          if (cache) {
+            if (
+              cache.cachedAudio.chunks.length ===
+              cache.cachedAudio.indexes.length
+            )
+              return;
+            textForRequest = cache.text;
+            setIndexes(cache.cachedAudio.indexes);
+            indexes.current = cache.cachedAudio.indexes;
+          }
 
           let index = 0;
 
           let array: Uint8Array = new Uint8Array();
 
-          for await (let chunk of streamingFetch({ text, indexes: true })) {
-            if (!started) return;
+          console.log("open");
 
-            audios.push(chunk);
-            array = concatenateUint8Arrays(audios);
+          for await (let chunk of streamingFetch({
+            text: textForRequest,
+            indexes: indexes.current.length === 0,
+          })) {
+            if (!started) return;
+            audios.current.push(chunk);
+            array = concatenateUint8Arrays(audios.current);
             const result: any = sliceEachWavData(array, index, false);
             index = result.idx;
-            if (result.indexes) {
-              console.log(result.indexes);
+            if (result.indexes && indexes.current.length === 0) {
               setIndexes(result.indexes);
-              indexes = result.indexes;
+              indexes.current = result.indexes;
             }
             if (result.wavData) {
-              if (!audioData.length) {
-                await handleAudio([result.wavData]);
+              const completeChunk = [result.wavData];
+              if (!audioData.current.length) {
+                await handleAudio(completeChunk);
               }
-              audioData.push([result.wavData]);
+              console.log(4);
+              cacheData(text, completeChunk);
             }
           }
 
           const lastChunk = new Uint8Array(array.buffer.slice(index));
-          lastChunk && audioData.push([lastChunk]);
-          if (!count) await handleAudio(audioData[0]);
+          if (lastChunk) cacheData(text, [lastChunk]);
+          if (!count.current) await handleAudio(audioData.current[0]);
         } catch (e) {
           console.log(e);
+          error.current = true;
           setDisabled(false);
           setStarted(false);
         }

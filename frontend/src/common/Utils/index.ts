@@ -5,9 +5,17 @@ export const delay = new Promise<boolean>((resolve, reject) => {
   setTimeout(() => resolve(true), 1000);
 });
 
-export const converToHtmlWithStyles = (contentState: ContentState) => {
+export const converToHtmlWithStyles = (
+  contentState: ContentState,
+  animation: boolean = false
+) => {
   const html = convertToHTML({
     styleToHTML: (style) => {
+      if (animation)
+        return {
+          start: "",
+          end: "",
+        };
       if (String(style) === "color-red")
         return {
           start: '<span style="color:red">',
@@ -15,6 +23,11 @@ export const converToHtmlWithStyles = (contentState: ContentState) => {
         };
     },
     entityToHTML: (entity, originalText) => {
+      if (animation)
+        return {
+          start: "",
+          end: "",
+        };
       if (entity.type === "LINK") {
         return {
           start: `<a style="color:#007bff;text-decoration:underline" href="${entity.data.url}">`,
@@ -80,26 +93,33 @@ export function wrapEachNodeSpan(htmlString: string) {
   const emptySpace = "&nbsp;";
 
   let prevSegment = "";
+  let prevParentTagName = "";
+  let prevIndex = 0;
   let prevPrevSegment = "";
 
   let digit = false;
 
-  function wrap(node: Node) {
+  function wrap(node: Node, parentTagName: string, index: number) {
     const wordsAndSpaces = node.nodeValue!.split(/(\s+)/);
     let result = document.createDocumentFragment();
 
     // console.log(wordsAndSpaces);
 
-    wordsAndSpaces.forEach((segment) => {
+    wordsAndSpaces.forEach((segment, i) => {
       if (segment === "") return;
       const span = document.createElement("span");
       span.id = `span_${counter}`;
       if (segment.trim() === "") {
+        if (prevSegment.trim() === "") {
+          console.log("worked");
+          spaceIndex--;
+        }
         span.className = `index__shower space_${spaceIndex}`;
         span.innerHTML = emptySpace.repeat(segment.length);
         spaceIndex++;
+        result.appendChild(span);
       } else {
-        if (prevSegment.trim() !== "") {
+        if (prevSegment.trim() !== "" && index === prevIndex) {
           charIndex--;
         }
         if (
@@ -112,11 +132,11 @@ export function wrapEachNodeSpan(htmlString: string) {
           // segment.match(/^\d+[\.,]?\d+[$%\.?!;:>)\]}]+?["'`]?$/g)
         ) {
           const prevSpace = result.querySelector(`.space_${spaceIndex - 1}`);
+          const prevChar = result.querySelector(`.char_${spaceIndex - 1}`);
+          prevSpace?.remove();
+          if (prevChar)
+            prevChar.innerHTML = prevChar?.textContent + emptySpace + segment;
 
-          prevSpace?.classList.remove(`space_${spaceIndex - 1}`);
-          prevSpace?.classList.add(`char_${charIndex - 1}`);
-          span.className = `index__shower char_${charIndex - 1}`;
-          span.textContent = segment;
           spaceIndex--;
           digit = true;
         } else {
@@ -125,13 +145,26 @@ export function wrapEachNodeSpan(htmlString: string) {
 
           charIndex++;
           digit = false;
+          result.appendChild(span);
         }
       }
       prevPrevSegment = prevSegment;
       prevSegment = segment;
-      result.appendChild(span);
       counter++;
     });
+
+    if (charIndex > spaceIndex) {
+      const span = document.createElement("span");
+      span.className = `index__shower space_${spaceIndex}`;
+      span.innerHTML = emptySpace;
+      result.append(span);
+      prevPrevSegment = prevSegment;
+      prevSegment = " ";
+      spaceIndex++;
+    }
+
+    prevParentTagName = parentTagName;
+    prevIndex = index;
 
     return result;
   }
@@ -153,14 +186,20 @@ export function wrapEachNodeSpan(htmlString: string) {
     currentNode = walker.nextNode();
   }
 
-  textNodes.forEach((node) => {
-    const spanWrappedText = wrap(node);
+  textNodes.forEach((node, index) => {
+    const spanWrappedText = wrap(
+      node,
+      node.parentElement?.localName || "",
+      index
+    );
     node.parentNode?.replaceChild(spanWrappedText, node);
   });
 
   return doc.body.innerHTML
     .replaceAll("<p></p>", `<p>${emptySpace}</p>`)
-    .replaceAll("<p>", "<p style='display:flex;flex-wrap:wrap;'>");
+    .replaceAll("<p>", "<p style='display:flex;flex-wrap:wrap;'>")
+    .replaceAll("<br><br>", `<p>${emptySpace}</p>`)
+    .replaceAll("<br>", `<div></div>`);
 }
 
 export function hasAudioHeader(chunk: Uint8Array) {

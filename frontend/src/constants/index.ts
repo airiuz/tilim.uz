@@ -47,6 +47,14 @@ export interface IIndexData {
   pos: number;
 }
 
+export interface ICache {
+  [key: string]: {
+    pos: number;
+    indexes: IIndexData[];
+    chunks: Uint8Array[][];
+  };
+}
+
 export type WebSocketMessage =
   | string
   | ArrayBuffer

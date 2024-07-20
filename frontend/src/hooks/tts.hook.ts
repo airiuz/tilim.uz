@@ -105,13 +105,8 @@ export const useTTSHook = () => {
       if (prevChunkValue.pos > pos) return;
       chunks = [...prevChunkValue.chunks, completeChunk];
     } else if (shortVersionOfThisText) {
-      // if (index >= shortVersionOfThisText.indexes.length) {
-      //   pos = pos + candidate.length;
-      // }
       chunks = [...shortVersionOfThisText.chunks, completeChunk];
     }
-
-    console.log(indexesTemp);
 
     cachedData.current[key] = {
       indexes: indexesTemp,
@@ -263,6 +258,7 @@ export const useTTSHook = () => {
     if (!started.current) return;
     const blob = new Blob(chunks, { type: "audio/wav" });
     const data = URL.createObjectURL(blob);
+    console.log(chunks);
     const duration = await getBlobDuration(blob);
     audio.current = new Audio(data);
 
@@ -283,7 +279,7 @@ export const useTTSHook = () => {
       if (text.length > 100 && !text.includes(" ")) return;
 
       if (!Boolean(text.trim())) return;
-      // setDisabled(true);
+      setDisabled(true);
 
       if (!started.current) {
         try {
@@ -302,7 +298,16 @@ export const useTTSHook = () => {
             textForRequest = cache.text;
           }
 
-          await getFirstChunk(text);
+          const firstChunk = await getFirstChunk(text);
+
+          const completeChunk = [new Uint8Array(firstChunk.audioBuffer.data)];
+
+          indexes.current.push(firstChunk.data);
+
+          handleAudio(completeChunk);
+          cacheData(text, completeChunk);
+
+          setConnected(true);
           return;
 
           let index = 0;
@@ -366,28 +371,19 @@ export const useTTSHook = () => {
   );
 
   const getFirstChunk = useCallback(async (text: string) => {
-    const data = await fetchData(
-      "http://localhost:5001/stream/api/tts-short",
-      "POST",
-      { text }
-    );
+    const url = "https://oyqiz.airi.uz/stream/api/tts-short";
+    // const url = "http://localhost:5001/stream/api/tts-short";
+
+    const data = await fetchData(url, "POST", { text });
 
     if (!data) throw new Error();
 
-    requestId.current = data.requestId;
-    indexes.current.push(data.data);
-    const blob = new Blob([data.audioBuffer], { type: "audio/wav" });
-    const url = window.URL.createObjectURL(blob);
-    // cacheData(text, )
-    audio.current = new Audio(url);
-    audio.current.play();
-
-    console.log(data);
+    return data;
   }, []);
 
   async function* streamingFetch(body: { text: string; indexes: boolean }) {
-    const url = "http://localhost:5001/stream/api/tts";
-    // const url = "https://oyqiz.airi.uz/stream/api/tts";
+    // const url = "http://localhost:5001/stream/api/tts";
+    const url = "https://oyqiz.airi.uz/stream/api/tts";
     const response = await fetch(url, {
       method: "POST",
       headers: {

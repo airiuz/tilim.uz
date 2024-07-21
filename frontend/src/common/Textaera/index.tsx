@@ -1,5 +1,6 @@
+"use client";
 import dynamic from "next/dynamic";
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import styles from "./index.module.css";
 import { Exit } from "@/src/common/Exit";

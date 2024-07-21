@@ -1,5 +1,5 @@
 "use client";
-// import DOMPurify from "dompurify";
+import DOMPurify from "dompurify";
 import { convertToHTML } from "draft-convert";
 import { ContentState } from "draft-js";
 export const delay = new Promise<boolean>((resolve, reject) => {
@@ -41,7 +41,7 @@ export const converToHtmlWithStyles = (
   })(contentState);
 
   return html;
-  // return DOMPurify.sanitize(html);
+  return DOMPurify.sanitize(html);
 };
 // export function wrapEachNodeSpan(htmlString: string) {
 //   let counter = 0;

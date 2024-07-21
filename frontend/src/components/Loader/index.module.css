@@ -4,7 +4,7 @@
   height: calc(100vh - 94px - 104px);
   justify-content: center;
   align-items: center;
-  z-index: 10000;
+  z-index: auto;
   background: var(--background-layout);
   color: var(--text);
   position: absolute;

@@ -21,8 +21,6 @@ export const useTTSHook = () => {
 
   const cachedData = useRef<ICache>({});
 
-  const requestId = useRef("");
-
   const audio = useRef<HTMLAudioElement | null>(null);
   const audios = useRef<Uint8Array[]>([]);
   const audioData = useRef<Uint8Array[][]>([]);
@@ -101,6 +99,7 @@ export const useTTSHook = () => {
     let indexesTemp = indexes.current;
 
     const prevChunkValue = cachedData.current[key];
+
     if (prevChunkValue) {
       if (prevChunkValue.pos > pos) return;
       chunks = [...prevChunkValue.chunks, completeChunk];
@@ -120,7 +119,8 @@ export const useTTSHook = () => {
     key = key.trim();
 
     let cachedAudio = cachedData.current[key];
-    let concatenationIndexes = false;
+    let concatenationIndexes = true;
+    console.log(cachedAudio);
     if (!cachedAudio) {
       const chachedTexts = Object.keys(cachedData.current);
       const candidates = chachedTexts.filter((item) =>
@@ -258,7 +258,6 @@ export const useTTSHook = () => {
     if (!started.current) return;
     const blob = new Blob(chunks, { type: "audio/wav" });
     const data = URL.createObjectURL(blob);
-    console.log(chunks);
     const duration = await getBlobDuration(blob);
     audio.current = new Audio(data);
 
@@ -269,6 +268,109 @@ export const useTTSHook = () => {
     count.current++;
     audio.current.addEventListener("ended", handleAudioEnd);
   }, []);
+
+  const playFirstChunk = useCallback(async (text: string) => {
+    const firstChunk = await getFirstChunk(text);
+
+    const completeChunk = [new Uint8Array(firstChunk.audioBuffer.data)];
+
+    indexes.current.push(firstChunk.data);
+    setIndexes(indexes.current);
+
+    handleAudio(completeChunk);
+    cacheData(text, completeChunk);
+
+    setConnected(true);
+
+    return firstChunk.requestId;
+  }, []);
+
+  const getFirstChunk = useCallback(async (text: string) => {
+    const url = "https://oyqiz.airi.uz/stream/api/tts-short";
+    // const url = "http://localhost:5001/stream/api/tts-short";
+
+    const data = await fetchData(url, "POST", { text });
+
+    if (!data) throw new Error();
+
+    return data;
+  }, []);
+
+  const playRestOfChunks = useCallback(
+    async (
+      text: string,
+      requestId: string | null,
+      cache: ReturnType<typeof getFromCacheIfExists>,
+      textForRequest: string | null
+    ) => {
+      let index = 0;
+
+      let array: Uint8Array = new Uint8Array();
+
+      const requestForIndexes =
+        indexes.current.length === 0 || cache?.concatenationIndexes;
+
+      console.log("open");
+
+      const body = {
+        requestId,
+        indexes: Boolean(requestForIndexes) || Boolean(requestId),
+        text: textForRequest || undefined,
+      };
+
+      for await (let chunk of streamingFetch(body)) {
+        if (!started) return;
+        audios.current.push(chunk);
+        array = concatenateUint8Arrays(audios.current);
+        const result: any = sliceEachWavData(array, index, false);
+        index = result.idx;
+        if (result.indexes) {
+          setIndexes(result.indexes);
+          const lastPos = indexes.current[audioData.current.length - 1].pos + 1;
+          indexes.current = indexes.current
+            .slice(0, audioData.current.length)
+            .concat(
+              result.indexes.map((item: IIndexData) => ({
+                ...item,
+                pos: lastPos + item.pos,
+              }))
+            );
+        }
+        if (result.wavData) cacheData(text, [result.wavData]);
+      }
+
+      const lastChunk = new Uint8Array(array.buffer.slice(index));
+      if (lastChunk) cacheData(text, [lastChunk]);
+      if (!count.current) await handleAudio(audioData.current[0]);
+    },
+    []
+  );
+
+  async function* streamingFetch(body: {
+    text?: string;
+    indexes: boolean;
+    requestId: string | null;
+  }) {
+    const baseUrl = "https://oyqiz.airi.uz/stream/api";
+    // const baseUrl = "http://localhost:5001/stream/api";
+    const completeUrl = baseUrl + (body.requestId ? "/tts-continue" : "/tts");
+    if (body.requestId) delete body.text;
+    const response = await fetch(completeUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+    reader.current = response.body?.getReader();
+
+    while (true && reader.current) {
+      const { done, value } = await reader.current.read();
+      if (done) break;
+
+      yield value;
+    }
+  }
 
   const handleClick = useCallback(
     async (setDisabled: Dispatch<SetStateAction<boolean>>) => {
@@ -287,74 +389,26 @@ export const useTTSHook = () => {
 
           const cache = getFromCacheIfExists(text);
           let textForRequest = text;
+          let requestId = null;
 
           if (cache) {
-            if (
-              cache.cachedAudio.chunks.length ===
-                cache.cachedAudio.indexes.length &&
-              !cache.concatenationIndexes
-            )
-              return;
+            const completed =
+              cache.cachedAudio.indexes[cache.cachedAudio.indexes.length - 1]
+                .pos >= text.length && !cache.concatenationIndexes;
+
+            if (completed) return;
             textForRequest = cache.text;
+            console.log(textForRequest);
+          } else {
+            requestId = await playFirstChunk(text);
+            console.log(requestId);
+
+            if (!requestId) return reset();
+
+            textForRequest = "";
           }
 
-          const firstChunk = await getFirstChunk(text);
-
-          const completeChunk = [new Uint8Array(firstChunk.audioBuffer.data)];
-
-          indexes.current.push(firstChunk.data);
-
-          handleAudio(completeChunk);
-          cacheData(text, completeChunk);
-
-          setConnected(true);
-          return;
-
-          let index = 0;
-
-          let array: Uint8Array = new Uint8Array();
-
-          const requestFOrIndexes =
-            indexes.current.length === 0 || cache?.concatenationIndexes;
-
-          console.log("open");
-
-          for await (let chunk of streamingFetch({
-            text: textForRequest,
-            indexes: Boolean(requestFOrIndexes),
-          })) {
-            if (!started) return;
-            audios.current.push(chunk);
-            array = concatenateUint8Arrays(audios.current);
-            const result: any = sliceEachWavData(array, index, false);
-            index = result.idx;
-            if (result.indexes && requestFOrIndexes) {
-              setIndexes(result.indexes);
-              if (cache?.concatenationIndexes) {
-                const lastPos =
-                  indexes.current[audioData.current.length - 1].pos + 1;
-                indexes.current = indexes.current
-                  .slice(0, audioData.current.length)
-                  .concat(
-                    result.indexes.map((item: IIndexData) => ({
-                      ...item,
-                      pos: lastPos + item.pos,
-                    }))
-                  );
-              } else indexes.current = result.indexes;
-            }
-            if (result.wavData) {
-              const completeChunk = [result.wavData];
-              if (!audioData.current.length) {
-                await handleAudio(completeChunk);
-              }
-              cacheData(text, completeChunk);
-            }
-          }
-
-          const lastChunk = new Uint8Array(array.buffer.slice(index));
-          if (lastChunk) cacheData(text, [lastChunk]);
-          if (!count.current) await handleAudio(audioData.current[0]);
+          await playRestOfChunks(text, requestId, cache, textForRequest);
         } catch (e) {
           console.log(e);
           error.current = true;
@@ -370,185 +424,5 @@ export const useTTSHook = () => {
     [connected, editorState]
   );
 
-  const getFirstChunk = useCallback(async (text: string) => {
-    const url = "https://oyqiz.airi.uz/stream/api/tts-short";
-    // const url = "http://localhost:5001/stream/api/tts-short";
-
-    const data = await fetchData(url, "POST", { text });
-
-    if (!data) throw new Error();
-
-    return data;
-  }, []);
-
-  async function* streamingFetch(body: { text: string; indexes: boolean }) {
-    // const url = "http://localhost:5001/stream/api/tts";
-    const url = "https://oyqiz.airi.uz/stream/api/tts";
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    });
-    reader.current = response.body?.getReader();
-
-    while (true && reader.current) {
-      const { done, value } = await reader.current.read();
-      if (done) break;
-
-      yield value;
-    }
-  }
-
   return { handleClick, connected };
 };
-
-// const handlePLay = (
-//   text: string,
-//   callback: (indexes: number[][], count: number, duration: number) => void
-// ) => {
-//   let reader: ReadableStreamDefaultReader<Uint8Array> | undefined;
-
-//   let audios: Uint8Array[] = [];
-//   const audioData: Uint8Array[][] = [];
-//   let indexes: number[][] = [];
-//   let started = false;
-//   let audio = new Audio();
-//   let count = 0;
-
-//   // generator function for receiving http stream response
-//   async function* streamingFetch(body: { text: string; indexes: boolean }) {
-//     const url = "https://oyqiz.airi.uz/stream/api/tts";
-//     const response = await fetch(url, {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify(body),
-//     });
-//     reader = response.body?.getReader();
-
-//     while (true && reader) {
-//       const { done, value } = await reader.read();
-//       if (done) break;
-
-//       yield value;
-//     }
-//   }
-
-//   // function for decoding Uint8Array to json
-//   function decodeFromUint8ArrayToJson(data: Uint8Array) {
-//     const decoder = new TextDecoder();
-//     const jsonString = decoder.decode(data, { stream: true });
-//     return JSON.parse(jsonString);
-//   }
-
-//   // function for extract each wav data from Uint8Array
-//   function sliceEachWavData(
-//     array: Uint8Array,
-//     index: number,
-//     iterated: boolean
-//   ) {
-//     const riffMarker = "RIFF";
-//     let idx = index;
-//     let wavData: null | Uint8Array = null;
-//     let indexes: null | number[][] = null;
-
-//     for (let i = index; i <= array.length - 4; i++) {
-//       if (
-//         String.fromCharCode(
-//           array[i],
-//           array[i + 1],
-//           array[i + 2],
-//           array[i + 3]
-//         ) === riffMarker &&
-//         iterated
-//       ) {
-//         const data = new Uint8Array(array.buffer.slice(index, i));
-//         if (
-//           data.length >= 4 &&
-//           data[0] === 0x52 && // 'R'
-//           data[1] === 0x49 && // 'I'
-//           data[2] === 0x46 && // 'F'
-//           data[3] === 0x46
-//         ) {
-//           wavData = data;
-//         } else indexes = decodeFromUint8ArrayToJson(data);
-//         idx = i;
-//       }
-//       iterated = true;
-//     }
-//     return { wavData, idx, indexes };
-//   }
-
-//   // function for waiting if next audio chunk doesn't exist
-//   const pauseIfPlaying = async (condition: boolean): Promise<boolean> => {
-//     if (condition) {
-//       await delay(100); // function that waits 100 ms
-//       return pauseIfPlaying(!Boolean(audios[count]));
-//     }
-//     return false;
-//   };
-
-//   // this function calls when audio ends
-//   const handleAudioEnd = async () => {
-//     if (count < audioData.length) {
-//       await pauseIfPlaying(!Boolean(audioData[count]));
-//       handleAudio(audioData[count]);
-//     } else {
-//       // When audio stops
-//     }
-//   };
-
-//   // play active audio chunk
-//   const handleAudio = async (chunks: Uint8Array[]) => {
-//     const blob = new Blob(chunks, { type: "audio/wav" });
-//     const duration = await getBlobDuration(blob); //import getBlobDuration from "get-blob-duration";
-//     const data = URL.createObjectURL(blob);
-//     console.log(blob);
-//     audio = new Audio(data);
-
-//     await audio.play();
-//     callback(indexes, count, duration);
-
-//     count++;
-//     audio.addEventListener("ended", handleAudioEnd);
-//   };
-
-//   // start playing audio
-//   async function play() {
-//     let index = 0;
-
-//     let array: Uint8Array = new Uint8Array();
-
-//     for await (let chunk of streamingFetch({ text, indexes: true })) {
-//       audios.push(chunk);
-//       array = concatenateUint8Arrays(audios);
-//       const result = sliceEachWavData(array, index, false);
-//       index = result.idx;
-//       if (result.indexes) {
-//         indexes = result.indexes;
-//       }
-//       if (result.wavData) {
-//         if (!audioData.length) {
-//           await handleAudio([result.wavData]);
-//         }
-//         audioData.push([result.wavData]);
-//       }
-
-//       console.log(chunk);
-//     }
-
-//     const lastChunk = new Uint8Array(array.buffer.slice(index));
-//     lastChunk && audioData.push([lastChunk]);
-//     if (!count) await handleAudio(audioData[0]);
-//   }
-
-//   // stop playing audio
-//   async function stop() {
-//     audio.pause();
-//   }
-
-//   return { play, stop };
-// };

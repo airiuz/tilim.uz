@@ -32,7 +32,7 @@ export const Dashboard = () => {
 
     const result = await fetchData(
       `/randomText?type=${Number(!language)}`,
-      "POST",
+      "GET",
       null,
       {},
       "/fastTyping"

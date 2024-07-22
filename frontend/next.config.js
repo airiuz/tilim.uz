@@ -20,20 +20,20 @@ const nextConfig = {
       },
       {
         source: "/fastTyping/users",
-        destination: "http://10.10.0.78:8080/api/ratings/top20",
+        destination: "http://integrations.airi.uz/api/ratings/top20",
       },
       {
         source: "/fastTyping/randomText",
-        destination: "http://10.10.0.78:8080/api/texts/randomText",
+        destination: "http://integrations.airi.uz/api/texts/randomText",
         has: [{ type: "query", key: "type" }],
       },
       {
         source: "/fastTyping/checkRating",
-        destination: "http://10.10.0.78:8080/api/ratings/checkRating",
+        destination: "http://integrations.airi.uz/api/ratings/checkRating",
       },
       {
         source: "/fastTyping/saveRating",
-        destination: "http://10.10.0.78:8080/api/ratings/saveRating",
+        destination: "http://integrations.airi.uz/api/ratings/saveRating",
       },
 
       {

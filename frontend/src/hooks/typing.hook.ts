@@ -134,7 +134,6 @@ export const useTypingHook = ({ content }: { content: string }) => {
     const users: IUser[] = response.data.kratings.concat(
       response.data.lratings
     );
-    // console.log(users);
     setUsers(users);
   }, []);
 

@@ -21,6 +21,8 @@ export const useTTSHook = () => {
 
   const cachedData = useRef<ICache>({});
 
+  const audioEnded = useRef(true);
+
   const audio = useRef<HTMLAudioElement | null>(null);
   const audios = useRef<Uint8Array[]>([]);
   const audioData = useRef<Uint8Array[][]>([]);
@@ -60,8 +62,12 @@ export const useTTSHook = () => {
     audios.current = [];
     reader.current?.cancel();
     reader.current = null;
-    audio.current?.pause();
-    audio.current = null;
+    if (audio.current) {
+      audio.current.removeEventListener("ended", handleAudioEnd);
+      audio.current.removeEventListener("pause", handleAudioPaused);
+      audio.current?.pause();
+      audio.current = null;
+    }
     setIndexes([]);
     handleResetDecoration();
   }, []);
@@ -120,7 +126,6 @@ export const useTTSHook = () => {
 
     let cachedAudio = cachedData.current[key];
     let concatenationIndexes = true;
-    console.log(cachedAudio);
     if (!cachedAudio) {
       const chachedTexts = Object.keys(cachedData.current);
       const candidates = chachedTexts.filter((item) =>
@@ -247,26 +252,47 @@ export const useTTSHook = () => {
   );
 
   const handleAudioEnd = useCallback(async () => {
+    audioEnded.current = true;
     if (!started.current) return false;
     if (count.current < audioData.current.length) {
       await pauseIfPlaying(!Boolean(audioData.current[count.current]));
+      setTimeout(() => {
+        audioEnded.current = false;
+      }, 200);
       handleAudio(audioData.current[count.current]);
     } else setStarted(false);
   }, []);
 
+  const handleAudioPaused = useCallback(async () => {
+    setTimeout(() => {
+      if (!audioEnded.current) {
+        setConnected(false);
+        reset();
+      }
+    }, 200);
+  }, []);
+
   const handleAudio = useCallback(async (chunks: Uint8Array[]) => {
     if (!started.current) return;
+
     const blob = new Blob(chunks, { type: "audio/wav" });
     const data = URL.createObjectURL(blob);
     const duration = await getBlobDuration(blob);
     audio.current = new Audio(data);
+
+    if (!indexes.current.length) {
+      setConnected(false);
+      return;
+    }
 
     await audio.current.play();
     setConnected(true);
 
     handleDecorateText(indexes.current, count.current, duration);
     count.current++;
+
     audio.current.addEventListener("ended", handleAudioEnd);
+    audio.current.addEventListener("pause", handleAudioPaused);
   }, []);
 
   const playFirstChunk = useCallback(async (text: string) => {
@@ -274,7 +300,7 @@ export const useTTSHook = () => {
 
     const completeChunk = [new Uint8Array(firstChunk.audioBuffer.data)];
 
-    indexes.current.push(firstChunk.data);
+    indexes.current = [firstChunk.data];
     setIndexes(indexes.current);
 
     handleAudio(completeChunk);
@@ -286,8 +312,8 @@ export const useTTSHook = () => {
   }, []);
 
   const getFirstChunk = useCallback(async (text: string) => {
-    const url = "https://oyqiz.airi.uz/stream/api/tts-short";
-    // const url = "http://localhost:5001/stream/api/tts-short";
+    // const url = "https://oyqiz.airi.uz/stream/api/tts-short";
+    const url = "http://localhost:5001/stream/api/tts-short";
 
     const data = await fetchData(url, "POST", { text });
 
@@ -300,21 +326,17 @@ export const useTTSHook = () => {
     async (
       text: string,
       requestId: string | null,
-      cache: ReturnType<typeof getFromCacheIfExists>,
       textForRequest: string | null
     ) => {
       let index = 0;
 
       let array: Uint8Array = new Uint8Array();
 
-      const requestForIndexes =
-        indexes.current.length === 0 || cache?.concatenationIndexes;
-
       console.log("open");
 
       const body = {
         requestId,
-        indexes: Boolean(requestForIndexes) || Boolean(requestId),
+        indexes: true,
         text: textForRequest || undefined,
       };
 
@@ -326,7 +348,8 @@ export const useTTSHook = () => {
         index = result.idx;
         if (result.indexes) {
           setIndexes(result.indexes);
-          const lastPos = indexes.current[audioData.current.length - 1].pos + 1;
+          console.log(result.indexes);
+          const lastPos = indexes.current[audioData.current.length - 1].pos;
           indexes.current = indexes.current
             .slice(0, audioData.current.length)
             .concat(
@@ -336,6 +359,8 @@ export const useTTSHook = () => {
               }))
             );
         }
+        console.log(indexes.current);
+
         if (result.wavData) cacheData(text, [result.wavData]);
       }
 
@@ -351,8 +376,8 @@ export const useTTSHook = () => {
     indexes: boolean;
     requestId: string | null;
   }) {
-    const baseUrl = "https://oyqiz.airi.uz/stream/api";
-    // const baseUrl = "http://localhost:5001/stream/api";
+    // const baseUrl = "https://oyqiz.airi.uz/stream/api";
+    const baseUrl = "http://localhost:5001/stream/api";
     const completeUrl = baseUrl + (body.requestId ? "/tts-continue" : "/tts");
     if (body.requestId) delete body.text;
     const response = await fetch(completeUrl, {
@@ -392,26 +417,24 @@ export const useTTSHook = () => {
           let requestId = null;
 
           if (cache) {
-            const completed =
-              cache.cachedAudio.indexes[cache.cachedAudio.indexes.length - 1]
-                .pos >= text.length && !cache.concatenationIndexes;
-
-            if (completed) return;
+            if (!Boolean(cache.text.trim())) return;
             textForRequest = cache.text;
-            console.log(textForRequest);
           } else {
             requestId = await playFirstChunk(text);
-            console.log(requestId);
 
-            if (!requestId) return reset();
+            if (!requestId) return;
 
             textForRequest = "";
           }
 
-          await playRestOfChunks(text, requestId, cache, textForRequest);
+          if (!requestId && !Boolean(textForRequest.trim())) return;
+
+          await playRestOfChunks(text, requestId, textForRequest);
         } catch (e) {
-          console.log(e);
+          setConnected(false);
           error.current = true;
+
+          console.log("errro");
           setDisabled(false);
           setStarted(false);
         }
@@ -421,7 +444,7 @@ export const useTTSHook = () => {
         console.log("close");
       }
     },
-    [connected, editorState]
+    [connected, editorState.getCurrentContent().getPlainText()]
   );
 
   return { handleClick, connected };

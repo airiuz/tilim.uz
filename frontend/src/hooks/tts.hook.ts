@@ -313,8 +313,8 @@ export const useTTSHook = () => {
   }, []);
 
   const getFirstChunk = useCallback(async (text: string) => {
-    // const url = "https://oyqiz.airi.uz/stream/api/tts-short";
-    const url = "http://localhost:5001/stream/api/tts-short";
+    const url = "https://oyqiz.airi.uz/stream/api/tts-short";
+    // const url = "http://localhost:5001/stream/api/tts-short";
 
     const data = await fetchData(url, "POST", { text });
 
@@ -377,8 +377,8 @@ export const useTTSHook = () => {
     indexes: boolean;
     requestId: string | null;
   }) {
-    // const baseUrl = "https://oyqiz.airi.uz/stream/api";
-    const baseUrl = "http://localhost:5001/stream/api";
+    const baseUrl = "https://oyqiz.airi.uz/stream/api";
+    // const baseUrl = "http://localhost:5001/stream/api";
     const completeUrl = baseUrl + (body.requestId ? "/tts-continue" : "/tts");
     if (body.requestId) delete body.text;
     const response = await fetch(completeUrl, {

@@ -10,6 +10,10 @@ export const converToHtmlWithStyles = (
   contentState: ContentState,
   animation: boolean = false
 ) => {
+  if (typeof window === "undefined") {
+    // Prevent the function from running on the server
+    return "";
+  }
   const html = convertToHTML({
     styleToHTML: (style) => {
       if (animation)
@@ -40,54 +44,13 @@ export const converToHtmlWithStyles = (
     },
   })(contentState);
 
-  return html;
   return DOMPurify.sanitize(html);
 };
-// export function wrapEachNodeSpan(htmlString: string) {
-//   let counter = 0;
-//   function wrap(node: Node) {
-//     let index = 0;
-//     let result = "";
-//     for (const char of node.nodeValue!) {
-//       result += `<span class="index__shower" id="span_${counter}">${
-//         char === " " ? "&nbsp;" : char
-//       }</span>`;
-//       index++;
-//       counter++;
-//     }
-//     return result;
-//   }
-
-//   const parser = new DOMParser();
-//   const doc = parser.parseFromString(htmlString, "text/html");
-
-//   const walker = document.createTreeWalker(
-//     doc.body,
-//     NodeFilter.SHOW_TEXT,
-//     null
-//   );
-
-//   const textNodes = [];
-//   let currentNode = walker.nextNode();
-
-//   while (currentNode) {
-//     textNodes.push(currentNode);
-//     currentNode = walker.nextNode();
-//   }
-
-//   textNodes.forEach((node) => {
-//     const spanWrappedText = wrap(node);
-//     const spanWrapper = document.createElement("span");
-//     spanWrapper.innerHTML = spanWrappedText;
-//     node.parentNode?.replaceChild(spanWrapper, node);
-//   });
-
-//   return doc.body.innerHTML
-//     .replace("<p></p>", "<p>&nbsp;</p>")
-//     .replaceAll("<p>", "<p style='display:flex;flex-wrap:wrap;'>");
-// }
-
 export function wrapEachNodeSpan(htmlString: string) {
+  if (typeof window === "undefined") {
+    // Prevent the function from running on the server
+    return "";
+  }
   let counter = 0;
 
   let charIndex = 0;

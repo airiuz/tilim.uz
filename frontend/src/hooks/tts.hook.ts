@@ -139,8 +139,8 @@ export const useTTSHook = () => {
       concatenationIndexes = true;
     }
 
-    const text = key.slice(cachedAudio.pos);
-
+    const text = Array.from(key).slice(cachedAudio.pos).join("");
+    console.log(text);
     for (const chunk of cachedAudio.chunks) {
       audioData.current.push(chunk);
     }
@@ -211,6 +211,7 @@ export const useTTSHook = () => {
           const waitingTime =
             ((span.textContent?.length || 0) / (contentLength || 1)) *
             charAnimationTime;
+
           span.classList.add("background");
           span.style.animation = `backgroundMove ${waitingTime}s linear`;
           await delay(1000 * waitingTime);
@@ -348,7 +349,7 @@ export const useTTSHook = () => {
         index = result.idx;
         if (result.indexes) {
           setIndexes(result.indexes);
-          console.log(result.indexes);
+          // console.log(result.indexes, "result");
           const lastPos = indexes.current[audioData.current.length - 1].pos;
           indexes.current = indexes.current
             .slice(0, audioData.current.length)
@@ -359,7 +360,7 @@ export const useTTSHook = () => {
               }))
             );
         }
-        console.log(indexes.current);
+        // console.log(indexes.current);
 
         if (result.wavData) cacheData(text, [result.wavData]);
       }
@@ -434,7 +435,7 @@ export const useTTSHook = () => {
           setConnected(false);
           error.current = true;
 
-          console.log("errro");
+          console.log("errro", e);
           setDisabled(false);
           setStarted(false);
         }

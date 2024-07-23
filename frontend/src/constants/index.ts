@@ -45,6 +45,7 @@ export interface IUser {
 export interface IIndexData {
   lengths: number[];
   pos: number;
+  text: string;
 }
 
 export interface ICache {

@@ -9,7 +9,8 @@
   flex-direction: column;
   gap: 12px;
   position: relative;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .dashboard__container .text__1 {

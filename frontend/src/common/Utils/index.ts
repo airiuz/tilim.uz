@@ -46,29 +46,21 @@ export const converToHtmlWithStyles = (
 
   return DOMPurify.sanitize(html);
 };
+
 export function wrapEachNodeSpan(htmlString: string) {
-  if (typeof window === "undefined") {
-    // Prevent the function from running on the server
-    return "";
-  }
   let counter = 0;
-
-  let charIndex = 0;
-  let spaceIndex = 0;
-  const emptySpace = "&nbsp;";
-
   let prevSegment = "";
+  let prevPrevSegment = "";
   let prevParentTagName = "";
   let prevIndex = 0;
-  let prevPrevSegment = "";
-
+  let spaceIndex = 0;
+  let charIndex = 0;
+  const emptySpace = "&nbsp;";
   let digit = false;
 
   function wrap(node: Node, parentTagName: string, index: number) {
     const wordsAndSpaces = node.nodeValue!.split(/(\s+)/);
     let result = document.createDocumentFragment();
-
-    // console.log(wordsAndSpaces);
 
     wordsAndSpaces.forEach((segment, i) => {
       if (segment === "") return;
@@ -76,7 +68,6 @@ export function wrapEachNodeSpan(htmlString: string) {
       span.id = `span_${counter}`;
       if (segment.trim() === "") {
         if (prevSegment.trim() === "") {
-          console.log("worked");
           spaceIndex--;
         }
         span.className = `index__shower space_${spaceIndex}`;
@@ -89,12 +80,8 @@ export function wrapEachNodeSpan(htmlString: string) {
         }
         if (
           prevSegment.trim() === "" &&
-          // prevPrevSegment.match(/^\d+$/g) &&
           prevPrevSegment.match(/^["'`<\+\-\{\[\(]?\d+$/g) &&
-          // prevPrevSegment.match(/^["'`<\+\-{\[(]?\d+$/g) &&
-          // segment.match(/^\d+$/g)
           segment.match(/^\d+[\.,]?\d+[\$\%\.\?!;\:>\)\]\}]?["'`]?$/g)
-          // segment.match(/^\d+[\.,]?\d+[$%\.?!;:>)\]}]+?["'`]?$/g)
         ) {
           const prevSpace = result.querySelector(`.space_${spaceIndex - 1}`);
           const prevChar = result.querySelector(`.char_${spaceIndex - 1}`);
@@ -160,13 +147,22 @@ export function wrapEachNodeSpan(htmlString: string) {
     node.parentNode?.replaceChild(spanWrappedText, node);
   });
 
-  return doc.body.innerHTML
-    .replaceAll("<p></p>", `<p>${emptySpace}</p>`)
-    .replaceAll("<p>", "<p style='display:flex;flex-wrap:wrap;'>")
-    .replaceAll("<br><br>", `<p>${emptySpace}</p>`)
-    .replaceAll("<br>", `<div></div>`);
-}
+  let outputHtml = doc.body.innerHTML;
 
+  // Replace <br> tags with </p><p>
+  outputHtml = outputHtml.replace(/<br\s*\/?>/g, "</p><p class='margin_top' >");
+
+  // Ensure that there are no empty <p> tags
+  outputHtml = outputHtml.replaceAll("<p></p>", `<p>${emptySpace}</p>`);
+
+  // Add styles to <p> tags
+  outputHtml = outputHtml.replaceAll(
+    /<p(.*?)>/g,
+    "<p$1 style='display:flex;flex-wrap:wrap;'>"
+  );
+
+  return outputHtml;
+}
 export function hasAudioHeader(chunk: Uint8Array) {
   console.log(
     isWavHeader(chunk),

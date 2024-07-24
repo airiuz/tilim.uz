@@ -198,6 +198,10 @@ span.index__shower {
   width: fit-content;
 }
 
+.margin_top {
+  margin-top: 0 !important;
+}
+
 span.background {
   background: linear-gradient(
     to left,

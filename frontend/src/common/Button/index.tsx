@@ -2,6 +2,7 @@
 import styles from "./index.module.css";
 import { ArrowIcon } from "@/src/common/Utils/icons";
 import { useTextEditorStore } from "@/src/store/translate.store";
+import { usePathname } from "next/navigation";
 import { ReactNode, useEffect, useState } from "react";
 
 interface ITranslatorButton {
@@ -35,9 +36,11 @@ export const TranslatorButton = ({
 
   const { setConnected } = useTextEditorStore();
 
+  const pathname = usePathname();
+
   const handleClick = (first: boolean) => {
     if (
-      animation &&
+      pathname === "/" &&
       !Boolean(editorState.getCurrentContent().getPlainText().trim())
     )
       return;
@@ -51,11 +54,11 @@ export const TranslatorButton = ({
   };
 
   useEffect(() => {
-    if (animation && changed) {
+    if (pathname === "/" && changed) {
       setActiveButton({ first: false, second: false });
       setChanged(false);
     }
-  }, [changed, animation]);
+  }, [changed, pathname]);
 
   return (
     <div

@@ -31,9 +31,17 @@ export const TranslatorButton = ({
     second: Boolean(secondBtnActive),
   });
 
+  const { changed, setChanged, editorState } = useTextEditorStore();
+
   const { setConnected } = useTextEditorStore();
 
   const handleClick = (first: boolean) => {
+    if (
+      animation &&
+      !Boolean(editorState.getCurrentContent().getPlainText().trim())
+    )
+      return;
+
     setConnected(false);
     setActiveButton((prev) => ({
       first,
@@ -41,6 +49,13 @@ export const TranslatorButton = ({
     }));
     if (onClick) onClick(first);
   };
+
+  useEffect(() => {
+    if (animation && changed) {
+      setActiveButton({ first: false, second: false });
+      setChanged(false);
+    }
+  }, [changed, animation]);
 
   return (
     <div
@@ -76,7 +91,7 @@ export const TranslatorButton = ({
 };
 
 export const LotinForTranslator = () => <span>Lotin</span>;
-export const KirilForTranslator = () => <span>Kiril</span>;
+export const KirilForTranslator = () => <span>Kirill</span>;
 export const ArrowForTranslator = () => <span>{ArrowIcon}</span>;
 
 interface IButton {

@@ -57,8 +57,10 @@ export default function Header() {
       pathname === Links.USERPOLICY ||
       pathname === Links.SECURITY ||
       pathname === Links.TERMS
-    )
+    ) {
+      if (ref && ref.current) ref.current.style.display = "none";
       return;
+    }
 
     if (!ref || !ref.current) return;
 
@@ -86,7 +88,7 @@ export default function Header() {
               >
                 <div>
                   <div className={styles.icon__wrapper}>{TranslatorIcon}</div>
-                  <span>Lotin-kiril</span>
+                  <span>Lotin-kirill</span>
                 </div>
                 <div></div>
               </Link>
@@ -96,7 +98,7 @@ export default function Header() {
               >
                 <div>
                   <div className={styles.icon__wrapper}>{DocumentIcon}</div>
-                  <span>Xujjatlar bilan ishlash</span>
+                  <span>Hujjatlar bilan ishlash</span>
                 </div>
                 <div></div>
               </Link>
@@ -138,7 +140,7 @@ export default function Header() {
         </div>
         <MobileMenu show={open} handleClose={handleOpen} />
       </header>
-      <div ref={ref} className="">
+      <div ref={ref}>
         <Loader />
       </div>
     </>

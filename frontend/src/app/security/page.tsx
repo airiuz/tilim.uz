@@ -84,14 +84,14 @@ export default function Security() {
             4.1. Maʼmuriyat quyidagi hollarda maʼlumotlarni uchinchi shaxslarga
             uzatish huquqiga ega: - Foydalanuvchi bunday harakatlarga, shu
             jumladan foydalanuvchi maʼlum bir maʼlumotni berishni cheklamaydigan
-            dasuturiy taʼminot sozlamalarini ishlatgan holatlarda roziligini
+            dasturiy taʼminot sozlamalarini ishlatgan holatlarda roziligini
             bildiradi; - Maʼlumotni qayta ishlash, maqsadga muvofiq uzatish
             talab etiladi: - Foydalanuvchi tomonidan sodir etilgan qonunbuzarlik
             sababli, Maʼmuriyat huquqlari qonuniy himoya qilinadi.
             <br />
             5. Maxfiylik siyosatining o‘zgarishi <br />
             5.1. Ushbu Siyosat Maʼmuriyat tomonidan bir tomonlama tartibda
-            foydalanuvchi tomonidan ogohlantirilmasdan o‘zgartilirishi yoki
+            foydalanuvchi tomonidan ogohlantirilmasdan o‘zgartirilishi yoki
             bekor qilinishi mumkin. Agar Siyosatning yangi variantida boshqacha
             qoidalar nazarda tutilgan bo‘lmasa, yangi siyosat Saytga
             joylashtirilgan paytdan boshlab kuchga kiradi.

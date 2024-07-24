@@ -6,17 +6,9 @@ import { useEffect, useMemo, useState } from "react";
 import { useFileStore } from "@/src/store/file.store";
 
 export const DragFileUpload = () => {
-  const { file, setFile } = useFileStore();
+  const { setFile } = useFileStore();
   const [mobile, setMobile] = useState(false);
-  const {
-    getRootProps,
-    getInputProps,
-    isFocused,
-    isDragAccept,
-    isDragReject,
-    acceptedFiles,
-    fileRejections,
-  } = useDropzone({
+  const { getRootProps, acceptedFiles, fileRejections } = useDropzone({
     minSize: 1,
     maxSize: 20971520,
     accept: {
@@ -57,7 +49,7 @@ export const DragFileUpload = () => {
   return (
     <div {...getRootProps({ className: "dropzone" })}>
       <div className={styles.file__upload__container}>
-        <h3 className={styles.file__upload__title}>Faynli yuklang</h3>
+        <h3 className={styles.file__upload__title}>Faylni yuklang</h3>
         <div className={styles.file__upload__icon}>{FileUploadIcon}</div>
         <div className={styles.file__upload__description}>
           Faylni shu yerga tashlang

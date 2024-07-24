@@ -21,12 +21,16 @@ const intialTooltipPosition: ITooltipPosition = {
 type TextEditorState = {
   editorState: EditorState;
   setEditorState: (newEditorState: EditorState) => void;
+
   tooltipPosition: ITooltipPosition;
   setTooltipPosition: (newTooltipPosition: ITooltipPosition) => void;
+
   selectedWord: string;
   setSelectedWord: (selectedWord: string) => void;
+
   incorrectWords: string[];
   setIncorrectWords: (incorrectWords: string[]) => void;
+
   language: string;
   setLanguage: (language: string) => void;
 
@@ -35,22 +39,34 @@ type TextEditorState = {
 
   indexes: IIndexData[];
   setIndexes: (indexes: IIndexData[]) => void;
+
+  changed: boolean;
+  setChanged: (changed: boolean) => void;
 };
 
 export const useTextEditorStore = create<TextEditorState>((set) => ({
   editorState: EditorState.createEmpty(),
   setEditorState: (newEditorState) => set({ editorState: newEditorState }),
   tooltipPosition: intialTooltipPosition,
+
   setTooltipPosition: (newTooltipPosition) =>
     set({ tooltipPosition: newTooltipPosition }),
+
   selectedWord: "",
   setSelectedWord: (selectedWord) => set({ selectedWord }),
+
   incorrectWords: [],
   setIncorrectWords: (incorrectWords) => set({ incorrectWords }),
+
   language: "0",
   setLanguage: (language) => set({ language }),
+
   connected: false,
   setConnected: (connected: boolean) => set({ connected }),
+
   indexes: [],
   setIndexes: (indexes: IIndexData[]) => set({ indexes }),
+
+  changed: false,
+  setChanged: (changed: boolean) => set({ changed }),
 }));

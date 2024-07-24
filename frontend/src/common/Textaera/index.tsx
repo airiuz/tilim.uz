@@ -37,7 +37,7 @@ export default function TextEditor({
   ...rest
 }: ITextEditor) {
   const { setText } = useSttStore();
-  const { connected, indexes } = useTextEditorStore();
+  const { connected, indexes, setChanged } = useTextEditorStore();
 
   const handleEditorChange = useCallback(
     (newState: EditorState) => {
@@ -50,6 +50,8 @@ export default function TextEditor({
         newState = EditorState.setInlineStyleOverride(newState, OrderedSet());
       }
 
+      if (prevText.trim() !== text.trim()) setChanged(true);
+
       setEditorState(newState);
     },
     [editorState, connected]
@@ -60,8 +62,6 @@ export default function TextEditor({
     setEditorState(emptyState);
     setText([]);
   };
-
-  // console.log(converToHtmlWithStyles(editorState.getCurrentContent()));
 
   const __html = useMemo(
     () =>

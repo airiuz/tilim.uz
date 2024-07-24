@@ -29,7 +29,7 @@ export default function Footer() {
           )}`}
         >
           <span>{TranslatorIcon}</span>
-          <span>Lotin-kiril</span>
+          <span>Lotin-kirill</span>
         </Link>
         <Link
           href={Links.DOCUMENT}
@@ -39,7 +39,7 @@ export default function Footer() {
           )}`}
         >
           <span>{DocumentIcon}</span>
-          <span>Xujjatlar bilan ishlash</span>
+          <span>Hujjatlar bilan ishlash</span>
         </Link>
         <Link
           href={Links.TYPING}

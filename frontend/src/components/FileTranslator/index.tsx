@@ -57,7 +57,7 @@ export const FileTranslator = () => {
             onClick={() => setCheckbox((prev) => !prev)}
           >
             <Checkbox checked={checkbox} />
-            <span>Xatoliklarni to’g’irlash</span>
+            <span>Xatoliklarni to‘g‘rilash</span>
           </div>
           <TranslatorButton
             animation={false}
@@ -87,8 +87,8 @@ export const FileTranslator = () => {
                   <h4>
                     <span>*</span>{" "}
                     <div>
-                      Bu tipdagi xujjat yuklash mumkin emas! Iltimos xujjat
-                      tipini tekshirib qaytattan urinib ko’ring. <br />
+                      Bu tipdagi hujjat yuklash mumkin emas! Iltimos hujjat
+                      tipini tekshirib qaytatdan urinib ko‘ring. <br />
                       Ruxsat etilgan formatlar:
                       <span>DOCX</span>
                       <span>XLSX</span>
@@ -103,7 +103,7 @@ export const FileTranslator = () => {
             <div className={styles.wrapper__3}>
               {name && (
                 <span className={styles.successText}>
-                  {CheckedIcon} O’girildi! va xatoliklar to’g’irlandi!
+                  {CheckedIcon} O‘girildi! va xatoliklar to‘g‘rilandi!
                 </span>
               )}
               <Button

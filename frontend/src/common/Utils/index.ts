@@ -48,6 +48,8 @@ export const converToHtmlWithStyles = (
 };
 
 export function wrapEachNodeSpan(htmlString: string) {
+  if (typeof window === "undefined") return "";
+
   let counter = 0;
   let prevSegment = "";
   let prevPrevSegment = "";

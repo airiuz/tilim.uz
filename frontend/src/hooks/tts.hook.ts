@@ -316,7 +316,7 @@ export const useTTSHook = () => {
     const url = "https://oyqiz.airi.uz/stream/api/tts-short";
     // const url = "http://localhost:5001/stream/api/tts-short";
 
-    const data = await fetchData(url, "POST", { text });
+    const data = await fetchData(url, "POST", { text, indexes: true });
 
     if (!data) throw new Error();
 

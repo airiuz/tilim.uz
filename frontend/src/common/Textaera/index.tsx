@@ -37,7 +37,7 @@ export default function TextEditor({
   ...rest
 }: ITextEditor) {
   const { setText } = useSttStore();
-  const { connected, indexes, setChanged } = useTextEditorStore();
+  const { connected, setConnected, indexes, setChanged } = useTextEditorStore();
 
   const handleEditorChange = useCallback(
     (newState: EditorState) => {
@@ -61,6 +61,7 @@ export default function TextEditor({
     const emptyState = EditorState.createEmpty();
     setEditorState(emptyState);
     setChanged(true);
+    setConnected(false);
     setText([]);
   };
 

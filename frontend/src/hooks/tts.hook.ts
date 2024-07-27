@@ -13,6 +13,9 @@ import { concatenateUint8Arrays, sliceEachWavData } from "../common/Utils";
 import { ICache, IIndexData } from "../constants";
 import useAxios from "./axios.hook";
 
+const baseUrl = "https://oyqiz.airi.uz/api/v1";
+// const baseUrl = "http://localhost:5001/api/v1";
+
 export const useTTSHook = () => {
   const { editorState, connected, setConnected, setIndexes } =
     useTextEditorStore();
@@ -140,7 +143,6 @@ export const useTTSHook = () => {
     }
 
     const text = Array.from(key).slice(cachedAudio.pos).join("");
-    console.log(text);
     for (const chunk of cachedAudio.chunks) {
       audioData.current.push(chunk);
     }
@@ -179,6 +181,8 @@ export const useTTSHook = () => {
         indexes[count],
         duration
       );
+
+      console.log(indexes);
 
       const prevChunksLength = indexes
         .filter((_, i) => i < count)
@@ -287,6 +291,7 @@ export const useTTSHook = () => {
     }
 
     await audio.current.play();
+    await delay(200);
     setConnected(true);
 
     handleDecorateText(indexes.current, count.current, duration);
@@ -313,8 +318,7 @@ export const useTTSHook = () => {
   }, []);
 
   const getFirstChunk = useCallback(async (text: string) => {
-    const url = "https://oyqiz.airi.uz/stream/api/tts-short";
-    // const url = "http://localhost:5001/stream/api/tts-short";
+    const url = baseUrl + "/tts-short";
 
     const data = await fetchData(url, "POST", { text, indexes: true });
 
@@ -377,9 +381,8 @@ export const useTTSHook = () => {
     indexes: boolean;
     requestId: string | null;
   }) {
-    const baseUrl = "https://oyqiz.airi.uz/stream/api";
-    // const baseUrl = "http://localhost:5001/stream/api";
-    const completeUrl = baseUrl + (body.requestId ? "/tts-continue" : "/tts");
+    const completeUrl =
+      baseUrl + (body.requestId ? "/tts-continue" : "/tts-stream");
     if (body.requestId) delete body.text;
     const response = await fetch(completeUrl, {
       method: "POST",

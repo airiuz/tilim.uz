@@ -39,8 +39,9 @@
   font-size: 20px;
   font-weight: 400;
   margin-right: 25px;
-  /* position: absolute; */
   margin-bottom: 20px;
+  display: inline-block;
+  width: -webkit-fill-available;
   top: 0;
   /* z-index: 100; */
 }

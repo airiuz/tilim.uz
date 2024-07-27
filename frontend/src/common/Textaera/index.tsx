@@ -60,6 +60,7 @@ export default function TextEditor({
   const handleClear = () => {
     const emptyState = EditorState.createEmpty();
     setEditorState(emptyState);
+    setChanged(true);
     setText([]);
   };
 

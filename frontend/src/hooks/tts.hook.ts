@@ -8,8 +8,11 @@ import {
 } from "react";
 import { useTextEditorStore } from "../store/translate.store";
 import { delay } from "../util/audio-worklet";
-import getBlobDuration from "get-blob-duration";
-import { concatenateUint8Arrays, sliceEachWavData } from "../common/Utils";
+import {
+  concatenateUint8Arrays,
+  getWavDuration,
+  sliceEachWavData,
+} from "../common/Utils";
 import { ICache, IIndexData } from "../constants";
 import useAxios from "./axios.hook";
 
@@ -182,8 +185,6 @@ export const useTTSHook = () => {
         duration
       );
 
-      console.log(indexes);
-
       const prevChunksLength = indexes
         .filter((_, i) => i < count)
         .reduce((sum, value) => sum + value.lengths.length, 0);
@@ -282,7 +283,7 @@ export const useTTSHook = () => {
 
     const blob = new Blob(chunks, { type: "audio/wav" });
     const data = URL.createObjectURL(blob);
-    const duration = await getBlobDuration(blob);
+    const duration = (await getWavDuration(blob)) - 0.75;
     audio.current = new Audio(data);
 
     if (!indexes.current.length) {
@@ -353,7 +354,6 @@ export const useTTSHook = () => {
         index = result.idx;
         if (result.indexes) {
           setIndexes(result.indexes);
-          // console.log(result.indexes, "result");
           const lastPos = indexes.current[audioData.current.length - 1].pos;
           indexes.current = indexes.current
             .slice(0, audioData.current.length)
@@ -364,8 +364,6 @@ export const useTTSHook = () => {
               }))
             );
         }
-        // console.log(indexes.current);
-
         if (result.wavData) cacheData(text, [result.wavData]);
       }
 

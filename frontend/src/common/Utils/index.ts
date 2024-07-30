@@ -279,3 +279,40 @@ export function sliceEachWavData(
   }
   return { wavData, idx, indexes };
 }
+
+export function getWavDuration(blob: Blob): Promise<number> {
+  return new Promise((resolve, reject) => {
+    // Create a new FileReader instance
+    const reader = new FileReader();
+
+    // Set up the onload event handler
+    reader.onload = (event: ProgressEvent<FileReader>) => {
+      const arrayBuffer = event.target?.result as ArrayBuffer;
+
+      // Create a new AudioContext instance
+      const audioContext = new window.AudioContext();
+
+      // Decode the audio data
+      audioContext.decodeAudioData(
+        arrayBuffer,
+        (audioBuffer) => {
+          // Resolve the promise with the duration
+          resolve(audioBuffer.duration);
+        },
+        (error) => {
+          // Reject the promise if there was an error
+          reject(error);
+        }
+      );
+    };
+
+    // Set up the onerror event handler
+    reader.onerror = (error) => {
+      // Reject the promise if there was an error
+      reject(error);
+    };
+
+    // Read the Blob as an ArrayBuffer
+    reader.readAsArrayBuffer(blob);
+  });
+}

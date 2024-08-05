@@ -163,6 +163,16 @@ export function wrapEachNodeSpan(htmlString: string) {
     "<p$1 style='display:flex;flex-wrap:wrap;'>"
   );
 
+  outputHtml = outputHtml.replaceAll(
+    /<h[1-5](.*?)>/g,
+    `<h3 style='margin:23.5px 0; font-size:20px !important'>`
+  );
+
+  outputHtml = outputHtml.replaceAll(
+    /<li(.*?)>/g,
+    "<li$1 style='display:flex;flex-wrap:wrap;'>"
+  );
+
   return outputHtml;
 }
 export function hasAudioHeader(chunk: Uint8Array) {

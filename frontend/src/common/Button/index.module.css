@@ -1,98 +1,97 @@
-
 .translator__button__container {
-    border: 1px solid var(--border);
-    border-radius:6px;
-    background: var(--background-translator-button);
-    padding:4px;
-    height: 48px;
-    gap:10px;
-    align-items:center;
-    display: flex;
-    cursor: pointer;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--background-translator-button);
+  padding: 4px;
+  gap: 5px;
+  height: 48px;
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+  cursor: pointer;
 }
 
 .translator__button__container div {
-    padding: 12.5px 41px;
-    flex: 1;
-    justify-content: center;
-    display: flex;
-    height: 40px;
-    align-items: center;
-    gap:15px;
-    border-radius: 6px;
+  padding: 12.5px 38px;
+  justify-content: center;
+  display: flex;
+  flex: 1;
+  height: 40px;
+  align-items: center;
+  gap: 15px;
+  border-radius: 6px;
 }
 
 .translator__button__container div.animation {
-    background:
-            linear-gradient(90deg, var(--blue) 50%, transparent 0) repeat-x,
-            linear-gradient(90deg, var(--blue) 50%, transparent 0) repeat-x,
-            linear-gradient(0deg, var(--blue) 50%, transparent 0) repeat-y,
-            linear-gradient(0deg, var(--blue) 50%, transparent 0) repeat-y;
-    background-size: 4px 2px, 4px 2px, 2px 4px, 2px 4px;
-    background-position: 0 0, 0 100%, 0 0, 100% 0;
-    animation: linearGradientMove .3s infinite linear;
+  background: linear-gradient(90deg, var(--blue) 50%, transparent 0) repeat-x,
+    linear-gradient(90deg, var(--blue) 50%, transparent 0) repeat-x,
+    linear-gradient(0deg, var(--blue) 50%, transparent 0) repeat-y,
+    linear-gradient(0deg, var(--blue) 50%, transparent 0) repeat-y;
+  background-size: 4px 2px, 4px 2px, 2px 4px, 2px 4px;
+  background-position: 0 0, 0 100%, 0 0, 100% 0;
+  animation: linearGradientMove 0.3s infinite linear;
 }
 
 .translator__button__container div.active {
-    background:var(--background-translator-button-active);
+  background: var(--background-translator-button-active);
 }
 
 .translator__button__container div.active span {
-    color: var(--active-button-color);
+  color: var(--active-button-color);
 }
 
 .translator__button__container div.active path {
-    fill: var(--active-button-color)
+  fill: var(--active-button-color);
 }
 
 .translator__button__container span {
-    display: flex;
-    align-items: center;
-    color: var(--social-icon)
+  display: flex;
+  align-items: center;
+  color: var(--social-icon);
 }
 
 .translator__button__container path {
-    fill: var(--social-icon)
+  fill: var(--social-icon);
 }
 
 @keyframes linearGradientMove {
-    100% {
-        background-position: 4px 0, -4px 100%, 0 -4px, 100% 4px;
-    }
+  100% {
+    background-position: 4px 0, -4px 100%, 0 -4px, 100% 4px;
+  }
 }
 
 .button {
-    background:var(--blue);
-    color:#fff;
-    padding: 15px 36px;
-    border-radius: 12px;
-    border:none;
-    cursor:pointer;
-    outline: none;
-    font-weight: 500;
-    justify-content: center;
-    display: flex;
-    gap: 12px;
-    align-items: center;
-    font-size: 16px;
+  background: var(--blue);
+  color: #fff;
+  padding: 15px 36px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  font-weight: 500;
+  justify-content: center;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  font-size: 16px;
 }
 
 .button path {
-    fill: #fff;
+  fill: #fff;
 }
 
 @media only screen and (max-width: 768px) {
-    .translator__button__container {
-        width: 100% !important;
-    }
+  .translator__button__container {
+    width: 100% !important;
+  }
 
-    .translator__button__container div {
-        padding: 12.5px 0;
-        font-size: 14px;
-        gap:10px;
-    }
-    .button {
-        padding: 15px 24px;
-        font-size:14px
-    }
+  .translator__button__container div {
+    padding: 12.5px 0;
+    font-size: 12px;
+    gap: 10px;
+  }
+  .button {
+    padding: 15px 24px;
+    font-size: 14px;
+  }
 }

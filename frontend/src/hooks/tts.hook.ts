@@ -17,7 +17,7 @@ import { ICache, IIndexData } from "../constants";
 import useAxios from "./axios.hook";
 
 const baseUrl = "https://oyqiz.airi.uz/api/v1";
-// const baseUrl = "http://localhost:5001/api/v1";
+// const baseUrl = "http://localhost:5001/dev/api/v1";
 
 export const useTTSHook = () => {
   const { editorState, connected, setConnected, setIndexes } =

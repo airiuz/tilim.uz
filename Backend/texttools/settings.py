@@ -30,6 +30,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_framework',
     'authuser',
+    'home',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -60,7 +62,17 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'texttools.wsgi.application'
+CHANNEL_LAYERS = {
+    "default":{
+        "BACKEND":"channels_redis.core.RedisChannelLayer",
+        "CONFIG":{
+            "hosts":[("localhost", 6379)]
+        }
+    }
+}
+
+ASGI_APPLICATION = 'texttools.asgi.application'
+# WSGI_APPLICATION = 'texttools.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases

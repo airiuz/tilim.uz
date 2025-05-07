@@ -18,6 +18,7 @@ urlpatterns = [
     re_path(r'^$', root_view, name='api-root'),
     path('auth/', include('authuser.urls')),
     path('api/', include('translit.urls')),
+    path('', include('home.urls')),
 
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
